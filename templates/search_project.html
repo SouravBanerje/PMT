@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Projects - Project Management System</title>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Search Projects</h2>
+        <form action="{{ url_for('search_project') }}" method="post">
+            <div>
+                <label for="search_term">Search Term:</label>
+                <input type="text" name="search_term" id="search_term" required>
+                <input type="submit" value="Search">
+            </div>
+        </form>
+        
+        {% if projects %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.project_id }}</td>
+                    <td>{{ project.project_name }}</td>
+                    <td>{{ project.start_date }}</td>
+                    <td>{{ project.end_date }}</td>
+                    <td>{{ project.project_type }}</td>
+                    <td>{{ project.status }}</td>
+                    <td>
+                        <a href="{{ url_for('project_details', project_id=project.id) }}">View Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        
+        {% if msg %}
+        <div>
+            <p>{{ msg }}</p>
+        </div>
+        {% endif %}
+        
+        <div>
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

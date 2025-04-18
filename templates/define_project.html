@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Define Project - Project Management System</title>
+    <script>
+        function toggleAmountFields() {
+            var projectType = document.getElementById('project_type').value;
+            var totalAmountField = document.getElementById('total_amount_field');
+            var perMonthBillingField = document.getElementById('per_month_billing_field');
+            
+            if (projectType === 'fixed') {
+                totalAmountField.style.display = 'block';
+                perMonthBillingField.style.display = 'none';
+            } else {
+                totalAmountField.style.display = 'none';
+                perMonthBillingField.style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Define New Project</h2>
+        <form action="{{ url_for('define_project') }}" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="project_name">Project Name: *</label>
+                <input type="text" name="project_name" id="project_name" required>
+            </div>
+            <div>
+                <label for="project_description">Project Description:</label>
+                <textarea name="project_description" id="project_description"></textarea>
+            </div>
+            <div>
+                <label for="start_date">Start Date: *</label>
+                <input type="date" name="start_date" id="start_date" required>
+            </div>
+            <div>
+                <label for="end_date">End Date: *</label>
+                <input type="date" name="end_date" id="end_date" required>
+            </div>
+            <div>
+                <label for="project_type">Project Type: *</label>
+                <select name="project_type" id="project_type" onchange="toggleAmountFields()" required>
+                    <option value="fixed">Fixed Price</option>
+                    <option value="tm">T&M Price</option>
+                </select>
+            </div>
+            <div id="total_amount_field">
+                <label for="total_amount">Total Amount: *</label>
+                <input type="number" name="total_amount" id="total_amount" step="0.01">
+            </div>
+            <div id="per_month_billing_field" style="display: none;">
+                <label for="per_month_billing">Per Month Billing: *</label>
+                <input type="number" name="per_month_billing" id="per_month_billing" step="0.01">
+            </div>
+            <div>
+                <label for="pm_id">Project Manager: *</label>
+                <select name="pm_id" id="pm_id" required>
+                    {% for pm in project_managers %}
+                    <option value="{{ pm.id }}">{{ pm.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="po_number">Customer PO Number:</label>
+                <input type="text" name="po_number" id="po_number">
+            </div>
+            <div>
+                <label for="sow_attachment">Signed SOW Attachment:</label>
+                <input type="file" name="sow_attachment" id="sow_attachment">
+            </div>
+            <div>
+                <input type="submit" value="Save Project">
+            </div>
+            {% if msg %}
+            <div>
+                <p>{{ msg }}</p>
+            </div>
+            {% endif %}
+        </form>
+        <div>
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </div>
+    <script>
+        // Initialize fields on page load
+        window.onload = function() {
+            toggleAmountFields();
+        };
+    </script>
+</body>
+</html>

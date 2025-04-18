@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Details - Project Management System</title>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Task Details: {{ task.task_name }}</h2>
+        <div>
+            <p><strong>Project:</strong> {{ project.project_name }}</p>
+            <p><strong>Description:</strong> {{ task.description }}</p>
+            <p><strong>Start Date:</strong> {{ task.start_date }}</p>
+            <p><strong>End Date:</strong> {{ task.end_date }}</p>
+            <p><strong>Duration:</strong> {{ task_hours }} hours</p>
+            <p><strong>Dependency (days):</strong> {{ task.dependency_days }}</p>
+            <p><strong>Status:</strong> {{ task.status }}</p>
+            <p><strong>Active:</strong> {% if task.is_active %}Yes{% else %}No{% endif %}</p>
+        </div>
+        
+        <div>
+            <h3>Assigned Resources</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Designation/Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resource in resources %}
+                    <tr>
+                        <td>{{ resource.username }}</td>
+                        <td>{{ resource.designation }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">No resources assigned</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+        <div>
+            <h3>Update Task</h3>
+            <form action="{{ url_for('update_task', task_id=task.id) }}" method="post">
+                <div>
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date" value="{{ task.start_date }}" required>
+                </div>
+                <div>
+                    <label for="end_date">End Date:</label>
+                    <input type="date" name="end_date" id="end_date" value="{{ task.end_date }}" required>
+                </div>
+                <div>
+                    <label for="status">Status:</label>
+                    <select name="status" id="status">
+                        <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                        <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" value="Update Task">
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        
+        <div>
+            <h3>Comments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                        <th>Date/Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.username }}</td>
+                        <td>{{ comment.comment_text }}</td>
+                        <td>{{ comment.created_at }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No comments yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <h4>Add Comment</h4>
+            <form action="{{ url_for('add_comment', task_id=task.id) }}" method="post">
+                <div>
+                    <textarea name="comment_text" required></textarea>
+                </div>
+                <div>
+                    <input type="submit" value="Add Comment">
+                </div>
+            </form>
+        </div>
+        
+        <div>
+            <a href="{{ url_for('project_details', project_id=project.id) }}">Back to Project</a>
+        </div>
+    </div>
+</body>
+</html>

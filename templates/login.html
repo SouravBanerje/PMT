@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Login</h2>
+        <form action="{{ url_for('login') }}" method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div>
+                <label for="user_type">Login as:</label>
+                <select name="user_type" id="user_type">
+                    <option value="admin">Admin</option>
+                    <option value="pm">Project Manager</option>
+                    <option value="team_member">Team Member</option>
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+            <div>
+                <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+            </div>
+            {% if msg %}
+            <div>
+                <p>{{ msg }}</p>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

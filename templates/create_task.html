@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Task - Project Management System</title>
+    <script>
+        function addResource() {
+            var resourcesContainer = document.getElementById('resources-container');
+            var newResource = document.createElement('div');
+            newResource.innerHTML = `
+                <div>
+                    <select name="resources[]">
+                        {% for member in team_members %}
+                        <option value="{{ member.id }}">{{ member.username }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="designations[]" placeholder="Designation/Grade">
+                    <button type="button" onclick="this.parentElement.remove()">Remove</button>
+                </div>
+            `;
+            resourcesContainer.appendChild(newResource);
+        }
+    </script>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Create Task for Project: {{ project.project_name }}</h2>
+        <form action="{{ url_for('create_task', project_id=project.id) }}" method="post">
+            <div>
+                <label for="task_name">Task Name: *</label>
+                <input type="text" name="task_name" id="task_name" required>
+            </div>
+            <div>
+                <label for="task_description">Task Description:</label>
+                <textarea name="task_description" id="task_description"></textarea>
+            </div>
+            <div>
+                <label for="start_date">Start Date: *</label>
+                <input type="date" name="start_date" id="start_date" required>
+            </div>
+            <div>
+                <label for="end_date">End Date: *</label>
+                <input type="date" name="end_date" id="end_date" required>
+            </div>
+            <div>
+                <label for="dependency_days">Dependency (days):</label>
+                <input type="number" name="dependency_days" id="dependency_days" value="0">
+            </div>
+            <div>
+                <label for="parent_task_id">Parent Task:</label>
+                <select name="parent_task_id" id="parent_task_id">
+                    <option value="">No Parent Task</option>
+                    {% for task in existing_tasks %}
+                    <option value="{{ task.id }}">{{ task.task_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="is_active">Is Active:</label>
+                <select name="is_active" id="is_active">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div>
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                </select>
+            </div>
+            <div>
+                <h3>Resources</h3>
+                <button type="button" onclick="addResource()">Add Resource</button>
+                <div id="resources-container">
+                    <!-- Resources will be added here dynamically -->
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Create Task">
+            </div>
+        </form>
+        <div>
+            <a href="{{ url_for('project_details', project_id=project.id) }}">Back to Project</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Details - Project Management System</title>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Project Details: {{ project.project_name }}</h2>
+        <div>
+            <p><strong>Project ID:</strong> {{ project.project_id }}</p>
+            <p><strong>Description:</strong> {{ project.description }}</p>
+            <p><strong>Start Date:</strong> {{ project.start_date }}</p>
+            <p><strong>End Date:</strong> {{ project.end_date }}</p>
+            <p><strong>Project Duration:</strong> {{ project_duration }} days</p>
+            <p><strong>Project Type:</strong> {{ project.project_type }}</p>
+            {% if project.project_type == 'fixed' %}
+            <p><strong>Total Amount:</strong> {{ project.total_amount }}</p>
+            {% else %}
+            <p><strong>Per Month Billing:</strong> {{ project.per_month_billing }}</p>
+            {% endif %}
+            <p><strong>Project Manager:</strong> {{ pm.username }}</p>
+            <p><strong>PO Number:</strong> {{ project.po_number }}</p>
+            <p><strong>Status:</strong> {{ project.status }}</p>
+        </div>
+        
+        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+        <div>
+            <a href="{{ url_for('create_task', project_id=project.id) }}">Create New Task</a>
+
+        </div>
+        {% endif %}
+        
+        <div>
+            <h3>Tasks</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Task Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr style="background-color: {% if task.color == 'red' %}#ffcccc{% else %}#ccffcc{% endif %}">
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.task_name }}</td>
+                        <td>{{ task.start_date }}</td>
+                        <td>{{ task.end_date }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <a href="{{ url_for('task_details', task_id=task.id) }}">View Details</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">No tasks found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div>
+            <a href="{{ url_for('gantt_chart', project_id=project.id) }}">View Gantt Chart</a>
+        </div>
+        
+        <div>
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

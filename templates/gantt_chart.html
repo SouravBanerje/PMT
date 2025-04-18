@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gantt Chart - Project Management System</title>
+    <style>
+        .gantt-container {
+            overflow-x: auto;
+        }
+        .gantt-row {
+            height: 30px;
+            margin-bottom: 5px;
+        }
+        .gantt-task-label {
+            display: inline-block;
+            width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .gantt-timeline {
+            display: inline-block;
+            height: 20px;
+            background-color: #ccffcc;
+            position: relative;
+        }
+        .gantt-scale {
+            position: relative;
+            height: 30px;
+            margin-left: 200px;
+            border-bottom: 1px solid #ccc;
+        }
+        .gantt-scale-item {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            font-size: 10px;
+            border-right: 1px solid #eee;
+        }
+    </style>
+    <script>
+        function generateGanttChart() {
+            var project = {{ project|tojson }};
+            var tasks = {{ tasks|tojson }};
+            
+            var startDate = new Date(project.start_date);
+            var endDate = new Date(project.end_date);
+            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            
+            var ganttContainer = document.getElementById('gantt-container');
+            
+            // Create scale
+            var scaleDiv = document.createElement('div');
+            scaleDiv.className = 'gantt-scale';
+            for (var i = 0; i <= totalDays; i++) {
+                var scaleItem = document.createElement('div');
+                scaleItem.className = 'gantt-scale-item';
+                scaleItem.textContent = i + 1;
+                scaleDiv.appendChild(scaleItem);
+            }
+            ganttContainer.appendChild(scaleDiv);
+            
+            // Create tasks
+            tasks.forEach(function(task) {
+                var taskStartDate = new Date(task.start_date);
+                var taskEndDate = new Date(task.end_date);
+                
+                var dayOffset = Math.ceil((taskStartDate - startDate) / (1000 * 60 * 60 * 24));
+                var taskDuration = Math.ceil((taskEndDate - taskStartDate) / (1000 * 60 * 60 * 24));
+                
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'gantt-row';
+                
+                var labelDiv = document.createElement('div');
+                labelDiv.className = 'gantt-task-label';
+                labelDiv.textContent = task.task_name;
+                rowDiv.appendChild(labelDiv);
+                
+                var timelineDiv = document.createElement('div');
+                timelineDiv.className = 'gantt-timeline';
+                timelineDiv.style.marginLeft = (dayOffset * 30) + 'px';
+                timelineDiv.style.width = (taskDuration * 30) + 'px';
+                timelineDiv.style.backgroundColor = task.color === 'red' ? '#ffcccc' : '#ccffcc';
+                rowDiv.appendChild(timelineDiv);
+                
+                ganttContainer.appendChild(rowDiv);
+            });
+        }
+        
+        window.onload = function() {
+            generateGanttChart();
+        };
+    </script>
+</head>
+<body>
+    <h1>Project Management System</h1>
+    <div>
+        <h2>Gantt Chart: {{ project.project_name }}</h2>
+        <div id="gantt-container" class="gantt-container">
+            <!-- Gantt chart will be generated here by JavaScript -->
+        </div>
+        <div>
+            <a href="{{ url_for('project_details', project_id=project.id) }}">Back to Project</a>
+        </div>
+    </div>
+</body>
+</html>
