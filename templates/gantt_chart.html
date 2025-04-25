@@ -1,106 +1,258 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gantt Chart - Project Management System</title>
+    <meta charset="UTF-8">
+    <title>Gantt Chart - {{ project.project_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap & Google Fonts for modern look -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #23272f;
+        }
+        .container-fluid {
+            max-width: 1100px;
+            margin: 38px auto 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 32px 30px 32px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         .gantt-container {
             overflow-x: auto;
+            margin: 24px 0 12px 0;
+            padding: 18px 0 14px 0;
+            background: #f8fafd;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(44,62,80,0.04);
         }
         .gantt-row {
-            height: 30px;
-            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            height: 40px;
         }
         .gantt-task-label {
-            display: inline-block;
             width: 200px;
-            overflow: hidden;
+            padding-right: 15px;
+            font-weight: 600;
+            color: #2462d5;
             text-overflow: ellipsis;
+            overflow: hidden;
             white-space: nowrap;
+            font-size: 1.08em;
         }
         .gantt-timeline {
-            display: inline-block;
-            height: 20px;
-            background-color: #ccffcc;
             position: relative;
-        }
-        .gantt-scale {
-            position: relative;
+            flex-grow: 1;
+            background: #f5f5f5;
+            border: 1px solid #dde4ed;
             height: 30px;
-            margin-left: 200px;
-            border-bottom: 1px solid #ccc;
+            border-radius: 7px;
+            min-width: 340px;
         }
-        .gantt-scale-item {
-            display: inline-block;
-            width: 30px;
+        .gantt-bar {
+            position: absolute;
+            height: 100%;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(.4,1.6,.6,.8);
+            box-shadow: 0 2px 7px rgba(44,62,80,0.08);
+            opacity: 0.93;
+        }
+        .gantt-bar:hover {
+            opacity: 1;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(80,160,255,0.12);
+            z-index: 3;
+        }
+        .date-header {
+            display: flex;
+            margin-left: 200px;
+            border-bottom: 1px solid #dde4ed;
+        }
+        .date-cell {
+            min-width: 30px;
             text-align: center;
-            font-size: 10px;
-            border-right: 1px solid #eee;
+            padding: 5px 2px;
+            font-size: 12px;
+            border-right: 1px solid #f2f4f7;
+            color: #4e5d70;
+            background: #f4f7fa;
+            font-weight: 600;
+        }
+        .status-completed { background-color: #28a745; }
+        .status-in-progress { background-color: #007bff; }
+        .status-delayed, .status-pending { background-color: #dc3545; }
+        .status-not-started { background-color: #6c757d; }
+        .status-badge {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 6px;
+            border-radius: 50%;
+        }
+        .legend {
+            display: flex;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 18px 20px;
+            margin-bottom: 0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            border: none;
+            font-weight: 600;
+            padding: 11px 30px;
+            border-radius: 7px;
+        }
+        .btn-primary:hover {
+            background: #2462d5;
+        }
+        @media (max-width: 900px) {
+            .container-fluid {
+                max-width: 99vw;
+                padding: 10px 2vw 14px 2vw;
+            }
+            h1 {
+                font-size: 1.09rem;
+            }
+            .gantt-task-label {
+                width: 130px;
+                font-size: 0.97em;
+            }
+            .gantt-timeline {
+                min-width: 200px;
+            }
         }
     </style>
-    <script>
-        function generateGanttChart() {
-            var project = {{ project|tojson }};
-            var tasks = {{ tasks|tojson }};
-            
-            var startDate = new Date(project.start_date);
-            var endDate = new Date(project.end_date);
-            var totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            
-            var ganttContainer = document.getElementById('gantt-container');
-            
-            // Create scale
-            var scaleDiv = document.createElement('div');
-            scaleDiv.className = 'gantt-scale';
-            for (var i = 0; i <= totalDays; i++) {
-                var scaleItem = document.createElement('div');
-                scaleItem.className = 'gantt-scale-item';
-                scaleItem.textContent = i + 1;
-                scaleDiv.appendChild(scaleItem);
-            }
-            ganttContainer.appendChild(scaleDiv);
-            
-            // Create tasks
-            tasks.forEach(function(task) {
-                var taskStartDate = new Date(task.start_date);
-                var taskEndDate = new Date(task.end_date);
-                
-                var dayOffset = Math.ceil((taskStartDate - startDate) / (1000 * 60 * 60 * 24));
-                var taskDuration = Math.ceil((taskEndDate - taskStartDate) / (1000 * 60 * 60 * 24));
-                
-                var rowDiv = document.createElement('div');
-                rowDiv.className = 'gantt-row';
-                
-                var labelDiv = document.createElement('div');
-                labelDiv.className = 'gantt-task-label';
-                labelDiv.textContent = task.task_name;
-                rowDiv.appendChild(labelDiv);
-                
-                var timelineDiv = document.createElement('div');
-                timelineDiv.className = 'gantt-timeline';
-                timelineDiv.style.marginLeft = (dayOffset * 30) + 'px';
-                timelineDiv.style.width = (taskDuration * 30) + 'px';
-                timelineDiv.style.backgroundColor = task.color === 'red' ? '#ffcccc' : '#ccffcc';
-                rowDiv.appendChild(timelineDiv);
-                
-                ganttContainer.appendChild(rowDiv);
-            });
-        }
-        
-        window.onload = function() {
-            generateGanttChart();
-        };
-    </script>
 </head>
 <body>
-    <h1>Project Management System</h1>
-    <div>
-        <h2>Gantt Chart: {{ project.project_name }}</h2>
-        <div id="gantt-container" class="gantt-container">
-            <!-- Gantt chart will be generated here by JavaScript -->
+    <div class="container-fluid">
+        <h1><i class="fa-solid fa-chart-gantt"></i> {{ project.project_name }} - Gantt Chart</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="status-badge status-completed"></div>
+                <span>Completed</span>
+            </div>
+            <div class="legend-item">
+                <div class="status-badge status-in-progress"></div>
+                <span>In Progress</span>
+            </div>
+            <div class="legend-item">
+                <div class="status-badge status-delayed"></div>
+                <span>Pending</span>
+            </div>
+            <div class="legend-item">
+                <div class="status-badge status-not-started"></div>
+                <span>Not Started</span>
+            </div>
         </div>
-        <div>
-            <a href="{{ url_for('project_details', project_id=project.id) }}">Back to Project</a>
+        
+        <div id="gantt-container" class="gantt-container">
+            <div id="date-header" class="date-header"></div>
+            <div id="tasks-container"></div>
+        </div>
+        
+        <div class="mb-4">
+            <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" 
+               class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back to Project Details</a>
         </div>
     </div>
+    <script>
+        const project = {{ project|tojson|safe }};
+        const tasks = {{ tasks|tojson|safe }};
+
+        function createGanttChart() {
+            const startDate = new Date(project.start_date);
+            const endDate = new Date(project.end_date);
+            const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            // Clear previous headers/bars if re-rendering
+            document.getElementById('date-header').innerHTML = "";
+            document.getElementById('tasks-container').innerHTML = "";
+
+            // Create date header
+            const dateHeader = document.getElementById('date-header');
+            for (let i = 0; i <= totalDays; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(currentDate.getDate() + i);
+
+                const dateCell = document.createElement('div');
+                dateCell.className = 'date-cell';
+                dateCell.textContent = currentDate.getDate();
+
+                // Add month name at the beginning of each month
+                if (currentDate.getDate() === 1 || i === 0) {
+                    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    dateCell.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getDate()}`;
+                    dateCell.style.fontWeight = 'bold';
+                    dateCell.style.color = '#2462d5';
+                }
+
+                dateHeader.appendChild(dateCell);
+            }
+
+            // Create task bars
+            const tasksContainer = document.getElementById('tasks-container');
+            tasks.forEach(task => {
+                const taskStart = new Date(task.start_date);
+                const taskEnd = new Date(task.end_date);
+
+                const leftOffset = Math.ceil((taskStart - startDate) / (1000 * 60 * 60 * 24));
+                const width = Math.max(1, Math.ceil((taskEnd - taskStart) / (1000 * 60 * 60 * 24)));
+
+                const row = document.createElement('div');
+                row.className = 'gantt-row';
+
+                const label = document.createElement('div');
+                label.className = 'gantt-task-label';
+                label.textContent = task.task_name;
+
+                const timeline = document.createElement('div');
+                timeline.className = 'gantt-timeline';
+
+                const bar = document.createElement('div');
+                // Support alternate naming: status-delayed or status-pending for "Pending"
+                let statusClass = task.status_class;
+                if (statusClass === "pending") statusClass = "delayed";
+                bar.className = `gantt-bar status-${statusClass}`;
+                bar.style.left = `${leftOffset * 30}px`;
+                bar.style.width = `${width * 30}px`;
+                bar.title = `${task.task_name}
+Start: ${task.start_date}
+End: ${task.end_date}
+Status: ${task.status}`;
+
+                timeline.appendChild(bar);
+                row.appendChild(label);
+                row.appendChild(timeline);
+                tasksContainer.appendChild(row);
+            });
+        }
+        window.onload = createGanttChart;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FontAwesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
 </body>
 </html>
+

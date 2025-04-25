@@ -1,58 +1,490 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Project Management System</title>
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f8cff;
+            --primary-dark: #2462d5;
+            --secondary: #44e3bc;
+            --secondary-dark: #1fa886;
+            --light: #f8f9fa;
+            --dark: #23272f;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --success: #09c372;
+            --gray: #95a5a6;
+            --shadow: 0 8px 24px rgba(0,0,0,0.11);
+            --glass: rgba(255,255,255,0.85);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        .navbar {
+            background: linear-gradient(90deg,var(--primary), var(--secondary));
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .navbar h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar h1 i {
+            color: var(--secondary);
+            font-size: 1.8rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        .user-badge {
+            background: rgba(255,255,255,0.13);
+            padding: 7px 18px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: badgePop 0.5s;
+        }
+        @keyframes badgePop {
+            0% {transform: scale(0.9);}
+            80% {transform: scale(1.05);}
+            100% {transform: scale(1);}
+        }
+        .logout-btn, .user-info a {
+            background: linear-gradient(90deg,var(--primary-dark), var(--secondary-dark));
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logout-btn:hover, .user-info a:hover {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(231,76,60,0.13);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: var(--glass);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .card-header {
+            padding: 24px 30px 18px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #f7fbff 60%, #e8faf4 100%);
+        }
+        .card-header h3 {
+            color: var(--dark);
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-header h3 i {
+            color: var(--primary);
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn, .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 2px 10px rgba(44,62,80,0.07);
+        }
+        .btn {
+            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .btn-secondary {
+            background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .card-body {
+            padding: 25px 30px 30px 30px;
+        }
+        .project-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            background: transparent;
+        }
+        .project-table th, .project-table td {
+            padding: 13px 17px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .project-table th {
+            background: #f4f7fa;
+            font-weight: 700;
+            color: var(--dark);
+            border-bottom: 2px solid #e3e8ee;
+        }
+        .project-table tbody tr {
+            background: rgba(255,255,255,0.96);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .project-table tr:hover {
+            background: #f2faff;
+            box-shadow: 0 2px 14px rgba(80,160,255,0.08);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .project-table .empty-row {
+            text-align: center;
+            color: var(--gray);
+            padding: 38px 0;
+        }
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.98em;
+            font-weight: 600;
+            display: inline-block;
+            min-width: 90px;
+            letter-spacing: 0.03em;
+            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+            transition: background 0.3s, color 0.3s;
+        }
+        .status-active {
+            background: rgba(46,204,113,0.16);
+            color: #1abc9c;
+        }
+        .status-pending {
+            background: rgba(243,156,18,0.18);
+            color: #e67e22;
+        }
+        .status-completed {
+            background: rgba(52,152,219,0.18);
+            color: #2462d5;
+        }
+        .status-cancelled {
+            background: rgba(231,76,60,0.13);
+            color: var(--danger);
+        }
+        .status-onhold {
+            background: rgba(149,165,166,0.13);
+            color: var(--gray);
+        }
+        .action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: none;
+            background: none;
+            transition: color 0.2s;
+        }
+        .action-link i {
+            font-size: 1rem;
+        }
+        .action-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .user-type-admin {
+            background: #e74c3c;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 13px;
+            font-size: 0.95em;
+            margin-left: 7px;
+        }
+        .user-type-pm {
+            background: #4f8cff;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 13px;
+            font-size: 0.95em;
+            margin-left: 7px;
+        }
+        .user-type-team_member {
+            background: #09c372;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 13px;
+            font-size: 0.95em;
+            margin-left: 7px;
+        }
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .container {
+                max-width: 100%;
+            }
+            .card-header, .card-body {
+                padding: 18px 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+                padding: 18px 10px;
+            }
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn, .btn-secondary {
+                width: 100%;
+            }
+            .project-table, .card-body > div {
+                display: block;
+                overflow-x: auto;
+                width: 100%;
+            }
+        }
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 150px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 7px;
+            padding: 7px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 115%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.92em;
+            pointer-events: none;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Row expansion for details (mobile/UX) */
+        .project-table .expand-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .project-table .project-extra {
+            display: none;
+            background: #f7fafd;
+        }
+        .project-table .project-extra td {
+            border-bottom: none;
+            padding-top: 0;
+        }
+        .project-table .expanded + .project-extra {
+            display: table-row;
+            animation: fadeIn 0.3s;
+        }
+    </style>
 </head>
 <body>
-    <h1>Project Management System</h1>
-    <div>
-        <h2>Welcome, {{ username }} ({{ user_type }})</h2>
-        <div>
-            <a href="{{ url_for('logout') }}">Logout</a>
+    <header class="navbar">
+        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
+        <div class="user-info">
+            <span class="user-badge">
+                <span>Welcome, <strong>{{ username }}</strong></span>
+                <span class="user-type user-type-{{ user_type }}">({{ user_type }})</span>
+            </span>
+            <a href="{{ url_for('logout.logout') }}" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-folder-open"></i> Projects</h3>
+                {% if user_type == 'admin' or user_type == 'pm' %}
+                <div class="action-buttons">
+                    <a href="{{ url_for('define_project.define_project') }}" class="btn tooltip">
+                        <i class="fa-solid fa-plus"></i> Define New Project
+                        
+                    </a>
+                    <a href="{{ url_for('search_project.search_project') }}" class="btn btn-secondary tooltip">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search Projects
+                       
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div style="overflow-x: auto;">
+                    <table class="project-table">
+                        <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr class="expand-row">
+                                <td>{{ project.project_id }}</td>
+                                <td>{{ project.project_name }}</td>
+                                <td>{{ project.start_date }}</td>
+                                <td>{{ project.end_date }}</td>
+                                <td>{{ project.project_type }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ project.status.lower() }}">
+                                        {{ project.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="action-link tooltip">
+                                        <i class="fa-solid fa-eye"></i> View
+                                        <span class="tooltiptext">See project details</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="project-extra">
+                                <td colspan="7">
+                                    <strong>Description:</strong> {{ project.description or "No description available." }}<br>
+                        
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="empty-row">No projects found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div>
-        <h3>Projects</h3>
-        {% if user_type == 'admin' or user_type == 'pm' %}
-        <div>
-            <a href="{{ url_for('define_project') }}">Define New Project</a>
-            <a href="{{ url_for('search_project') }}">Search Projects</a>
-        </div>
-        {% endif %}
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Project ID</th>
-                    <th>Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for project in projects %}
-                <tr>
-                    <td>{{ project.project_id }}</td>
-                    <td>{{ project.project_name }}</td>
-                    <td>{{ project.start_date }}</td>
-                    <td>{{ project.end_date }}</td>
-                    <td>{{ project.project_type }}</td>
-                    <td>{{ project.status }}</td>
-                    <td>
-                        <a href="{{ url_for('project_details', project_id=project.id) }}">View Details</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="7">No projects found</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Modal for quick add/search -->
+    <div id="quick-action-modal" style="display:none;">
+      <!-- Placeholder for future interactive modal -->
     </div>
+    <script>
+        // Interactive: Table row expand/collapse for extra info
+        document.addEventListener('DOMContentLoaded', function() {
+            // Table row expansion for extra info
+            document.querySelectorAll('.expand-row').forEach((row, idx) => {
+                row.addEventListener('click', function() {
+                    // Toggle expanded
+                    row.classList.toggle('expanded');
+                    const next = row.nextElementSibling;
+                    if(next && next.classList.contains('project-extra')) {
+                        if(row.classList.contains('expanded')) {
+                            next.style.display = 'table-row';
+                        } else {
+                            next.style.display = 'none';
+                        }
+                    }
+                });
+            });
+            // Status dynamic coloring
+            document.querySelectorAll('.status-badge').forEach(badge => {
+                const status = badge.textContent.trim().toLowerCase();
+                badge.classList.remove('status-active','status-pending','status-completed','status-cancelled','status-onhold');
+                if (status.includes('active') || status.includes('progress')) {
+                    badge.classList.add('status-active');
+                } else if (status.includes('pending') || status.includes('planned')) {
+                    badge.classList.add('status-pending');
+                } else if (status.includes('complete') || status.includes('done') || status.includes('finished')) {
+                    badge.classList.add('status-completed');
+                } else if (status.includes('cancelled') || status.includes('canceled')) {
+                    badge.classList.add('status-cancelled');
+                } else if (status.includes('hold') || status.includes('on hold')) {
+                    badge.classList.add('status-onhold');
+                }
+            });
+            // Set user type styling
+            const userTypeElement = document.querySelector('.user-type');
+            if (userTypeElement) {
+                const userType = userTypeElement.textContent.replace(/[()]/g, '').trim().toLowerCase();
+                userTypeElement.classList.add('user-type-' + userType);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversation with {{ other_user.username }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #23272f;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 32px 32px 24px 32px;
+        }
+        h1 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #2462d5;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: #f2f7fd;
+            padding: 7px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        .messages-list {
+            background: #f7fbff;
+            border-radius: 9px;
+            padding: 18px 18px 8px 18px;
+            margin-bottom: 20px;
+            max-height: 340px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+        }
+        .message-item {
+            margin-bottom: 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .message-item.you {
+            align-items: flex-end;
+        }
+        .message-bubble {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            background: #e0eafc;
+            color: #23272f;
+            font-size: 1.04em;
+            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+        .message-item.you .message-bubble {
+            background: #4f8cff;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .sender-label {
+            font-weight: 600;
+            color: #2462d5;
+            margin-right: 10px;
+            font-size: 0.99em;
+        }
+        .message-item.you .sender-label {
+            color: #4f8cff;
+        }
+        .timestamp {
+            color: #b2bec3;
+            font-size: 0.86em;
+            margin-top: 2px;
+        }
+        .send-form {
+            background: #f7fbff;
+            border-radius: 9px;
+            padding: 18px 18px 12px 18px;
+            margin-top: 2px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+        }
+        textarea {
+            width: 100%;
+            border-radius: 8px;
+            border: 1.5px solid #b2bec3;
+            padding: 12px 13px;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            background: #f9fbfd;
+            resize: vertical;
+            min-height: 60px;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        textarea:focus {
+            border-color: #4f8cff;
+            background: #fff;
+            outline: none;
+        }
+        .btn-send {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 26px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .btn-send:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .form-tip {
+            font-size: 0.93em;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 10px 2vw 14px 2vw;
+                max-width: 100vw;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-comments"></i> Conversation with {{ other_user.username }}</h1>
+        <a href="/messages" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Messages</a>
+        <h2 style="font-size:1.12rem;margin-bottom:10px;font-weight:600;color:#2462d5;"><i class="fa-solid fa-message"></i> Messages</h2>
+        <div class="messages-list" id="messages-list">
+            {% for message in messages %}
+                <div class="message-item {% if message.sender_id == session.id %}you{% endif %}">
+                    <span class="sender-label">
+                        {% if message.sender_id == session.id %}
+                            You:
+                        {% else %}
+                            {{ other_user.username }}:
+                        {% endif %}
+                    </span>
+                    <span class="message-bubble">{{ message.message_text }}</span>
+                    <span class="timestamp"><i class="fa-regular fa-clock"></i> {{ message.created_at }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <h2 style="font-size:1.12rem;margin-bottom:7px;margin-top:20px;font-weight:600;color:#2462d5;"><i class="fa-solid fa-paper-plane"></i> Send Message</h2>
+        <form method="post" class="send-form">
+            <div>
+                <textarea name="message_text" placeholder="Type your message..." required></textarea>
+            </div>
+            <div>
+                <span class="form-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Use <b>@username</b> to mention someone</span>
+            </div>
+            <div>
+                <button type="submit" class="btn-send"><i class="fa-solid fa-paper-plane"></i> Send</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Scroll to bottom of messages on page load for chat UX
+        window.onload = function() {
+            var messagesList = document.getElementById("messages-list");
+            if (messagesList) {
+                messagesList.scrollTop = messagesList.scrollHeight;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resource Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 34px 24px 34px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        nav {
+            margin-bottom: 24px;
+        }
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        nav a {
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 5px;
+            background: #f2f7fd;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        nav a:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        h2 {
+            font-size: 1.13rem;
+            margin: 28px 0 14px 0;
+            font-weight: 700;
+            color: #2462d5;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 7px;
+            background: #f8fafd;
+            border-radius: 8px;
+            margin-bottom: 0;
+        }
+        th, td {
+            padding: 10px 13px;
+            text-align: left;
+            font-size: 1.03em;
+        }
+        th {
+            background: #f2f7fd;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #dde4ed;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        td a {
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 9px;
+            transition: color 0.16s;
+        }
+        td a:hover {
+            color: #4f8cff;
+            text-decoration: underline;
+        }
+        @media (max-width: 900px) {
+            .container { max-width: 100vw; padding: 10px 2vw 14px 2vw; }
+            h1 { font-size: 1.11rem; }
+            h2 { font-size: 1.01rem; }
+            th, td { font-size: 0.96em; }
+            table { font-size: 0.98em; }
+            nav ul { flex-direction: column; gap: 7px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-users-cog"></i> Resource Management</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home.home') }}"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="{{ url_for('resource_calendar.resource_calendar') }}"><i class="fa-solid fa-calendar-days"></i> Resource Calendar</a></li>
+                <li><a href="{{ url_for('skill_matrix.skill_matrix') }}"><i class="fa-solid fa-table-cells-large"></i> Skill Matrix</a></li>
+                <li><a href="{{ url_for('time_tracking.time_tracking') }}"><i class="fa-solid fa-clock"></i> Time Tracking</a></li>
+                <li><a href="{{ url_for('resource_utilization.resource_utilization') }}"><i class="fa-solid fa-chart-simple"></i> Resource Utilization</a></li>
+                <li><a href="{{ url_for('resource_optimization.resource_optimization') }}"><i class="fa-solid fa-layer-group"></i> Resource Allocation</a></li>
+                <li><a href="{{ url_for('capacity_planning.capacity_planning') }}"><i class="fa-solid fa-people-roof"></i> Capacity Planning</a></li>
+            </ul>
+        </nav>
+        <h2><i class="fa-solid fa-users"></i> Team Members</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in team_members %}
+                <tr>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.username }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>
+                        <a href="{{ url_for('resource_calendar.resource_calendar') }}?user_id={{ member.id }}"><i class="fa-solid fa-calendar-days"></i> View Calendar</a>
+                        <a href="{{ url_for('skill_matrix.skill_matrix') }}?user_id={{ member.id }}"><i class="fa-solid fa-table-cells-large"></i> View Skills</a>
+                        <a href="{{ url_for('time_tracking.time_tracking') }}?user_id={{ member.id }}"><i class="fa-solid fa-clock"></i> View Timesheet</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

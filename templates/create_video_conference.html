@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Video Conference</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 36px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 34px 22px 34px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #2462d5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h2 {
+            font-size: 1.08rem;
+            color: #2462d5;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 14px;
+        }
+        a {
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f2f7fd;
+            padding: 7px 16px;
+            border-radius: 5px;
+            transition: background 0.16s, color 0.16s;
+        }
+        a:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+            text-decoration: underline;
+        }
+        form > div {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2462d5;
+        }
+        input[type="text"], input[type="url"], input[type="datetime-local"], select {
+            border-radius: 7px;
+            border: 1.5px solid #b2bec3;
+            padding: 10px 13px;
+            font-size: 1rem;
+            background: #f9fbfd;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        input[type="text"]:focus, input[type="url"]:focus, input[type="datetime-local"]:focus, select:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 11px 27px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        button[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .participants-container {
+            max-height: 165px;
+            overflow-y: auto;
+            border: 1.5px solid #e3e8ee;
+            padding: 10px 10px 5px 10px;
+            border-radius: 7px;
+            background: #f7fbff;
+        }
+        .participant-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .participant-item label {
+            font-weight: 500;
+            margin-bottom: 0;
+            color: #23272f;
+            cursor: pointer;
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 10px 2vw 12px 2vw;
+                max-width: 100vw;
+            }
+            h1 {
+                font-size: 1.11rem;
+            }
+            h2 {
+                font-size: 1.01rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-video"></i> Schedule Video Conference</h1>
+        <a href="/video_conferences"><i class="fa-solid fa-arrow-left"></i> Back to Conferences</a>
+        <div>
+            <h2><i class="fa-solid fa-calendar-plus"></i> Conference Details</h2>
+            <form method="post" autocomplete="off">
+                <div>
+                    <label for="conference_name"><i class="fa-solid fa-signature"></i> Conference Name:</label>
+                    <input type="text" id="conference_name" name="conference_name" required placeholder="Enter conference name">
+                </div>
+                <div>
+                    <label for="project_id"><i class="fa-solid fa-folder"></i> Project (Optional):</label>
+                    <select id="project_id" name="project_id">
+                        <option value="">-- No Project --</option>
+                        {% for project in projects %}
+                            <option value="{{ project.id }}">{{ project.project_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div>
+                    <label for="task_id">Task (Optional):</label>
+                    <select id="task_id" name="task_id" disabled>
+                        <option value="">-- No Task --</option>
+                         Tasks will be loaded dynamically based on selected project
+                    </select>
+                </div> -->
+                <div>
+                    <label for="meeting_link"><i class="fa-solid fa-link"></i> Meeting Link:</label>
+                    <input type="url" id="meeting_link" name="meeting_link" required placeholder="https://meet.example.com/room-id">
+                </div>
+                <div>
+                    <label for="scheduled_start"><i class="fa-solid fa-clock"></i> Start Time:</label>
+                    <input type="datetime-local" id="scheduled_start" name="scheduled_start" required>
+                </div>
+                <div>
+                    <label for="scheduled_end"><i class="fa-solid fa-clock"></i> End Time:</label>
+                    <input type="datetime-local" id="scheduled_end" name="scheduled_end" required>
+                </div>
+                <div>
+                    <label><i class="fa-solid fa-users"></i> Participants:</label>
+                    <div class="participants-container">
+                        {% for user in users %}
+                            <div class="participant-item">
+                                <input type="checkbox" id="participant_{{ user.id }}" name="participants" value="{{ user.id }}">
+                                <label for="participant_{{ user.id }}">{{ user.username }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <button type="submit"><i class="fa-solid fa-calendar-check"></i> Schedule Conference</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Set default datetime values to current time rounded to next 30 minutes
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const minutes = Math.ceil(now.getMinutes() / 30) * 30;
+            now.setMinutes(minutes);
+            now.setSeconds(0);
+            
+            const start = new Date(now);
+            const end = new Date(now);
+            end.setHours(end.getHours() + 1); // Default meeting length: 1 hour
+            
+            const formatDateTime = date => {
+                return date.getFullYear() + '-' + 
+                       String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(date.getDate()).padStart(2, '0') + 'T' + 
+                       String(date.getHours()).padStart(2, '0') + ':' + 
+                       String(date.getMinutes()).padStart(2, '0');
+            };
+            
+            document.getElementById('scheduled_start').value = formatDateTime(start);
+            document.getElementById('scheduled_end').value = formatDateTime(end);
+            
+            // If you want dynamic task loading based on project:
+            // document.getElementById('project_id').addEventListener('change', function() {
+            //     const projectId = this.value;
+            //     const taskSelect = document.getElementById('task_id');
+            //     while (taskSelect.options.length > 1) {
+            //         taskSelect.remove(1);
+            //     }
+            //     if (projectId) {
+            //         taskSelect.disabled = false;
+            //         fetch(`/api/project_tasks/${projectId}`)
+            //             .then(response => response.json())
+            //             .then(tasks => {
+            //                 tasks.forEach(task => {
+            //                     const option = document.createElement('option');
+            //                     option.value = task.id;
+            //                     option.textContent = task.task_name;
+            //                     taskSelect.appendChild(option);
+            //                 });
+            //             })
+            //             .catch(error => console.error('Error fetching tasks:', error));
+            //     } else {
+            //         taskSelect.disabled = true;
+            //     }
+            // });
+        });
+    </script>
+</body>
+</html>
+

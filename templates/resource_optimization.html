@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Optimization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg,#e0eafc 0%,#cfdef3 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+        .resource-card {
+            transition: all 0.3s;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+        .skill-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .workload-low {
+            background-color: #e6fbe9 !important;
+        }
+        .workload-medium {
+            background-color: #fffbe1 !important;
+        }
+        .workload-high {
+            background-color: #ffeaea !important;
+        }
+        .task-card {
+            border-left: 5px solid #6c757d;
+            margin-bottom: 15px;
+        }
+        .current-resources {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        h1, h2, h5, h6 {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2462d5;
+            font-weight: 700;
+        }
+        .card-header {
+            background: #f4f7fa;
+            border-bottom: 1px solid #e3e8ee;
+        }
+        .badge.bg-info {
+            color: #fff;
+            background: #4f8cff !important;
+        }
+        .form-select, .btn, .table, .alert {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .alert-info {
+            background: #f4f7fa;
+            color: #2462d5;
+            border: 1px solid #b2bec3;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: #fff;
+            font-weight: bold;
+            background: #2462d5;
+            border-radius: 5px;
+        }
+        footer {
+            background: #23272f;
+            color: #fff;
+        }
+        @media (max-width: 1000px) {
+            .container { max-width: 98vw; padding: 12px 2vw 18px 2vw;}
+        }
+        @media (max-width: 700px) {
+            .container { padding: 8px 2vw 18px 2vw; }
+            h1 { font-size: 1.18rem; }
+            .col-md-6, .col-md-3, .col-lg-4 { flex: 1 1 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/home"><i class="fa-solid fa-diagram-project"></i> Project Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resource-management"><i class="fa-solid fa-users-cog"></i> Resource Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resource_calendar"><i class="fa-solid fa-calendar-days"></i> Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/skill_matrix"><i class="fa-solid fa-table-cells-large"></i> Skill Matrix</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/time_tracking"><i class="fa-solid fa-clock"></i> Time Tracking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resource_utilization"><i class="fa-solid fa-chart-simple"></i> Utilization</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/resource_optimization"><i class="fa-solid fa-lightbulb"></i> Optimization</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/capacity_planning"><i class="fa-solid fa-people-roof"></i> Capacity Planning</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <h1 class="mb-4"><i class="fa-solid fa-lightbulb"></i> Resource Optimization</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-diagram-project"></i> Select Project</h5>
+            </div>
+            <div class="card-body">
+                <form action="/resource_optimization" method="get">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select name="project_id" class="form-select">
+                                <option value="">Select a project</option>
+                                {% for project in projects %}
+                                <option value="{{ project.id }}" {% if selected_project and selected_project.id == project.id %}selected{% endif %}>{{ project.project_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-filter"></i> Apply</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if selected_project %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-folder-open"></i> Project: {{ selected_project.project_name }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Start Date:</strong> {{ selected_project.start_date }}</p>
+                        <p><strong>End Date:</strong> {{ selected_project.end_date }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Status:</strong> {{ selected_project.status }}</p>
+                        <p><strong>Type:</strong> {{ selected_project.project_type }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mb-3"><i class="fa-solid fa-list-check"></i> Task Resource Optimization</h2>
+        
+        {% for task in tasks %}
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fa-solid fa-clipboard-list"></i> Task: {{ task.task_name }}</h5>
+                <span class="badge bg-info">{{ task.status }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Start Date:</strong> {{ task.start_date }}</p>
+                        <p><strong>End Date:</strong> {{ task.end_date }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Description:</strong> {{ task.description }}</p>
+                    </div>
+                </div>
+
+                <!-- Current Resources -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6><i class="fa-solid fa-users"></i> Current Resources</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if task_resources[task.id] %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for resource in task_resources[task.id] %}
+                                    <tr>
+                                        <td>{{ resource.username }}</td>
+                                        <td>{{ resource.designation }}</td>
+                                        <td>
+                                            <form action="/remove_resource" method="post" class="d-inline">
+                                                <input type="hidden" name="resource_id" value="{{ resource.id }}">
+                                                <input type="hidden" name="project_id" value="{{ selected_project.id }}">
+                                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-user-xmark"></i> Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">No resources assigned yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Recommended Resources -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6><i class="fa-solid fa-user-plus"></i> Recommended Resources</h6>
+                    </div>
+                    <div class="card-body">
+                        {% if task_candidates[task.id] %}
+                        <div class="row">
+                            {% for candidate in task_candidates[task.id] %}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card resource-card {% if candidate.current_workload >= 3 %}workload-high{% elif candidate.current_workload >= 2 %}workload-medium{% else %}workload-low{% endif %}">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><i class="fa-solid fa-user"></i> {{ candidate.username }}</h6>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <span class="badge bg-primary">{{ candidate.matching_skills }} matching skills</span>
+                                                <span class="badge {% if candidate.current_workload >= 3 %}bg-danger{% elif candidate.current_workload >= 2 %}bg-warning{% else %}bg-success{% endif %}">
+                                                    {{ candidate.current_workload }} current tasks
+                                                </span>
+                                            </small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small class="text-muted">Avg. Proficiency: {{ "%.1f"|format(candidate.avg_proficiency) }}/5</small>
+                                        </p>
+                                        <form action="/assign_resource" method="post">
+                                            <input type="hidden" name="task_id" value="{{ task.id }}">
+                                            <input type="hidden" name="user_id" value="{{ candidate.id }}">
+                                            <input type="hidden" name="project_id" value="{{ selected_project.id }}">
+                                            <div class="mb-2">
+                                                <select name="designation" class="form-select form-select-sm" required>
+                                                    <option value="">Select role</option>
+                                                    <option value="Developer">Developer</option>
+                                                    <option value="Tester">Tester</option>
+                                                    <option value="Designer">Designer</option>
+                                                    <option value="Analyst">Analyst</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-primary w-100"><i class="fa-solid fa-user-plus"></i> Assign</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-muted">No candidate resources available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Overall Resource Allocation -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-users"></i> Overall Resource Allocation</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for resource in resource_allocation %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card resource-card {% if resource.assignment_count >= 3 %}workload-high{% elif resource.assignment_count >= 2 %}workload-medium{% else %}workload-low{% endif %}">
+                            <div class="card-body text-center">
+                                <h6 class="card-title"><i class="fa-solid fa-user"></i> {{ resource.username }}</h6>
+                                <p class="h3">{{ resource.assignment_count }}</p>
+                                <p class="card-text">Tasks Assigned</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-circle-info"></i> Please select a project to view optimization recommendations.
+        </div>
+        {% endif %}
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Project Management System</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>Resource Optimization</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

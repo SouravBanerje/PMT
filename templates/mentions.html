@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentions</title>
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 36px 34px 24px 34px;
+        }
+        header {
+            padding-bottom: 12px;
+            border-bottom: 1.5px solid #e3e8ee;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        nav {
+            margin-bottom: 0;
+        }
+        nav a {
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 12px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            background: #f2f7fd;
+            transition: background 0.17s, color 0.17s;
+        }
+        nav a:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        h2 {
+            font-size: 1.11rem;
+            margin: 18px 0 12px 0;
+            font-weight: 700;
+            color: #2462d5;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 22px;
+            padding: 13px 0;
+            border-radius: 7px;
+            background: #f8fafd;
+            box-shadow: 0 1px 6px rgba(44,62,80,0.04);
+            position: relative;
+        }
+        li .fa-user-pen {
+            color: #2462d5;
+            margin-right: 6px;
+        }
+        li strong {
+            color: #2462d5;
+        }
+        li p {
+            margin: 8px 0 6px 0;
+            color: #23272f;
+            font-size: 1.04em;
+        }
+        .mention-meta {
+            color: #6c757d;
+            font-size: 0.92em;
+            margin-left: 6px;
+        }
+        .mention-type {
+            color: #4f8cff;
+            font-weight: 600;
+            font-size: 0.97em;
+            margin-left: 5px;
+        }
+        .mention-actions a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 10px;
+            background: #e9faef;
+            padding: 5px 14px;
+            border-radius: 5px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .mention-actions a:hover {
+            background: #d2f5e5;
+            color: #157347;
+        }
+        .mention-actions span {
+            color: #6c757d;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e3e8ee;
+            margin: 0 0 0 0;
+        }
+        .flash-message {
+            background: #f7fbff;
+            color: #2462d5;
+            border-left: 4px solid #4f8cff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 1.04em;
+        }
+        @media (max-width: 800px) {
+            .container { max-width: 100vw; padding: 10px 2vw 14px 2vw; }
+            h1 { font-size: 1.12rem; }
+            h2 { font-size: 1.01rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fa-solid fa-at"></i> Mentions</h1>
+            <nav>
+                <a href="{{ url_for('home.home') }}"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="{{ url_for('notifications.notifications') }}"><i class="fa-solid fa-bell"></i> Notifications</a>
+            </nav>
+        </header>
+
+        <div>
+            <h2><i class="fa-solid fa-comments"></i> All Mentions</h2>
+            {% if mentions %}
+                <ul>
+                    {% for mention in mentions %}
+                        <li>
+                            <div>
+                                <i class="fa-solid fa-user-pen"></i>
+                                <strong>{{ mention.mentioned_by_name }}</strong> mentioned you in a 
+                                <span class="mention-type">
+                                    {% if mention.content_type == 'comment' %}
+                                        task comment
+                                    {% elif mention.content_type == 'message' %}
+                                        message
+                                    {% elif mention.content_type == 'forum_topic' %}
+                                        forum topic
+                                    {% elif mention.content_type == 'forum_reply' %}
+                                        forum reply
+                                    {% endif %}
+                                </span>
+                                <span class="mention-meta">({{ mention.created_at }})</span>
+                            </div>
+                            <div>
+                                <p>{{ mention.content_preview }}</p>
+                            </div>
+                            <div class="mention-actions">
+                                {% if mention.is_read == 0 %}
+                                    <a href="{{ url_for('notifications.mark_mention_read', mention_id=mention.id) }}"><i class="fa-solid fa-check"></i> Mark as Read</a>
+                                {% else %}
+                                    <span><i class="fa-solid fa-circle-check"></i> Read</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% if not loop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You have no mentions.</p>
+            {% endif %}
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <div class="flash-message"><i class="fa-solid fa-circle-info"></i> {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script>
+        // Auto refresh mentions every 30 seconds
+        setTimeout(function() {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Version Changes Report</title>
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: #23272f;
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 36px 38px 34px 38px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px 32px;
+            margin-bottom: 18px;
+            align-items: flex-end;
+        }
+        form > div {
+            display: flex;
+            flex-direction: column;
+            min-width: 170px;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2462d5;
+        }
+        input[type="date"], select {
+            border-radius: 7px;
+            border: 1.5px solid #b2bec3;
+            padding: 8px 13px;
+            font-size: 1rem;
+            background: #f9fbfd;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        input[type="date"]:focus, select:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.03);
+        }
+        a.back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 16px 0 10px 0;
+            background: #f2f7fd;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        a.back-link:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        hr {
+            border: none;
+            border-top: 1.5px solid #e3e8ee;
+            margin: 30px 0 18px 0;
+        }
+        h2 {
+            font-size: 1.13rem;
+            margin: 16px 0 12px 0;
+            font-weight: 700;
+            color: #2462d5;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            margin-top: 7px;
+        }
+        th, td {
+            padding: 10px 13px;
+            text-align: left;
+            font-size: 1.03em;
+        }
+        th {
+            background: #f4f7fa;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #e3e8ee;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        .summary {
+            background: #f8fafd;
+            box-shadow: 0 1px 6px rgba(44,62,80,0.04);
+            padding: 18px 22px;
+            border-radius: 8px;
+            margin-top: 19px;
+            font-size: 1.04em;
+        }
+        .summary h3 {
+            margin-top: 0;
+            color: #2462d5;
+        }
+        @media (max-width: 1100px) {
+            .container { max-width: 99vw; padding: 10px 2vw 18px 2vw; }
+            form { gap: 18px 12px; }
+            th, td { font-size: 0.98em; }
+        }
+        @media (max-width: 700px) {
+            form { flex-direction: column; gap: 8px 0; }
+            .container { padding: 8px 2vw 14px 2vw;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-clock-rotate-left"></i> Project Version Changes Report</h1>
+        
+        <form action="{{ url_for('project_version_report.project_version_report') }}" method="get" autocomplete="off">
+            <div>
+                <label for="project_id"><i class="fa-solid fa-diagram-project"></i> Project:</label>
+                <select id="project_id" name="project_id">
+                    <option value="">All Projects</option>
+                    {% for p in projects %}
+                    <option value="{{ p.id }}" {% if selected_project_id == p.id %}selected{% endif %}>
+                        {{ p.project_id }} - {{ p.project_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="change_type"><i class="fa-solid fa-filter"></i> Change Type:</label>
+                <select id="change_type" name="change_type">
+                    <option value="" {% if not change_type %}selected{% endif %}>All Changes</option>
+                    <option value="schedule" {% if change_type == 'schedule' %}selected{% endif %}>Schedule Changes</option>
+                    <option value="cost" {% if change_type == 'cost' %}selected{% endif %}>Cost Changes</option>
+                    <option value="resource" {% if change_type == 'resource' %}selected{% endif %}>Resource Changes</option>
+                </select>
+            </div>
+            <div>
+                <label for="start_date"><i class="fa-solid fa-calendar-day"></i> From Date:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+            </div>
+            <div>
+                <label for="end_date"><i class="fa-solid fa-calendar-day"></i> To Date:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+            </div>
+            <button type="submit"><i class="fa-solid fa-chart-line"></i> Generate Report</button>
+        </form>
+        <div>
+            <a href="{{ url_for('project_details.project_details', project_id=selected_project_id) }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Project
+            </a>
+        </div>
+        <hr>
+        {% if version_changes %}
+        <h2><i class="fa-solid fa-table-list"></i> Report Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Version</th>
+                    <th>Change Type</th>
+                    <th>Description</th>
+                    <th>Previous Value</th>
+                    <th>New Value</th>
+                    <th>Changed By</th>
+                    <th>Changed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for change in version_changes %}
+                <tr>
+                    <td>{{ change.proj_id }}</td>
+                    <td>{{ change.project_name }}</td>
+                    <td>{{ change.version }}</td>
+                    <td>{{ change.change_type|capitalize }}</td>
+                    <td>{{ change.description }}</td>
+                    <td>{{ change.previous_value }}</td>
+                    <td>{{ change.new_value }}</td>
+                    <td>{{ change.username }}</td>
+                    <td>{{ change.changed_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="summary">
+            <h3><i class="fa-solid fa-chart-pie"></i> Summary</h3>
+            <p>Total Changes: {{ version_changes|length }}</p>
+            <p>
+                Change Type Distribution:
+                {% set schedule_count = version_changes|selectattr('change_type', 'equalto', 'schedule')|list|length %}
+                {% set cost_count = version_changes|selectattr('change_type', 'equalto', 'cost')|list|length %}
+                {% set resource_count = version_changes|selectattr('change_type', 'equalto', 'resource')|list|length %}
+                Schedule: {{ schedule_count }}, 
+                Cost: {{ cost_count }}, 
+                Resource: {{ resource_count }}
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Project Cost</title>
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg,#e0eafc 0%,#cfdef3 100%);
+            color: #23272f;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 44px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 36px 34px 28px 34px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        h2 {
+            font-size: 1.18rem;
+            color: #2462d5;
+            font-weight: 700;
+            margin: 34px 0 16px 0;
+        }
+        h3 {
+            color: #44e3bc;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 17px;
+        }
+        form {
+            background: #f7fbff;
+            border-radius: 9px;
+            padding: 22px 18px 16px 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+        }
+        form > div {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #2462d5;
+        }
+        input[type="number"], textarea {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            font-size: 1rem;
+            background: #f9fbfd;
+            font-family: inherit;
+            margin-bottom: 2px;
+        }
+        input[type="number"]:disabled {
+            background: #e2e8f0;
+            color: #888;
+        }
+        textarea:focus, input[type="number"]:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-right: 18px;
+            transition: background 0.18s, transform 0.13s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
+        }
+        button[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.02);
+        }
+        a {
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            background: #f2f7fd;
+            padding: 8px 17px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        a:hover {
+            background: #e6f1fa;
+            color: #4f8cff;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 7px;
+            background: #f8fafd;
+            border-radius: 8px;
+            margin-bottom: 0;
+        }
+        th, td {
+            padding: 10px 13px;
+            text-align: left;
+            font-size: 1.02em;
+        }
+        th {
+            background: #f2f7fd;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #dde4ed;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        @media (max-width: 800px) {
+            .container { max-width: 97vw; padding: 12px 2vw 14px 2vw; }
+            h1 { font-size: 1.11rem; }
+            h2 { font-size: 1.01rem; }
+            th, td { font-size: 0.96em; }
+            table { font-size: 0.98em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Project Cost - {{ project.project_name }}</h1>
+        <h3>Current Version: {{ project.version }}</h3>
+        <form action="{{ url_for('update_project_cost.update_project_cost', project_id=project.id) }}" method="post">
+            {% if project.project_type == 'fixed' %}
+            <div>
+                <label for="current_cost">Current Total Amount:</label>
+                <input type="number" id="current_cost" value="{{ project.total_amount }}" disabled>
+            </div>
+            <div>
+                <label for="total_amount">New Total Amount:</label>
+                <input type="number" id="total_amount" name="total_amount" step="0.01" required>
+            </div>
+            {% else %}
+            <div>
+                <label for="current_cost">Current Monthly Billing:</label>
+                <input type="number" id="current_cost" value="{{ project.per_month_billing }}" disabled>
+            </div>
+            <div>
+                <label for="per_month_billing">New Monthly Billing:</label>
+                <input type="number" id="per_month_billing" name="per_month_billing" step="0.01" required>
+            </div>
+            {% endif %}
+            <div>
+                <label for="change_reason">Reason for Change:</label>
+                <textarea id="change_reason" name="change_reason" rows="4" required></textarea>
+            </div>
+            <button type="submit">Update Cost</button>
+            <a href="{{ url_for('project_details.project_details', project_id=project.id) }}">Cancel</a>
+        </form>
+        <h2>Cost Version History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Previous Cost</th>
+                    <th>New Cost</th>
+                    <th>Change Reason</th>
+                    <th>Changed By</th>
+                    <th>Changed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for version in cost_versions %}
+                <tr>
+                    <td>{{ version.version }}</td>
+                    <td>${{ version.previous_value }}</td>
+                    <td>${{ version.new_value }}</td>
+                    <td>{{ version.description }}</td>
+                    <td>{{ version.username }}</td>
+                    <td>{{ version.changed_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

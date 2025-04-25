@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Topic - {{ forum.forum_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 32px 32px 22px 32px;
+        }
+        h1 {
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #2462d5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: #f2f7fd;
+            padding: 7px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        h2 {
+            font-size: 1.07rem;
+            color: #2462d5;
+            margin-top: 12px;
+            margin-bottom: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        form > div {
+            margin-bottom: 17px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2462d5;
+        }
+        input[type="text"], textarea {
+            border-radius: 7px;
+            border: 1.5px solid #b2bec3;
+            padding: 11px 12px;
+            font-size: 1rem;
+            background: #f9fbfd;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #4f8cff, #2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 10px 26px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        button[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .form-tip {
+            font-size: 0.93em;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px 2vw 12px 2vw;
+                max-width: 100vw;
+            }
+            h1 {
+                font-size: 1.09rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <i class="fa-solid fa-comment-medical"></i>
+            Create Topic - {{ forum.forum_name }}
+        </h1>
+        <a href="/forum/{{ forum.id }}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Topics
+        </a>
+        <div>
+            <h2><i class="fa-solid fa-list"></i> Topic Details</h2>
+            <form method="post" autocomplete="off">
+                <div>
+                    <label for="title"><i class="fa-solid fa-signature"></i> Title:</label>
+                    <input type="text" id="title" name="title" required placeholder="Enter topic title">
+                </div>
+                <div>
+                    <label for="content"><i class="fa-solid fa-align-left"></i> Content:</label>
+                    <textarea id="content" name="content" rows="10" required placeholder="Write your topic here..."></textarea>
+                </div>
+                <div>
+                    <span class="form-tip"><i class="fa-solid fa-lightbulb"></i> Tip: Use <b>@username</b> to mention someone</span>
+                    <button type="submit"><i class="fa-solid fa-plus"></i> Create Topic</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

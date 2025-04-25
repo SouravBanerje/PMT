@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resource Utilization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts & FontAwesome for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg,#e0eafc 0%,#cfdef3 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #23272f;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 950px;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 38px 32px 38px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        nav {
+            margin-bottom: 24px;
+        }
+        nav ul {
+            display: flex;
+            gap: 16px;
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        nav a {
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 5px;
+            background: #f2f7fd;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        nav a:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        .month-nav {
+            margin-bottom: 20px;
+        }
+        .month-nav a {
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 8px;
+            transition: color 0.2s;
+        }
+        .month-nav a:hover {
+            text-decoration: underline;
+            color: #4f8cff;
+        }
+        h2 {
+            font-size: 1.13rem;
+            margin: 18px 0 12px 0;
+            font-weight: 700;
+            color: #2462d5;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 7px;
+            background: #f8fafd;
+            border-radius: 8px;
+            margin-bottom: 0;
+        }
+        th, td {
+            padding: 11px 13px;
+            text-align: left;
+            font-size: 1.03em;
+        }
+        th {
+            background: #f2f7fd;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #dde4ed;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        .project-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 4px;
+            background: #f6fcfd;
+            margin-top: 5px;
+            border-radius: 6px;
+            font-size: 0.97em;
+        }
+        .project-table th, .project-table td {
+            padding: 7px 10px;
+            font-size: 0.97em;
+            background: #f7fafc;
+        }
+        .project-table th {
+            background: #eaf2fb;
+            color: #2462d5;
+            border-bottom: 1px solid #dde4ed;
+        }
+        @media (max-width: 1000px) {
+            .container { max-width: 99vw; padding: 10px 2vw 16px 2vw; }
+            th, td { font-size: 0.97em; }
+            table, .project-table { font-size: 0.98em; }
+        }
+        @media (max-width: 700px) {
+            th, td { font-size: 0.94em; }
+            .container { padding: 6px 2vw 8px 2vw;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-chart-simple"></i> Resource Utilization</h1>
+        
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home.home') }}"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="{{ url_for('resource_management.resource_management') }}"><i class="fa-solid fa-users-cog"></i> Resource Management</a></li>
+            </ul>
+        </nav>
+        
+        <div>
+            <h2><i class="fa-solid fa-calendar-days"></i> {{ month_name }} {{ year }}</h2>
+            <div class="month-nav">
+                <a href="{{ url_for('resource_utilization.resource_utilization', month=prev_month, year=prev_year) }}">
+                    <i class="fa-solid fa-chevron-left"></i> Previous Month
+                </a>
+                |
+                <a href="{{ url_for('resource_utilization.resource_utilization', month=next_month, year=next_year) }}">
+                    Next Month <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>Available Hours</th>
+                    <th>Logged Hours</th>
+                    <th>Utilization %</th>
+                    <th>Project Allocation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in utilization_data %}
+                <tr>
+                    <td>{{ resource.username }}</td>
+                    <td>{{ resource.available_hours }}</td>
+                    <td>{{ resource.logged_hours }}</td>
+                    <td>
+                        <span style="{% if resource.utilization >= 80 %}color: #28a745; font-weight: 700;{% elif resource.utilization >=60 %}color: #e67e22; font-weight: 600;{% else %}color: #e74c3c; font-weight: 600;{% endif %}">
+                            {{ resource.utilization }}%
+                        </span>
+                    </td>
+                    <td>
+                        <table class="project-table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Hours</th>
+                                    <th>% of Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in resource.project_allocation %}
+                                <tr>
+                                    <td>{{ project.project_name }}</td>
+                                    <td>{{ project.project_hours }}</td>
+                                    <td>{{ (project.project_hours / resource.logged_hours * 100)|round(1) if resource.logged_hours > 0 else 0 }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

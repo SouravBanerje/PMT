@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacity Planning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .calendar-day {
+            height: 100px;
+            min-width: 120px;
+            position: relative;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            transition: background 0.15s;
+        }
+        .calendar-day:hover {
+            background: #f1f7ff;
+            z-index: 2;
+        }
+        .calendar-header {
+            min-width: 120px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+        }
+        .weekend {
+            background-color: #f8f9fa !important;
+        }
+        .date-label {
+            position: absolute;
+            top: 5px;
+            right: 7px;
+            font-size: 0.8rem;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        .capacity-bar {
+            height: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            transition: width 0.4s;
+        }
+        .capacity-low {
+            background-color: #28a745;
+        }
+        .capacity-medium {
+            background-color: #ffc107;
+        }
+        .capacity-high {
+            background-color: #dc3545;
+        }
+        .task-indicator {
+            font-size: 0.7rem;
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-bottom: 2px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background-color: #e9ecef;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .task-indicator:hover {
+            background: #cbe5fd;
+        }
+        .week-header {
+            background-color: #e9ecef;
+            text-align: center;
+            font-weight: bold;
+        }
+        .resource-row:hover {
+            background-color: rgba(0,0,0,0.04);
+        }
+        .progress {
+            height: 18px;
+        }
+        .progress-bar {
+            font-size: 0.98em;
+        }
+        .card-header h5, .card-header .h5 {
+            font-weight: 700;
+        }
+        .list-group-item h6 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+        .list-group-item ul {
+            margin-bottom: 0;
+            margin-left: 17px;
+        }
+        footer {
+            background: linear-gradient(90deg,var(--bs-dark), #222942 70%);
+            color: #fff;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 1200px) {
+            .calendar-day, .calendar-header {
+                min-width: 90px;
+            }
+            .week-header {
+                font-size: 1em;
+            }
+        }
+        @media (max-width: 900px) {
+            .calendar-day, .calendar-header {
+                min-width: 65px;
+                font-size: 0.95em;
+            }
+            .date-label {
+                font-size: 0.75rem;
+            }
+        }
+        @media (max-width: 700px) {
+            .container-fluid, .container {
+                padding-left: 6px;
+                padding-right: 6px;
+            }
+            .card-header, .card-body {
+                padding-left: 7px;
+                padding-right: 7px;
+            }
+            .calendar-day, .calendar-header {
+                min-width: 52px;
+                font-size: 0.93em;
+            }
+            .week-header {
+                font-size: 0.97em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/home"><i class="fa-solid fa-diagram-project me-2"></i>Project Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/home"><i class="fa-solid fa-house me-1"></i>Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/resource-management"><i class="fa-solid fa-users me-1"></i>Resource Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/resource_calendar"><i class="fa-regular fa-calendar-days me-1"></i>Calendar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/skill_matrix"><i class="fa-solid fa-brain me-1"></i>Skill Matrix</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/time_tracking"><i class="fa-solid fa-clock me-1"></i>Time Tracking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/resource_utilization"><i class="fa-solid fa-chart-pie me-1"></i>Utilization</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/resource_optimization"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Optimization</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/capacity_planning"><i class="fa-solid fa-cubes-stacked me-1"></i>Capacity Planning</a></li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fa-solid fa-sign-out-alt me-1"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <h1 class="mb-4"><i class="fa-solid fa-cubes-stacked me-2"></i>Capacity Planning</h1>
+        
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fa-solid fa-calendar-week me-2"></i>4-Week Capacity View</h5>
+                    <div>
+                        <a href="/capacity_planning?start_date={{ prev_period }}" class="btn btn-sm btn-outline-secondary me-2">
+                            <i class="fas fa-chevron-left"></i> Previous Period
+                        </a>
+                        <a href="/capacity_planning?start_date={{ next_period }}" class="btn btn-sm btn-outline-secondary">
+                            Next Period <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex mb-3">
+                    <div class="me-3">
+                        <span class="badge bg-success p-2 me-1"></span> Available
+                    </div>
+                    <div class="me-3">
+                        <span class="badge bg-warning p-2 me-1"></span> 50-75% Allocated
+                    </div>
+                    <div>
+                        <span class="badge bg-danger p-2 me-1"></span> Over 75% Allocated
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 200px;">Resource</th>
+                                {% for week_num, days in weeks.items() %}
+                                <th colspan="{{ days|length }}" class="week-header">Week {{ week_num }}</th>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                {% for date_info in date_range %}
+                                <th class="calendar-header {% if date_info.is_weekend %}weekend{% endif %}">
+                                    {{ date_info.date.strftime('%a') }}<br>
+                                    {{ date_info.date.strftime('%d') }}
+                                </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in team_members %}
+                            <tr class="resource-row">
+                                <td>{{ member.username }}</td>
+                                {% for date_info in date_range %}
+                                {% set date_str = date_info.formatted %}
+                                {% set available_hours = capacity_data[member.id].availability.get(date_str, 8) %}
+                                {% set assignments = capacity_data[member.id].assignments.get(date_str, []) %}
+                                {% set total_assigned = 0 %}
+                                {% for assignment in assignments %}
+                                    {% set total_assigned = total_assigned + assignment.hours %}
+                                {% endfor %}
+                                {% set utilization_percent = (total_assigned / available_hours * 100) if available_hours > 0 else 0 %}
+                                
+                                <td class="calendar-day {% if date_info.is_weekend %}weekend{% endif %}">
+                                    <div class="date-label" title="Available: {{ available_hours }}h">{{ available_hours }}h</div>
+                                    
+                                    <div class="capacity-bar 
+                                        {% if utilization_percent > 75 %}capacity-high
+                                        {% elif utilization_percent > 50 %}capacity-medium
+                                        {% else %}capacity-low{% endif %}"
+                                        style="width: {{ utilization_percent if utilization_percent < 100 else 100 }}%;">
+                                    </div>
+                                    
+                                    {% if assignments %}
+                                        {% for assignment in assignments %}
+                                        <div class="task-indicator" title="{{ assignment.project_name }}: {{ assignment.task_name }} ({{ assignment.hours }}h)">
+                                            <i class="fa-solid fa-briefcase me-1"></i>{{ assignment.task_name|truncate(12) }} ({{ "%.1f"|format(assignment.hours) }}h)
+                                        </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-light">
+                        <h5><i class="fa-solid fa-gauge-high me-2"></i>Team Utilization Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Resource</th>
+                                        <th>Avg. Capacity</th>
+                                        <th>Avg. Allocation</th>
+                                        <th>Utilization</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for member in team_members %}
+                                    {% set total_available = 0 %}
+                                    {% set total_assigned = 0 %}
+                                    {% for date_info in date_range %}
+                                    {% set date_str = date_info.formatted %}
+                                    {% set available_hours = capacity_data[member.id].availability.get(date_str, 8) %}
+                                    {% set assignments = capacity_data[member.id].assignments.get(date_str, []) %}
+                                    {% set day_assigned = 0 %}
+                                    {% for assignment in assignments %}
+                                        {% set day_assigned = day_assigned + assignment.hours %}
+                                    {% endfor %}
+                                    {% set total_available = total_available + available_hours %}
+                                    {% set total_assigned = total_assigned + day_assigned %}
+                                    {% endfor %}
+                                    {% set avg_available = total_available / date_range|length %}
+                                    {% set avg_assigned = total_assigned / date_range|length %}
+                                    {% set utilization = (total_assigned / total_available * 100) if total_available > 0 else 0 %}
+                                    <tr>
+                                        <td>{{ member.username }}</td>
+                                        <td>{{ "%.1f"|format(avg_available) }}h/day</td>
+                                        <td>{{ "%.1f"|format(avg_assigned) }}h/day</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar 
+                                                    {% if utilization > 75 %}bg-danger
+                                                    {% elif utilization > 50 %}bg-warning
+                                                    {% else %}bg-success{% endif %}" 
+                                                    role="progressbar" 
+                                                    style="width: {{ utilization if utilization < 100 else 100 }}%;" 
+                                                    aria-valuenow="{{ utilization }}" 
+                                                    aria-valuemin="0" 
+                                                    aria-valuemax="100">{{ "%.1f"|format(utilization) }}%</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-light">
+                        <h5><i class="fa-solid fa-bolt me-2"></i>Capacity Planning Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="/resource_optimization" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1"><i class="fa-solid fa-arrows-rotate me-2"></i>Optimize Team Allocation</h5>
+                                    <small>Action</small>
+                                </div>
+                                <p class="mb-1">Review and adjust resource assignments to balance workload.</p>
+                            </a>
+                            <a href="/skill_matrix" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1"><i class="fa-solid fa-chart-simple me-2"></i>Skill Gap Analysis</h5>
+                                    <small>Action</small>
+                                </div>
+                                <p class="mb-1">Identify skill gaps and training needs in your team.</p>
+                            </a>
+                            <a href="/resource_calendar" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1"><i class="fa-solid fa-calendar-week me-2"></i>Update Resource Availability</h5>
+                                    <small>Action</small>
+                                </div>
+                                <p class="mb-1">Update capacity data for planned absences and holidays.</p>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1"><i class="fa-solid fa-file-export me-2"></i>Generate Capacity Report</h5>
+                                    <small>Action</small>
+                                </div>
+                                <p class="mb-1">Export detailed capacity planning data for reporting.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-light">
+                <h5><i class="fa-solid fa-lightbulb me-2"></i>Capacity Planning Recommendations</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>Recommendations are generated based on current capacity data</h6>
+                    <p class="mb-0">These recommendations help optimize resource allocation and improve team productivity.</p>
+                </div>
+                
+                <div class="list-group">
+                    {% set overallocated = [] %}
+                    {% set underallocated = [] %}
+                    
+                    {% for member in team_members %}
+                    {% set total_available = 0 %}
+                    {% set total_assigned = 0 %}
+                    {% for date_info in date_range %}
+                    {% set date_str = date_info.formatted %}
+                    {% set available_hours = capacity_data[member.id].availability.get(date_str, 8) %}
+                    {% set assignments = capacity_data[member.id].assignments.get(date_str, []) %}
+                    {% set day_assigned = 0 %}
+                    {% for assignment in assignments %}
+                        {% set day_assigned = day_assigned + assignment.hours %}
+                    {% endfor %}
+                    {% set total_available = total_available + available_hours %}
+                    {% set total_assigned = total_assigned + day_assigned %}
+                    {% endfor %}
+                    
+                    {% set utilization = (total_assigned / total_available * 100) if total_available > 0 else 0 %}
+                    {% if utilization > 90 %}
+                        {% set overallocated = overallocated + [member] %}
+                    {% elif utilization < 50 %}
+                        {% set underallocated = underallocated + [member] %}
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if overallocated %}
+                    <div class="list-group-item list-group-item-warning">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Overallocated Resources</h6>
+                        <p>The following team members are overallocated and may need workload adjustment:</p>
+                        <ul>
+                            {% for member in overallocated %}
+                            <li>{{ member.username }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Consider redistributing tasks or adjusting deadlines to prevent burnout.</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if underallocated %}
+                    <div class="list-group-item list-group-item-info">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Underutilized Resources</h6>
+                        <p>The following team members have capacity for additional work:</p>
+                        <ul>
+                            {% for member in underallocated %}
+                            <li>{{ member.username }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Consider assigning additional tasks to these resources to improve team productivity.</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="list-group-item">
+                        <h6><i class="fas fa-chart-line me-2"></i>Capacity Trend Analysis</h6>
+                        <p>Team capacity is projected to be stable over the next 4 weeks.</p>
+                        <p>No significant changes in resource availability are anticipated.</p>
+                    </div>
+                    
+                    <div class="list-group-item">
+                        <h6><i class="fas fa-calendar-alt me-2"></i>Important Dates</h6>
+                        <p>Be aware of these dates that may impact capacity:</p>
+                        <ul>
+                            <li>End of Quarter: June 30</li>
+                            <li>Company Holiday: May 25</li>
+                            <li>Team Training: May 15-16</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Project Management System</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>Capacity Planning</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

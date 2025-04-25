@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.title }}</title>
+    <!-- Google Fonts & FontAwesome for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #23272f;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 720px;
+            margin: 38px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 30px 30px 22px 30px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .breadcrumbs {
+            font-size: 0.98em;
+            margin-bottom: 20px;
+            color: #57606f;
+        }
+        .breadcrumbs a {
+            color: #2462d5;
+            text-decoration: none;
+            transition: color 0.17s;
+        }
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+            color: #4f8cff;
+        }
+        .original-post, .reply {
+            background: #f7fbff;
+            padding: 17px 18px 13px 18px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            border-left: 4px solid #2462d5;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.03);
+        }
+        .original-post {
+            background: #eaf2fb;
+        }
+        .post-meta {
+            color: #6c7a89;
+            font-size: 0.97em;
+            margin-bottom: 7px;
+        }
+        .reply {
+            border-left: 4px solid #4f8cff;
+            background: #f7fbff;
+        }
+        .reply:not(:last-child) {
+            margin-bottom: 13px;
+        }
+        h2 {
+            font-size: 1.17rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin: 22px 0 13px 0;
+            letter-spacing: 0.03em;
+        }
+        textarea {
+            width: 100%;
+            resize: vertical;
+            min-height: 70px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            padding: 9px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #f9fbfd;
+            margin-bottom: 8px;
+        }
+        textarea:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 9px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
+        }
+        button[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.03);
+        }
+        .tip {
+            color: #57606f;
+            font-size: 0.95em;
+            margin-bottom: 9px;
+        }
+        @media (max-width: 850px) {
+            .container { max-width: 98vw; padding: 10px 2vw 16px 2vw; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 8px 2vw 8px 2vw;}
+            h1 { font-size: 1.14rem; }
+            h2 { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-comment-dots"></i> {{ topic.title }}</h1>
+        <div class="breadcrumbs">
+            <a href="/project/{{ topic.project_id }}/forums"><i class="fa-solid fa-comments"></i> Forums</a> &gt; 
+            <a href="/forum/{{ topic.forum_id }}"><i class="fa-solid fa-folder"></i> {{ topic.forum_name }}</a>
+        </div>
+
+        <div>
+            <h2><i class="fa-solid fa-thumbtack"></i> Original Post</h2>
+            <div class="original-post">
+                <div class="post-meta">
+                    <i class="fa-solid fa-user"></i> Posted by <strong>{{ topic.username }}</strong> on <span>{{ topic.created_at }}</span>
+                </div>
+                <div>{{ topic.content|safe }}</div>
+            </div>
+        </div>
+
+        <div>
+            <h2><i class="fa-solid fa-reply"></i> Replies</h2>
+            {% if replies %}
+                {% for reply in replies %}
+                    <div class="reply">
+                        <div class="post-meta">
+                            <i class="fa-solid fa-user"></i> Reply by <strong>{{ reply.username }}</strong> on <span>{{ reply.created_at }}</span>
+                        </div>
+                        <div>{{ reply.content|safe }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="tip">No replies yet.</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <h2><i class="fa-solid fa-pen"></i> Add Reply</h2>
+            <form method="post" action="/topic/{{ topic.id }}/reply">
+                <div>
+                    <textarea name="content" rows="5" cols="50" required placeholder="Write your reply..."></textarea>
+                </div>
+                <div>
+                    <p class="tip"><small><i class="fa-solid fa-at"></i> Tip: Use @username to mention someone</small></p>
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i> Post Reply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

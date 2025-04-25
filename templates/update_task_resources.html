@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Task Resources - Project Management System</title>
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            color: #23272f;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 44px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 38px 34px 28px 34px;
+        }
+        h1 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.12rem;
+            color: #2462d5;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+        form {
+            background: #f7fbff;
+            border-radius: 9px;
+            padding: 22px 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            background: #f8fafd;
+            border-radius: 8px;
+        }
+        th, td {
+            padding: 10px 13px;
+            text-align: left;
+            font-size: 1.01em;
+        }
+        th {
+            background: #f2f7fd;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #dde4ed;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        select, input[type="text"] {
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            font-size: 1rem;
+            background: #f9fbfd;
+            font-family: inherit;
+        }
+        select:focus, input[type="text"]:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        button[type="button"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 7px 18px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px 0;
+            transition: background 0.18s, transform 0.13s;
+        }
+        button[type="button"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.02);
+        }
+        input[type="submit"] {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            padding: 9px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.13s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
+        }
+        input[type="submit"]:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.02);
+        }
+        a {
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            background: #f2f7fd;
+            padding: 8px 17px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        a:hover {
+            background: #e6f1fa;
+            color: #4f8cff;
+        }
+        @media (max-width: 800px) {
+            .container { max-width: 98vw; padding: 12px 2vw 14px 2vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
+        <h2><i class="fa-solid fa-user-pen"></i> Update Resources for Task: {{ task.task_name }}</h2>
+        <form action="{{ url_for('update_task.update_task_resources', task_id=task.id) }}" method="post">
+            <table id="resourceTable">
+                <thead>
+                    <tr>
+                        <th>Team Member</th>
+                        <th>Designation/Grade</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if current_resources %}
+                        {% for resource in current_resources %}
+                        <tr>
+                            <td>
+                                <select name="resources[]" required>
+                                    <option value="">Select Team Member</option>
+                                    {% for user in all_users %}
+                                    <option value="{{ user.id }}" {% if user.id == resource.user_id %}selected{% endif %}>{{ user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="designations[]" value="{{ resource.designation }}" required>
+                            </td>
+                            <td>
+                                <button type="button" class="remove-row">Remove</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>
+                                <select name="resources[]" required>
+                                    <option value="">Select Team Member</option>
+                                    {% for user in all_users %}
+                                    <option value="{{ user.id }}">{{ user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="designations[]" required>
+                            </td>
+                            <td>
+                                <button type="button" class="remove-row">Remove</button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <button type="button" id="addResource">Add Team Member</button>
+            <div style="margin-top: 20px;">
+                <input type="submit" value="Update Resources">
+            </div>
+        </form>
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('task_details', task_id=task.id) }}"><i class="fa-solid fa-arrow-left"></i> Back to Task Details</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('addResource').addEventListener('click', function() {
+            var table = document.getElementById('resourceTable').getElementsByTagName('tbody')[0];
+            var firstRow = table.querySelector('tr');
+            var newRow = firstRow.cloneNode(true);
+
+            // Reset values in the new row
+            var selectField = newRow.querySelector('select[name="resources[]"]');
+            selectField.selectedIndex = 0;
+            newRow.querySelector('input[name="designations[]"]').value = '';
+
+            table.appendChild(newRow);
+            attachRemoveListeners();
+        });
+
+        function attachRemoveListeners() {
+            var removeButtons = document.querySelectorAll('.remove-row');
+            removeButtons.forEach(function(button) {
+                button.onclick = function() {
+                    var row = this.parentNode.parentNode;
+                    if (row.parentNode.rows.length > 1) {
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert('At least one team member is required.');
+                    }
+                }
+            });
+        }
+
+        attachRemoveListeners();
+    </script>
+</body>
+</html>
+

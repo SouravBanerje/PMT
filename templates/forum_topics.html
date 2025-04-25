@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ forum.forum_name }} - Topics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 780px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 34px 28px 34px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+            font-weight: 700;
+            color: #2462d5;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        p {
+            color: #444;
+            margin-bottom: 18px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 18px;
+            background: #f2f7fd;
+            padding: 7px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        .create-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            padding: 10px 23px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 22px;
+            margin-top: 3px;
+            transition: background 0.2s, transform 0.13s;
+            box-shadow: 0 2px 7px rgba(44,62,80,0.08);
+        }
+        .create-link:hover {
+            background: #2462d5;
+            color: #fff;
+            transform: translateY(-2px) scale(1.03);
+        }
+        h2 {
+            font-size: 1.15rem;
+            color: #2462d5;
+            font-weight: 700;
+            margin-top: 12px;
+            margin-bottom: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 7px;
+        }
+        thead th {
+            text-align: left;
+            padding: 12px 13px;
+            background: #f4f7fa;
+            font-weight: 700;
+            color: #23272f;
+            border-bottom: 2px solid #e3e8ee;
+        }
+        tbody tr {
+            background: rgba(255,255,255,0.97);
+            transition: box-shadow 0.18s, transform 0.18s;
+        }
+        tbody tr:hover {
+            background: #f2faff;
+            box-shadow: 0 2px 14px rgba(80,160,255,0.09);
+            transform: translateY(-2px) scale(1.01);
+        }
+        td {
+            padding: 11px 13px;
+            vertical-align: middle;
+            font-size: 1.05em;
+        }
+        td a {
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.16s;
+        }
+        td a:hover {
+            color: #4f8cff;
+            text-decoration: underline;
+        }
+        @media (max-width: 900px) {
+            .container {
+                max-width: 99vw;
+                padding: 14px 3vw 18px 3vw;
+            }
+            h1 { font-size: 1.13rem; }
+            h2 { font-size: 1.02rem; }
+            table, thead, tbody, th, td, tr {
+                font-size: 0.99em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-comments"></i> {{ forum.forum_name }}</h1>
+        <p>{{ forum.description }}</p>
+        <a href="/project/{{ forum.project_id }}/forums" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Forums
+        </a>
+        <div>
+            <a href="/forum/{{ forum.id }}/create_topic" class="create-link">
+                <i class="fa-solid fa-plus"></i> Create New Topic
+            </a>
+        </div>
+        <div>
+            <h2><i class="fa-solid fa-list"></i> Topics</h2>
+            {% if topics %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Author</th>
+                            <th>Replies</th>
+                            <th>Created</th>
+                            <th>Last Reply</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topic in topics %}
+                            <tr>
+                                <td><a href="/topic/{{ topic.id }}"><i class="fa-solid fa-comment"></i> {{ topic.title }}</a></td>
+                                <td>{{ topic.username }}</td>
+                                <td>{{ topic.reply_count }}</td>
+                                <td>{{ topic.created_at }}</td>
+                                <td>
+                                    {% if topic.last_reply_time %}
+                                        {{ topic.last_reply_time }}
+                                    {% else %}
+                                        No replies
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No topics available in this forum.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

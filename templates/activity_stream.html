@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Stream</title>
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f8cff;
+            --primary-dark: #2462d5;
+            --secondary: #44e3bc;
+            --danger: #e74c3c;
+            --gray: #b2bec3;
+            --light: #f8f9fa;
+            --dark: #23272f;
+            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+        }
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        header {
+            background: linear-gradient(90deg,var(--primary), var(--secondary));
+            color: #fff;
+            padding: 22px 0 20px 0;
+            margin-bottom: 26px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            background: rgba(255,255,255,0.13);
+            padding: 7px 18px;
+            border-radius: 20px;
+            margin-right: 10px;
+            transition: background 0.18s;
+        }
+        nav a:hover {
+            background: #fff;
+            color: var(--primary-dark);
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 33px 32px 25px 32px;
+        }
+        h2 {
+            font-size: 1.18rem;
+            margin: 18px 0 12px 0;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f7fbff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+            padding: 17px 22px;
+            margin-bottom: 13px;
+            position: relative;
+            animation: fadeIn 0.4s;
+        }
+        li p {
+            margin: 0;
+            font-size: 1.05em;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+        }
+        li strong {
+            color: var(--primary-dark);
+        }
+        li small {
+            color: var(--gray);
+            font-size: 0.96em;
+            margin-left: 6px;
+        }
+        .fa-globe, .fa-diagram-project, .fa-tasks {
+            color: var(--primary);
+        }
+        .flash-messages {
+            background: #fef6f6;
+            color: var(--danger);
+            padding: 13px 17px;
+            border-radius: 6px;
+            font-size: 1.07rem;
+            margin-bottom: 18px;
+            margin-top: 18px;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @media (max-width: 850px) {
+            .container {
+                max-width: 98vw;
+                padding: 14px 3vw 18px 3vw;
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 8px 1vw 10px 1vw;
+            }
+            header h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fa-solid fa-clock-rotate-left"></i> Activity Stream</h1>
+        <nav>
+            <a href="{{ url_for('home.home') }}"><i class="fa-solid fa-house"></i> Home</a>
+        </nav>
+    </header>
+    <div class="container">
+        {% if session.user_type == 'admin' %}
+            <div>
+                <h2><i class="fa-solid fa-globe"></i> Global Activities</h2>
+                {% if global_activities %}
+                    <ul>
+                        {% for activity in global_activities %}
+                            <li>
+                                <p>
+                                    <strong>{{ activity.username }}</strong> - 
+                                    {{ activity.description }}
+                                    {% if activity.project_name %}
+                                        in project <b>{{ activity.project_name }}</b>
+                                    {% endif %}
+                                    {% if activity.task_name %}
+                                        on task <b>{{ activity.task_name }}</b>
+                                    {% endif %}
+                                    <small>{{ activity.created_at }}</small>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No global activities found.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+            <div>
+                <h2><i class="fa-solid fa-diagram-project"></i> Project Activities</h2>
+                {% if project_activities %}
+                    <ul>
+                        {% for activity in project_activities %}
+                            <li>
+                                <p>
+                                    <strong>{{ activity.username }}</strong> - 
+                                    {{ activity.description }}
+                                    {% if activity.project_name %}
+                                        in project <b>{{ activity.project_name }}</b>
+                                    {% endif %}
+                                    {% if activity.task_name %}
+                                        on task <b>{{ activity.task_name }}</b>
+                                    {% endif %}
+                                    <small>{{ activity.created_at }}</small>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No project activities found.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div>
+            <h2><i class="fa-solid fa-tasks"></i> Task Activities</h2>
+            {% if task_activities %}
+                <ul>
+                    {% for activity in task_activities %}
+                        <li>
+                            <p>
+                                <strong>{{ activity.username }}</strong> - 
+                                {{ activity.description }}
+                                {% if activity.project_name %}
+                                    in project <b>{{ activity.project_name }}</b>
+                                {% endif %}
+                                {% if activity.task_name %}
+                                    on task <b>{{ activity.task_name }}</b>
+                                {% endif %}
+                                <small>{{ activity.created_at }}</small>
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No task activities found.</p>
+            {% endif %}
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <p><i class="fa-solid fa-circle-info"></i> {{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <script>
+        // Auto refresh activity stream every 60 seconds
+        setTimeout(function() {
+            location.reload();
+        }, 60000);
+    </script>
+</body>
+</html>

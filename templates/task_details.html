@@ -1,25 +1,190 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Task Details - Project Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: #23272f;
+            margin: 0;
+        }
+        .container {
+            max-width: 770px;
+            margin: 45px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 34px 34px 24px 34px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 12px;
+        }
+        h3 {
+            font-size: 1.07rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin: 20px 0 9px 0;
+        }
+        h4 {
+            font-size: 1.01rem;
+            font-weight: 600;
+            color: #2462d5;
+            margin: 12px 0 5px 0;
+        }
+        .info-block {
+            background: #f7fbff;
+            border-radius: 9px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+            padding: 17px 22px;
+            margin-bottom: 18px;
+        }
+        p {
+            margin: 7px 0;
+        }
+        strong {
+            color: #2462d5;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 7px;
+            background: #f8fafd;
+            border-radius: 8px;
+            margin-bottom: 18px;
+        }
+        th, td {
+            padding: 10px 13px;
+            text-align: left;
+            font-size: 1.03em;
+        }
+        th {
+            background: #f2f7fd;
+            color: #2462d5;
+            font-weight: 700;
+            border-bottom: 2px solid #dde4ed;
+        }
+        tr {
+            background: #fff;
+            border-radius: 8px;
+            transition: background 0.16s;
+        }
+        tr:hover {
+            background: #f2faff;
+        }
+        textarea {
+            width: 100%;
+            min-height: 60px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            padding: 9px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            background: #f9fbfd;
+            margin-bottom: 7px;
+        }
+        textarea:focus {
+            border-color: #2462d5;
+            background: #fff;
+            outline: none;
+        }
+        input[type="date"], select {
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            font-size: 1rem;
+            background: #f9fbfd;
+            margin-bottom: 7px;
+            font-family: inherit;
+        }
+        input[type="submit"], .btn, a.update-link {
+            background: linear-gradient(90deg,#4f8cff,#2462d5);
+            color: #fff;
+            font-weight: 600;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.13s;
+            margin-top: 8px;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        input[type="submit"]:hover, .btn:hover, a.update-link:hover {
+            background: #2462d5;
+            transform: translateY(-2px) scale(1.02);
+            color: #fff;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            color: #2462d5;
+            text-decoration: none;
+            font-weight: 600;
+            background: #f2f7fd;
+            padding: 9px 18px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: #4f8cff;
+        }
+        @media (max-width: 900px) {
+            .container { max-width: 99vw; padding: 10px 2vw 14px 2vw; }
+            h1 { font-size: 1.11rem; }
+            h2 { font-size: 1.01rem; }
+            th, td { font-size: 0.96em; }
+            table { font-size: 0.98em; }
+            textarea { min-width: 80px; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Project Management System</h1>
-    <div>
-        <h2>Task Details: {{ task.task_name }}</h2>
-        <div>
-            <p><strong>Project:</strong> {{ project.project_name }}</p>
-            <p><strong>Description:</strong> {{ task.description }}</p>
-            <p><strong>Start Date:</strong> {{ task.start_date }}</p>
-            <p><strong>End Date:</strong> {{ task.end_date }}</p>
-            <p><strong>Duration:</strong> {{ task_hours }} hours</p>
-            <p><strong>Dependency (days):</strong> {{ task.dependency_days }}</p>
-            <p><strong>Status:</strong> {{ task.status }}</p>
-            <p><strong>Active:</strong> {% if task.is_active %}Yes{% else %}No{% endif %}</p>
+    <div class="container">
+        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
+        <div class="info-block">
+            <h2><i class="fa-solid fa-list-check"></i> Task Details: {{ task.task_name }}</h2>
+            <div>
+                <p><strong>Project:</strong> {{ project.project_name }}</p>
+                <p><strong>Description:</strong> {{ task.description }}</p>
+                <p><strong>Start Date:</strong> {{ task.start_date }}</p>
+                <p><strong>End Date:</strong> {{ task.end_date }}</p>
+                <p><strong>Duration:</strong> {{ task_hours }} hours</p>
+                <p><strong>Dependency (days):</strong> {{ task.dependency_days }}</p>
+                <p><strong>Status:</strong> {{ task.status }}</p>
+                <p><strong>Active:</strong> {% if task.is_active %}Yes{% else %}No{% endif %}</p>
+            </div>
         </div>
-        
-        <div>
-            <h3>Assigned Resources</h3>
+        <div class="info-block">
+            <h3><i class="fa-solid fa-users"></i> Assigned Resources</h3>
             <table>
                 <thead>
                     <tr>
@@ -41,21 +206,20 @@
                 </tbody>
             </table>
         </div>
-        
         {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-        <div>
-            <h3>Update Task</h3>
-            <form action="{{ url_for('update_task', task_id=task.id) }}" method="post">
+        <div class="info-block">
+            <h3><i class="fa-solid fa-pen-to-square"></i> Update Task</h3>
+            <form action="{{ url_for('update_task.update_task', task_id=task.id) }}" method="post">
                 <div>
-                    <label for="start_date">Start Date:</label>
+                    <label for="start_date"><i class="fa-solid fa-calendar-day"></i> Start Date:</label>
                     <input type="date" name="start_date" id="start_date" value="{{ task.start_date }}" required>
                 </div>
                 <div>
-                    <label for="end_date">End Date:</label>
+                    <label for="end_date"><i class="fa-solid fa-calendar-day"></i> End Date:</label>
                     <input type="date" name="end_date" id="end_date" value="{{ task.end_date }}" required>
                 </div>
                 <div>
-                    <label for="status">Status:</label>
+                    <label for="status"><i class="fa-solid fa-signal"></i> Status:</label>
                     <select name="status" id="status">
                         <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
                         <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
@@ -64,14 +228,16 @@
                     </select>
                 </div>
                 <div>
-                    <input type="submit" value="Update Task">
+                    <input type="submit" value="Update Task" class="btn">
                 </div>
             </form>
+            <div>
+                <a href="{{url_for('update_task.update_task_resources',task_id=task.id)}}" class="update-link"><i class="fa-solid fa-user-pen"></i> Update Resources</a>
+            </div>
         </div>
         {% endif %}
-        
-        <div>
-            <h3>Comments</h3>
+        <div class="info-block">
+            <h3><i class="fa-solid fa-comments"></i> Comments</h3>
             <table>
                 <thead>
                     <tr>
@@ -93,22 +259,24 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-            </table>
-            
-            <h4>Add Comment</h4>
-            <form action="{{ url_for('add_comment', task_id=task.id) }}" method="post">
+            </table> 
+            <h4><i class="fa-solid fa-plus"></i> Add Comment</h4>
+            <form action="{{ url_for('update_task.add_comment', task_id=task.id) }}" method="post">
                 <div>
-                    <textarea name="comment_text" required></textarea>
+                    <textarea name="comment_text" required placeholder="Write your comment..."></textarea>
                 </div>
                 <div>
-                    <input type="submit" value="Add Comment">
+                    <input type="submit" value="Add Comment" class="btn">
+                </div>
+                <div>
+                    <a href="{{url_for('messages.messages')}}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Messages</a>
                 </div>
             </form>
         </div>
-        
         <div>
-            <a href="{{ url_for('project_details', project_id=project.id) }}">Back to Project</a>
+            <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Project</a>
         </div>
     </div>
 </body>
 </html>
+

@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #23272f;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
+            padding: 36px 34px 24px 34px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2462d5;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        a.home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8cff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 22px;
+            background: #f2f7fd;
+            padding: 7px 16px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        a.home-link:hover {
+            background: #e6f1fa;
+            color: #2462d5;
+        }
+        h2 {
+            font-size: 1.13rem;
+            margin: 23px 0 14px 0;
+            font-weight: 700;
+            color: #2462d5;
+        }
+        h3 {
+            font-size: 1.04rem;
+            font-weight: 600;
+            color: #2462d5;
+            margin-top: 12px;
+            margin-bottom: 7px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 17px;
+            padding: 13px 0;
+            border-radius: 7px;
+            background: #f8fafd;
+            box-shadow: 0 1px 6px rgba(44,62,80,0.04);
+            position: relative;
+        }
+        li:last-child {
+            margin-bottom: 0;
+        }
+        li a {
+            color: #2462d5;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.14s;
+        }
+        li a:hover {
+            color: #4f8cff;
+            text-decoration: underline;
+        }
+        li small {
+            color: #6c757d;
+            font-size: 0.97em;
+            display: block;
+            margin-top: 2px;
+            margin-left: 2px;
+        }
+        .badge-unread {
+            background: #28a745;
+            color: #fff;
+            padding: 2px 9px;
+            border-radius: 10px;
+            font-size: 0.88em;
+            margin-left: 7px;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+        @media (max-width: 700px) {
+            .container { max-width: 100vw; padding: 10px 2vw 14px 2vw; }
+            h1 { font-size: 1.11rem; }
+            h2 { font-size: 1.01rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-envelope"></i> Messages</h1>
+        <a href="/home" class="home-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        
+        <div>
+            <h2><i class="fa-solid fa-comments"></i> Conversations</h2>
+            <ul>
+                {% for convo in conversations %}
+                    <li>
+                        <a href="/messages/{{ convo.id }}">
+                            <i class="fa-solid fa-user"></i> {{ convo.username }}
+                            {% if convo.unread_count > 0 %}
+                                <span class="badge-unread">{{ convo.unread_count }} unread</span>
+                            {% endif %}
+                        </a>
+                        <small><i class="fa-solid fa-clock"></i> Last message: {{ convo.last_message_time }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <h2><i class="fa-solid fa-paper-plane"></i> Start New Conversation</h2>
+            <h3><i class="fa-solid fa-user-plus"></i> Select User</h3>
+            <ul>
+                {% for user in users %}
+                    <li>
+                        <a href="/messages/{{ user.id }}"><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

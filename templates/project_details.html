@@ -1,77 +1,393 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Project Details - Project Management System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f8cff;
+            --primary-dark: #2462d5;
+            --secondary: #44e3bc;
+            --danger: #e74c3c;
+            --gray: #b2bec3;
+            --light: #f8f9fa;
+            --dark: #23272f;
+            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+        }
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 34px 40px 40px 40px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1.5px solid #e3e8ee;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 {
+            font-size: 1.19rem;
+            margin: 19px 0 18px 0;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        h3 {
+            font-size: 1.07rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 18px 0 7px 0;
+        }
+        .info-block, .actions-block {
+            background: #f7fbff;
+            border-radius: 9px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+            padding: 17px 20px;
+            margin-bottom: 18px;
+        }
+        .info-block p {
+            margin: 8px 0;
+            font-size: 1.03em;
+        }
+        .info-block strong {
+            color: var(--primary-dark);
+        }
+        .actions-block a {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 8px;
+            color: #fff;
+            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.13s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.07);
+        }
+        .actions-block a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .actions-block {
+            margin-bottom: 22px;
+        }
+        .version-table, .tasks-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            margin-top: 7px;
+        }
+        .version-table th, .tasks-table th, .version-table td, .tasks-table td {
+            padding: 11px 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .version-table th, .tasks-table th {
+            background: #f4f7fa;
+            font-weight: 700;
+            color: var(--dark);
+            border-bottom: 2px solid #e3e8ee;
+        }
+        .version-table tbody tr, .tasks-table tbody tr {
+            background: rgba(255,255,255,0.97);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .version-table tbody tr:hover, .tasks-table tbody tr:hover {
+            background: #f2faff;
+            box-shadow: 0 2px 14px rgba(80,160,255,0.09);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.98em;
+            font-weight: 600;
+            display: inline-block;
+            min-width: 70px;
+            letter-spacing: 0.03em;
+            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+        }
+        .status-active {
+            background: rgba(46,204,113,0.16);
+            color: #1abc9c;
+        }
+        .status-pending {
+            background: rgba(243,156,18,0.18);
+            color: #e67e22;
+        }
+        .status-completed {
+            background: rgba(52,152,219,0.18);
+            color: #2462d5;
+        }
+        .status-cancelled {
+            background: rgba(231,76,60,0.13);
+            color: var(--danger);
+        }
+        .status-onhold {
+            background: rgba(149,165,166,0.13);
+            color: var(--gray);
+        }
+        .project-actions {
+            margin-top: 14px;
+            margin-bottom: 16px;
+        }
+        .project-actions a, .tasks-actions a {
+            margin-right: 15px;
+            color: #fff;
+            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
+            padding: 9px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.13s;
+            display: inline-block;
+        }
+        .project-actions a:hover, .tasks-actions a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .tasks-actions {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .tasks-table td .task-action-link {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 5px 11px;
+            border-radius: 4px;
+            transition: background 0.12s;
+        }
+        .tasks-table td .task-action-link:hover {
+            background: #f2faff;
+            color: var(--primary);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            background: #f2f7fd;
+            padding: 9px 18px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: var(--primary);
+        }
+        @media (max-width: 1000px) {
+            .container {
+                max-width: 98vw;
+                padding: 12px 2vw 18px 2vw;
+            }
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 8px 2vw 18px 2vw;
+            }
+            th, td {
+                font-size: 0.97em;
+            }
+            .tasks-table, .version-table {
+                font-size: 0.97em;
+            }
+            .back-link {
+                font-size: 0.97em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Project Management System</h1>
-    <div>
-        <h2>Project Details: {{ project.project_name }}</h2>
-        <div>
-            <p><strong>Project ID:</strong> {{ project.project_id }}</p>
+    <div class="container">
+        <header>
+            <h1><i class="fa-solid fa-diagram-project"></i> Project Details</h1>
+        </header>
+        <h2>
+            <i class="fa-solid fa-folder-open"></i> 
+            {{ project.project_name }} (ID: {{ project.project_id }}) - Version {{ project.version }}
+        </h2>
+        <div class="info-block">
+            <h3><i class="fa-solid fa-circle-info"></i> Basic Information</h3>
             <p><strong>Description:</strong> {{ project.description }}</p>
+            <p><strong>Project Manager:</strong> {{ pm.username }}</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="status-badge status-{{ project.status|lower }}">{{ project.status }}</span>
+            </p>
+            <p><strong>Type:</strong> {{ project.project_type }}</p>
+            {% if project.project_type == 'fixed' %}
+                <p><strong>Total Amount:</strong> ${{ project.total_amount }}</p>
+            {% else %}
+                <p><strong>Per Month Billing:</strong> ${{ project.per_month_billing }}</p>
+            {% endif %}
+            <p><strong>PO Number:</strong> {{ project.po_number }}</p>
+            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+                <a href="{{ url_for('update_project_cost.update_project_cost', project_id=project.id) }}" class="btn" style="margin-top:10px;">
+                    <i class="fa-solid fa-pen-fancy"></i> Update Cost
+                </a>
+            {% endif %}
+        </div>
+        <div class="info-block">
+            <h3><i class="fa-solid fa-calendar-days"></i> Schedule Information</h3>
             <p><strong>Start Date:</strong> {{ project.start_date }}</p>
             <p><strong>End Date:</strong> {{ project.end_date }}</p>
             <p><strong>Project Duration:</strong> {{ project_duration }} days</p>
-            <p><strong>Project Type:</strong> {{ project.project_type }}</p>
-            {% if project.project_type == 'fixed' %}
-            <p><strong>Total Amount:</strong> {{ project.total_amount }}</p>
-            {% else %}
-            <p><strong>Per Month Billing:</strong> {{ project.per_month_billing }}</p>
+            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+                <a href="{{ url_for('update_project_schedule.update_project_schedule', project_id=project.id) }}" class="btn" style="margin-top:10px;">
+                    <i class="fa-solid fa-calendar-pen"></i> Update Schedule
+                </a>
             {% endif %}
-            <p><strong>Project Manager:</strong> {{ pm.username }}</p>
-            <p><strong>PO Number:</strong> {{ project.po_number }}</p>
-            <p><strong>Status:</strong> {{ project.status }}</p>
         </div>
-        
-        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-        <div>
-            <a href="{{ url_for('create_task', project_id=project.id) }}">Create New Task</a>
-
+        <div class="actions-block">
+            <a href="{{url_for('project_version_report.project_version_report',project_id=project.id)}}">
+                <i class="fa-solid fa-clock-rotate-left"></i> View Project Version History
+            </a>
         </div>
-        {% endif %}
-        
-        <div>
-            <h3>Tasks</h3>
-            <table>
+        {% if recent_versions %}
+        <div class="info-block">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Version Changes</h3>
+            <table class="version-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Version</th>
+                        <th>Change Type</th>
+                        <th>Description</th>
+                        <th>Changed By</th>
+                        <th>Changed At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for change in recent_versions %}
+                    <tr>
+                        <td>{{ change.version }}</td>
+                        <td>{{ change.change_type|capitalize }}</td>
+                        <td>{{ change.description }}</td>
+                        <td>{{ change.username }}</td>
+                        <td>{{ change.changed_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('project_version_report', project_id=project.id) }}" class="btn" style="margin-top:10px;">
+                <i class="fa-solid fa-clock-rotate-left"></i> View Complete Change History
+            </a>
+        </div>
+        {% endif %}
+        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+        <div class="actions-block">
+            <a href="{{ url_for('update_project.update_project', project_id=project.id) }}"><i class="fa-solid fa-pen-to-square"></i> Update Project</a>
+            <a href="{{ url_for('create_task.create_task', project_id=project.id) }}"><i class="fa-solid fa-list-check"></i> Create New Task</a>
+            <a href="{{ url_for('resource_management.resource_management') }}"><i class="fa-solid fa-users-cog"></i> Resource Management</a>
+            <a href="{{url_for('forums.forums', project_id=project.id)}}"><i class="fa-solid fa-comments"></i> Forums</a>
+            <a href="{{url_for('messages.messages')}}"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}"><i class="fa-solid fa-video"></i> Video Conferences</a>
+            <a href="{{url_for('notifications.notifications')}}"><i class="fa-solid fa-bell"></i> Notifications</a>
+            <a href="{{url_for('activity_stream.activity_stream')}}"><i class="fa-solid fa-stream"></i> Activity Stream</a>
+        </div>
+        {% endif %}
+        {% if session.user_type=="team_member" %}
+        <div class="actions-block">
+            <a href="{{url_for('forums.forums', project_id=project.id)}}"><i class="fa-solid fa-comments"></i> Forums</a>
+            <a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}"><i class="fa-solid fa-video"></i> Video Conferences</a>
+            <a href="{{url_for('notifications.notifications')}}"><i class="fa-solid fa-bell"></i> Notifications</a>
+        </div>
+        {% endif %}
+        <div class="info-block">
+            <h3><i class="fa-solid fa-tasks"></i> Tasks</h3>
+            <table class="tasks-table">
+                <thead>
+                    <tr>
                         <th>Task Name</th>
+                        <th>Status</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for task in tasks %}
-                    <tr style="background-color: {% if task.color == 'red' %}#ffcccc{% else %}#ccffcc{% endif %}">
-                        <td>{{ task.id }}</td>
+                    <tr style="background-color: {% if task.color %}{{ task.color }}{% else %}white{% endif %};">
                         <td>{{ task.task_name }}</td>
+                        <td>
+                            <span class="status-badge status-{{ task.status|lower }}">{{ task.status }}</span>
+                        </td>
                         <td>{{ task.start_date }}</td>
                         <td>{{ task.end_date }}</td>
-                        <td>{{ task.status }}</td>
                         <td>
-                            <a href="{{ url_for('task_details', task_id=task.id) }}">View Details</a>
+                             <a href="{{ url_for('task_details', task_id=task.id) }}" class="task-action-link">
+                                 <i class="fa-solid fa-eye"></i> View
+                             </a>
                         </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="6">No tasks found</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+                <div class="tasks-actions">
+                    <a href="{{ url_for('create_task.create_task', project_id=project.id) }}">
+                        <i class="fa-solid fa-plus"></i> Add Task
+                    </a> 
+                </div>
+            {% endif %}
         </div>
-        
-        <div>
-            <a href="{{ url_for('gantt_chart', project_id=project.id) }}">View Gantt Chart</a>
-        </div>
-        
-        <div>
-            <a href="{{ url_for('home') }}">Back to Home</a>
+        <div class="actions-block" style="margin-top:18px;">
+            <a href="{{ url_for('gantt_chart.gantt_chart', project_id=project.id) }}">
+                <i class="fa-solid fa-chart-gantt"></i> View Gantt Chart
+            </a>
+            <a href="{{ url_for('home.home') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Projects
+            </a>
         </div>
     </div>
+    <script>
+        // Status badge color logic for dynamic statuses
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.status-badge').forEach(badge => {
+                const status = badge.textContent.trim().toLowerCase();
+                badge.classList.remove('status-active','status-pending','status-completed','status-cancelled','status-onhold');
+                if (status.includes('active') || status.includes('progress')) {
+                    badge.classList.add('status-active');
+                } else if (status.includes('pending') || status.includes('planned')) {
+                    badge.classList.add('status-pending');
+                } else if (status.includes('complete') || status.includes('done') || status.includes('finished')) {
+                    badge.classList.add('status-completed');
+                } else if (status.includes('cancelled') || status.includes('canceled')) {
+                    badge.classList.add('status-cancelled');
+                } else if (status.includes('hold') || status.includes('on hold')) {
+                    badge.classList.add('status-onhold');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

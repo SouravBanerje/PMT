@@ -1,7 +1,168 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Define Project - Project Management System</title>
+    <!-- Google Fonts for clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f8cff;
+            --primary-dark: #2462d5;
+            --secondary: #44e3bc;
+            --danger: #e74c3c;
+            --gray: #b2bec3;
+            --light: #f8f9fa;
+            --dark: #23272f;
+            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+        }
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            margin: 0;
+        }
+        .container {
+            max-width: 620px;
+            margin: 42px auto 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 38px 35px 36px 35px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 20px;
+            border-bottom: 1.5px solid #e3e8ee;
+            margin-bottom: 16px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--primary-dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 {
+            font-size: 1.19rem;
+            margin: 21px 0 20px 0;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 0.5px;
+        }
+        form {
+            margin-bottom: 22px;
+        }
+        form > div {
+            margin-bottom: 19px;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
+            padding: 11px 13px;
+            border-radius: 6px;
+            border: 1.5px solid #b2bec3;
+            font-size: 1rem;
+            background: #f9fbfd;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            background: #fff;
+        }
+        textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+        input[type="file"] {
+            font-size: 1rem;
+            color: var(--primary-dark);
+            background: none;
+            padding: 5px 0;
+        }
+        input[type="submit"], .btn {
+            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 31px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.12s;
+            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
+            margin-top: 8px;
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        input[type="submit"]:hover, .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .msg {
+            background: #fef6f6;
+            color: var(--danger);
+            padding: 13px 17px;
+            border-radius: 6px;
+            font-size: 1.02rem;
+            margin-bottom: 7px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            background: #f2f7fd;
+            padding: 9px 18px;
+            border-radius: 5px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e6f1fa;
+            color: var(--primary);
+        }
+        /* Responsive Styles */
+        @media (max-width: 700px) {
+            .container {
+                max-width: 99vw;
+                padding: 14px 3vw 18px 3vw;
+            }
+            form > div {
+                margin-bottom: 12px;
+            }
+            input[type="submit"], .btn {
+                width: 100%;
+            }
+            .back-link {
+                font-size: 0.97em;
+            }
+        }
+    </style>
     <script>
         function toggleAmountFields() {
             var projectType = document.getElementById('project_type').value;
@@ -9,53 +170,59 @@
             var perMonthBillingField = document.getElementById('per_month_billing_field');
             
             if (projectType === 'fixed') {
-                totalAmountField.style.display = 'block';
+                totalAmountField.style.display = 'flex';
                 perMonthBillingField.style.display = 'none';
             } else {
                 totalAmountField.style.display = 'none';
-                perMonthBillingField.style.display = 'block';
+                perMonthBillingField.style.display = 'flex';
             }
         }
+        // Initialize fields on page load
+        window.onload = function() {
+            toggleAmountFields();
+        };
     </script>
 </head>
 <body>
-    <h1>Project Management System</h1>
-    <div>
-        <h2>Define New Project</h2>
-        <form action="{{ url_for('define_project') }}" method="post" enctype="multipart/form-data">
+    <div class="container">
+        <header>
+            <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
+        </header>
+        <h2><i class="fa-solid fa-plus"></i> Define New Project</h2>
+        <form action="{{ url_for('define_project.define_project') }}" method="post" enctype="multipart/form-data" autocomplete="off">
             <div>
-                <label for="project_name">Project Name: *</label>
-                <input type="text" name="project_name" id="project_name" required>
+                <label for="project_name"><i class="fa-solid fa-signature"></i> Project Name: *</label>
+                <input type="text" name="project_name" id="project_name" required placeholder="Enter project name">
             </div>
             <div>
-                <label for="project_description">Project Description:</label>
-                <textarea name="project_description" id="project_description"></textarea>
+                <label for="project_description"><i class="fa-solid fa-pen"></i> Project Description:</label>
+                <textarea name="project_description" id="project_description" placeholder="Describe the project"></textarea>
             </div>
             <div>
-                <label for="start_date">Start Date: *</label>
+                <label for="start_date"><i class="fa-solid fa-calendar-days"></i> Start Date: *</label>
                 <input type="date" name="start_date" id="start_date" required>
             </div>
             <div>
-                <label for="end_date">End Date: *</label>
+                <label for="end_date"><i class="fa-solid fa-calendar-days"></i> End Date: *</label>
                 <input type="date" name="end_date" id="end_date" required>
             </div>
             <div>
-                <label for="project_type">Project Type: *</label>
+                <label for="project_type"><i class="fa-solid fa-layer-group"></i> Project Type: *</label>
                 <select name="project_type" id="project_type" onchange="toggleAmountFields()" required>
                     <option value="fixed">Fixed Price</option>
-                    <option value="tm">T&M Price</option>
+                    <option value="tm">T&amp;M Price</option>
                 </select>
             </div>
             <div id="total_amount_field">
-                <label for="total_amount">Total Amount: *</label>
-                <input type="number" name="total_amount" id="total_amount" step="0.01">
+                <label for="total_amount"><i class="fa-solid fa-indian-rupee-sign"></i> Total Amount: *</label>
+                <input type="number" name="total_amount" id="total_amount" step="0.01" placeholder="Enter total amount">
             </div>
             <div id="per_month_billing_field" style="display: none;">
-                <label for="per_month_billing">Per Month Billing: *</label>
-                <input type="number" name="per_month_billing" id="per_month_billing" step="0.01">
+                <label for="per_month_billing"><i class="fa-solid fa-calendar-week"></i> Per Month Billing: *</label>
+                <input type="number" name="per_month_billing" id="per_month_billing" step="0.01" placeholder="Enter per month billing">
             </div>
             <div>
-                <label for="pm_id">Project Manager: *</label>
+                <label for="pm_id"><i class="fa-solid fa-user-tie"></i> Project Manager: *</label>
                 <select name="pm_id" id="pm_id" required>
                     {% for pm in project_managers %}
                     <option value="{{ pm.id }}">{{ pm.username }}</option>
@@ -63,31 +230,26 @@
                 </select>
             </div>
             <div>
-                <label for="po_number">Customer PO Number:</label>
-                <input type="text" name="po_number" id="po_number">
+                <label for="po_number"><i class="fa-solid fa-receipt"></i> Customer PO Number:</label>
+                <input type="text" name="po_number" id="po_number" placeholder="Enter PO number">
             </div>
             <div>
-                <label for="sow_attachment">Signed SOW Attachment:</label>
-                <input type="file" name="sow_attachment" id="sow_attachment">
+                <label for="sow_attachment"><i class="fa-solid fa-paperclip"></i> Signed SOW Attachment:</label>
+                <input type="file" name="sow_attachment" id="sow_attachment" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
             </div>
             <div>
                 <input type="submit" value="Save Project">
             </div>
             {% if msg %}
-            <div>
-                <p>{{ msg }}</p>
+            <div class="msg">
+                <p><i class="fa-solid fa-circle-info"></i> {{ msg }}</p>
             </div>
             {% endif %}
         </form>
-        <div>
-            <a href="{{ url_for('home') }}">Back to Home</a>
-        </div>
+        <a href="{{ url_for('home.home') }}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
     </div>
-    <script>
-        // Initialize fields on page load
-        window.onload = function() {
-            toggleAmountFields();
-        };
-    </script>
 </body>
 </html>
+
