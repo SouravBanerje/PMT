@@ -1,255 +1,612 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Define Project - Project Management System</title>
-    <!-- Google Fonts for clean look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-            --primary: #4f8cff;
-            --primary-dark: #2462d5;
-            --secondary: #44e3bc;
-            --danger: #e74c3c;
-            --gray: #b2bec3;
-            --light: #f8f9fa;
-            --dark: #23272f;
-            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+            /* Modern Color Scheme */
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #eef2ff;
+            --secondary: #14b8a6;
+            --secondary-light: #f0fdfa;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f97316;
+            
+            /* Shadows and Effects */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
         }
+
         * {
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-            color: var(--dark);
             margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .container {
-            max-width: 620px;
-            margin: 42px auto 0 auto;
-            background: #fff;
-            border-radius: 16px;
+
+        body {
+            background: linear-gradient(135deg, var(--gray-50) 0%, #e2e8f0 100%);
+            color: var(--gray-800);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            padding: 1.5rem;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
             box-shadow: var(--shadow);
-            padding: 38px 35px 36px 35px;
         }
-        header {
+
+        .top-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding-bottom: 20px;
-            border-bottom: 1.5px solid #e3e8ee;
-            margin-bottom: 16px;
+            gap: 12px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        header h1 {
+
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            margin-bottom: 2rem;
             font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--primary-dark);
-            margin: 0;
+            color: var(--gray-900);
+        }
+
+        .form-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
         }
-        h2 {
-            font-size: 1.19rem;
-            margin: 21px 0 20px 0;
-            font-weight: 700;
-            color: var(--primary-dark);
-            letter-spacing: 0.5px;
-        }
-        form {
-            margin-bottom: 22px;
-        }
-        form > div {
-            margin-bottom: 19px;
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
         }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
         label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--primary-dark);
-        }
-        input[type="text"], input[type="number"], input[type="date"], select, textarea {
-            padding: 11px 13px;
-            border-radius: 6px;
-            border: 1.5px solid #b2bec3;
-            font-size: 1rem;
-            background: #f9fbfd;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            background: #fff;
-        }
-        textarea {
-            min-height: 70px;
-            resize: vertical;
-        }
-        input[type="file"] {
-            font-size: 1rem;
-            color: var(--primary-dark);
-            background: none;
-            padding: 5px 0;
-        }
-        input[type="submit"], .btn {
-            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
-            color: #fff;
-            font-weight: 600;
-            padding: 12px 31px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.12s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
-            margin-top: 8px;
-            align-self: flex-start;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
         }
-        input[type="submit"]:hover, .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px) scale(1.03);
-        }
-        .msg {
-            background: #fef6f6;
-            color: var(--danger);
-            padding: 13px 17px;
-            border-radius: 6px;
-            font-size: 1.02rem;
-            margin-bottom: 7px;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 10px;
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 600;
-            background: #f2f7fd;
-            padding: 9px 18px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .back-link:hover {
-            background: #e6f1fa;
+
+        label i {
             color: var(--primary);
         }
-        /* Responsive Styles */
-        @media (max-width: 700px) {
-            .container {
-                max-width: 99vw;
-                padding: 14px 3vw 18px 3vw;
+
+        .required {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            color: var(--gray-800);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .input-hint {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-text {
+            color: var(--primary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            transform: translateY(-1px);
+        }
+
+        .amount-fields {
+            display: none;
+        }
+
+        .amount-fields.visible {
+            display: block;
+        }
+
+        .msg {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .msg.error {
+            background: #fee2e2;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .msg.success {
+            background: #dcfce7;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+                margin: 1rem auto;
             }
-            form > div {
-                margin-bottom: 12px;
+
+            .form-container {
+                padding: 1.5rem;
             }
-            input[type="submit"], .btn {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
                 width: 100%;
-            }
-            .back-link {
-                font-size: 0.97em;
+                justify-content: center;
             }
         }
     </style>
-    <script>
-        function toggleAmountFields() {
-            var projectType = document.getElementById('project_type').value;
-            var totalAmountField = document.getElementById('total_amount_field');
-            var perMonthBillingField = document.getElementById('per_month_billing_field');
-            
-            if (projectType === 'fixed') {
-                totalAmountField.style.display = 'flex';
-                perMonthBillingField.style.display = 'none';
-            } else {
-                totalAmountField.style.display = 'none';
-                perMonthBillingField.style.display = 'flex';
-            }
-        }
-        // Initialize fields on page load
-        window.onload = function() {
-            toggleAmountFields();
-        };
-    </script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
-        </header>
-        <h2><i class="fa-solid fa-plus"></i> Define New Project</h2>
-        <form action="{{ url_for('define_project.define_project') }}" method="post" enctype="multipart/form-data" autocomplete="off">
-            <div>
-                <label for="project_name"><i class="fa-solid fa-signature"></i> Project Name: *</label>
-                <input type="text" name="project_name" id="project_name" required placeholder="Enter project name">
+    <header class="top-header">
+        <h1>
+            <i class="fa-solid fa-diagram-project"></i>
+            Project Management System
+        </h1>
+    </header>
+
+    <main class="main-content">
+        <h2 class="page-title">Define New Project</h2>
+
+        <form id="projectForm" action="{{ url_for('define_project.define_project') }}" method="post" enctype="multipart/form-data">
+            <div class="form-container">
+                <!-- Basic Information Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fa-solid fa-info-circle"></i>
+                            Basic Information
+                        </h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-signature"></i>
+                                Project Name
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" name="project_name" required 
+                                   placeholder="Enter project name"
+                                   pattern="[A-Za-z0-9\s-_]+"
+                                   title="Project name can contain letters, numbers, spaces, hyphens and underscores">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-layer-group"></i>
+                                Project Type
+                                <span class="required">*</span>
+                            </label>
+                            <select name="project_type" required onchange="toggleAmountFields()">
+                                <option value="">Select Project Type</option>
+                                <option value="fixed">Fixed Price</option>
+                                <option value="tm">Time & Material</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>
+                                <i class="fa-solid fa-pen"></i>
+                                Project Description
+                            </label>
+                            <textarea name="project_description" 
+                                    placeholder="Describe the project objectives, scope, and deliverables..."
+                                    maxlength="1000"></textarea>
+                            <div class="input-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Maximum 1000 characters
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Details Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            Project Details
+                        </h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-calendar-days"></i>
+                                Start Date
+                                <span class="required">*</span>
+                            </label>
+                            <input type="date" name="start_date" required min="{{ today }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-calendar-check"></i>
+                                End Date
+                                <span class="required">*</span>
+                            </label>
+                            <input type="date" name="end_date" required min="{{ today }}">
+                        </div>
+
+                        <div id="fixed_amount" class="form-group amount-fields">
+                            <label>
+                                <i class="fa-solid fa-dollar-sign"></i>
+                                Total Amount
+                                <span class="required">*</span>
+                            </label>
+                            <input type="number" name="total_amount" 
+                                   step="0.01" min="0"
+                                   placeholder="Enter total project amount">
+                        </div>
+
+                        <div id="tm_amount" class="form-group amount-fields">
+                            <label>
+                                <i class="fa-solid fa-calendar-week"></i>
+                                Per Month Billing
+                                <span class="required">*</span>
+                            </label>
+                            <input type="number" name="per_month_billing" 
+                                   step="0.01" min="0"
+                                   placeholder="Enter monthly billing amount">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-user-tie"></i>
+                                Project Manager
+                                <span class="required">*</span>
+                            </label>
+                            <select name="pm_id" required>
+                                <option value="">Select Project Manager</option>
+                                {% for pm in project_managers %}
+                                <option value="{{ pm.id }}">{{ pm.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fa-solid fa-receipt"></i>
+                                Customer PO Number
+                            </label>
+                            <input type="text" name="po_number" 
+                                   placeholder="Enter PO number"
+                                   pattern="[A-Za-z0-9-_]+"
+                                   title="PO number can contain letters, numbers, hyphens and underscores">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fa-solid fa-file-contract"></i>
+                            Documents
+                        </h3>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <i class="fa-solid fa-paperclip"></i>
+                            Signed SOW Attachment
+                        </label>
+                        <div class="file-upload" id="fileUpload">
+                            <div class="file-upload-text">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Drop files here or click to upload</span>
+                            </div>
+                            <input type="file" name="sow_attachment" 
+                                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                   onchange="updateFileName(this)">
+                        </div>
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i>
+                            Accepted formats: PDF, JPG, PNG, DOC, DOCX
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('home.home') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Home
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Create Project
+                    </button>
+                </div>
             </div>
-            <div>
-                <label for="project_description"><i class="fa-solid fa-pen"></i> Project Description:</label>
-                <textarea name="project_description" id="project_description" placeholder="Describe the project"></textarea>
-            </div>
-            <div>
-                <label for="start_date"><i class="fa-solid fa-calendar-days"></i> Start Date: *</label>
-                <input type="date" name="start_date" id="start_date" required>
-            </div>
-            <div>
-                <label for="end_date"><i class="fa-solid fa-calendar-days"></i> End Date: *</label>
-                <input type="date" name="end_date" id="end_date" required>
-            </div>
-            <div>
-                <label for="project_type"><i class="fa-solid fa-layer-group"></i> Project Type: *</label>
-                <select name="project_type" id="project_type" onchange="toggleAmountFields()" required>
-                    <option value="fixed">Fixed Price</option>
-                    <option value="tm">T&amp;M Price</option>
-                </select>
-            </div>
-            <div id="total_amount_field">
-                <label for="total_amount"><i class="fa-solid fa-indian-rupee-sign"></i> Total Amount: *</label>
-                <input type="number" name="total_amount" id="total_amount" step="0.01" placeholder="Enter total amount">
-            </div>
-            <div id="per_month_billing_field" style="display: none;">
-                <label for="per_month_billing"><i class="fa-solid fa-calendar-week"></i> Per Month Billing: *</label>
-                <input type="number" name="per_month_billing" id="per_month_billing" step="0.01" placeholder="Enter per month billing">
-            </div>
-            <div>
-                <label for="pm_id"><i class="fa-solid fa-user-tie"></i> Project Manager: *</label>
-                <select name="pm_id" id="pm_id" required>
-                    {% for pm in project_managers %}
-                    <option value="{{ pm.id }}">{{ pm.username }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label for="po_number"><i class="fa-solid fa-receipt"></i> Customer PO Number:</label>
-                <input type="text" name="po_number" id="po_number" placeholder="Enter PO number">
-            </div>
-            <div>
-                <label for="sow_attachment"><i class="fa-solid fa-paperclip"></i> Signed SOW Attachment:</label>
-                <input type="file" name="sow_attachment" id="sow_attachment" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-            </div>
-            <div>
-                <input type="submit" value="Save Project">
-            </div>
-            {% if msg %}
-            <div class="msg">
-                <p><i class="fa-solid fa-circle-info"></i> {{ msg }}</p>
-            </div>
-            {% endif %}
         </form>
-        <a href="{{ url_for('home.home') }}" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-        </a>
-    </div>
+
+        {% if msg %}
+        <div class="msg {% if 'success' in msg.lower() %}success{% else %}error{% endif %}">
+            <i class="fas {% if 'success' in msg.lower() %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+            {{ msg }}
+        </div>
+        {% endif %}
+    </main>
+
+    <script>
+        function toggleAmountFields() {
+            const projectType = document.querySelector('select[name="project_type"]').value;
+            const fixedAmount = document.getElementById('fixed_amount');
+            const tmAmount = document.getElementById('tm_amount');
+            
+            fixedAmount.style.display = projectType === 'fixed' ? 'block' : 'none';
+            tmAmount.style.display = projectType === 'tm' ? 'block' : 'none';
+            
+            document.querySelector('input[name="total_amount"]').required = projectType === 'fixed';
+            document.querySelector('input[name="per_month_billing"]').required = projectType === 'tm';
+            
+            if (projectType === 'fixed') {
+                document.querySelector('input[name="per_month_billing"]').value = '';
+            } else if (projectType === 'tm') {
+                document.querySelector('input[name="total_amount"]').value = '';
+            }
+        }
+
+        function updateFileName(input) {
+            const fileName = input.files[0]?.name;
+            if (fileName) {
+                input.parentElement.querySelector('.file-upload-text').innerHTML = `
+                    <i class="fas fa-file-alt"></i>
+                    <span>${fileName}</span>
+                `;
+            }
+        }
+
+        // Form validation
+        document.getElementById('projectForm').addEventListener('submit', function(e) {
+            const startDate = new Date(document.querySelector('input[name="start_date"]').value);
+            const endDate = new Date(document.querySelector('input[name="end_date"]').value);
+            
+            if (endDate < startDate) {
+                e.preventDefault();
+                alert('End date cannot be earlier than start date');
+                return;
+            }
+
+            const projectType = document.querySelector('select[name="project_type"]').value;
+            if (projectType === 'fixed') {
+                const amount = document.querySelector('input[name="total_amount"]').value;
+                if (!amount || amount <= 0) {
+                    e.preventDefault();
+                    alert('Please enter a valid total amount');
+                    return;
+                }
+            } else if (projectType === 'tm') {
+                const billing = document.querySelector('input[name="per_month_billing"]').value;
+                if (!billing || billing <= 0) {
+                    e.preventDefault();
+                    alert('Please enter a valid monthly billing amount');
+                    return;
+                }
+            }
+        });
+
+        // File drag and drop
+        const fileUpload = document.getElementById('fileUpload');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUpload.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUpload.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUpload.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            fileUpload.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            fileUpload.classList.remove('highlight');
+        }
+
+        fileUpload.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            const input = fileUpload.querySelector('input[type="file"]');
+            input.files = files;
+            updateFileName(input);
+        }
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleAmountFields();
+            
+            const startDateInput = document.querySelector('input[name="start_date"]');
+            const endDateInput = document.querySelector('input[name="end_date"]');
+            
+            if (!startDateInput.min) {
+                const today = new Date().toISOString().split('T')[0];
+                startDateInput.min = today;
+                endDateInput.min = today;
+            }
+        });
+    </script>
 </body>
 </html>
-

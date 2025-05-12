@@ -1,330 +1,585 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Project Details - Project Management System</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <!-- Modern fonts combination -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-            --primary: #4f8cff;
-            --primary-dark: #2462d5;
-            --secondary: #44e3bc;
-            --danger: #e74c3c;
-            --gray: #b2bec3;
-            --light: #f8f9fa;
-            --dark: #23272f;
-            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+            /* Modern Color Scheme with updated palette */
+            --primary: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #6d28d9;
+            --primary-bg: #f5f3ff;
+            --secondary: #06b6d4;
+            --secondary-light: #22d3ee;
+            --secondary-bg: #ecfeff;
+            --accent: #f43f5e;
+            --accent-light: #fb7185;
+            --accent-bg: #fff1f2;
+            --success: #10b981;
+            --success-light: #34d399;
+            --success-bg: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fbbf24;
+            --warning-bg: #fffbeb;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --surface-3: #f1f5f9;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            /* Updated Shadows for depth */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --shadow-colored: 0px 10px 20px rgba(124, 58, 237, 0.1);
+            
+            /* Modern Border Radius */
+            --radius-sm: 0.5rem;
+            --radius: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-            color: var(--dark);
-            margin: 0;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--surface-2);
+            color: var(--gray-800);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            font-size: 15px;
         }
-        .container {
-            max-width: 900px;
-            margin: 40px auto 0 auto;
-            background: #fff;
-            border-radius: 18px;
-            box-shadow: var(--shadow);
-            padding: 34px 40px 40px 40px;
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 0 6rem;
+            position: relative;
+            overflow: hidden;
         }
-        header {
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .current-time {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding-bottom: 16px;
-            border-bottom: 1.5px solid #e3e8ee;
-            margin-bottom: 20px;
+            gap: 0.5rem;
         }
-        header h1 {
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-title i {
             font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin: 0;
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: -3rem auto 2rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-colored);
+        }
+
+        .section-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-bg);
         }
-        h2 {
-            font-size: 1.19rem;
-            margin: 19px 0 18px 0;
-            font-weight: 700;
-            color: var(--primary-dark);
-        }
-        h3 {
-            font-size: 1.07rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin: 18px 0 7px 0;
-        }
-        .info-block, .actions-block {
-            background: #f7fbff;
-            border-radius: 9px;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
-            padding: 17px 20px;
-            margin-bottom: 18px;
-        }
-        .info-block p {
-            margin: 8px 0;
-            font-size: 1.03em;
-        }
-        .info-block strong {
-            color: var(--primary-dark);
-        }
-        .actions-block a {
-            display: inline-block;
-            margin-right: 15px;
-            margin-bottom: 8px;
-            color: #fff;
-            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
-            padding: 10px 18px;
-            border-radius: 6px;
-            text-decoration: none;
+
+        .section-title {
+            font-size: 1.5rem;
             font-weight: 600;
-            transition: background 0.2s, transform 0.13s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.07);
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
-        .actions-block a:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px) scale(1.03);
-        }
-        .actions-block {
-            margin-bottom: 22px;
-        }
-        .version-table, .tasks-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 6px;
-            margin-top: 7px;
-        }
-        .version-table th, .tasks-table th, .version-table td, .tasks-table td {
-            padding: 11px 14px;
-            text-align: left;
-            vertical-align: middle;
-        }
-        .version-table th, .tasks-table th {
-            background: #f4f7fa;
-            font-weight: 700;
-            color: var(--dark);
-            border-bottom: 2px solid #e3e8ee;
-        }
-        .version-table tbody tr, .tasks-table tbody tr {
-            background: rgba(255,255,255,0.97);
-            transition: box-shadow 0.2s, transform 0.2s;
-        }
-        .version-table tbody tr:hover, .tasks-table tbody tr:hover {
-            background: #f2faff;
-            box-shadow: 0 2px 14px rgba(80,160,255,0.09);
-            transform: translateY(-2px) scale(1.01);
-        }
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 40px;
-            font-size: 0.98em;
-            font-weight: 600;
-            display: inline-block;
-            min-width: 70px;
-            letter-spacing: 0.03em;
-            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
-        }
-        .status-active {
-            background: rgba(46,204,113,0.16);
-            color: #1abc9c;
-        }
-        .status-pending {
-            background: rgba(243,156,18,0.18);
-            color: #e67e22;
-        }
-        .status-completed {
-            background: rgba(52,152,219,0.18);
-            color: #2462d5;
-        }
-        .status-cancelled {
-            background: rgba(231,76,60,0.13);
-            color: var(--danger);
-        }
-        .status-onhold {
-            background: rgba(149,165,166,0.13);
-            color: var(--gray);
-        }
-        .project-actions {
-            margin-top: 14px;
-            margin-bottom: 16px;
-        }
-        .project-actions a, .tasks-actions a {
-            margin-right: 15px;
-            color: #fff;
-            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
-            padding: 9px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.2s, transform 0.13s;
-            display: inline-block;
-        }
-        .project-actions a:hover, .tasks-actions a:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px) scale(1.03);
-        }
-        .tasks-actions {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-        .tasks-table td .task-action-link {
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 5px 11px;
-            border-radius: 4px;
-            transition: background 0.12s;
-        }
-        .tasks-table td .task-action-link:hover {
-            background: #f2faff;
+
+        .section-title i {
             color: var(--primary);
         }
-        .back-link {
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            background: var(--surface-2);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-light);
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-label i {
+            color: var(--primary-light);
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            margin-top: 16px;
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 600;
-            background: #f2f7fd;
-            padding: 9px 18px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1;
+            gap: 0.5rem;
+            transition: var(--transition);
         }
-        .back-link:hover {
-            background: #e6f1fa;
+
+        .badge i {
+            font-size: 0.875rem;
+        }
+
+        .badge-active {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .badge-pending {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .badge-completed {
+            background: var(--primary-bg);
             color: var(--primary);
         }
-        @media (max-width: 1000px) {
-            .container {
-                max-width: 98vw;
-                padding: 12px 2vw 18px 2vw;
-            }
+
+        .badge:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.95);
         }
-        @media (max-width: 700px) {
-            .container {
-                padding: 8px 2vw 18px 2vw;
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-colored);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary-light);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-bg);
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+        }
+
+        table th {
+            background: var(--surface-2);
+            color: var(--gray-700);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--primary-bg);
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-800);
+            transition: var(--transition);
+        }
+
+        table tr:hover td {
+            background: var(--primary-bg);
+        }
+
+        .task-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+            background: var(--primary-bg);
+        }
+
+        .task-action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* Modern Loading Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 2rem 0 4rem;
             }
-            th, td {
-                font-size: 0.97em;
+
+            .header-content,
+            .content-wrapper {
+                padding: 0 1rem;
             }
-            .tasks-table, .version-table {
-                font-size: 0.97em;
+
+            .project-title {
+                font-size: 1.8rem;
             }
-            .back-link {
-                font-size: 0.97em;
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fa-solid fa-diagram-project"></i> Project Details</h1>
-        </header>
-        <h2>
-            <i class="fa-solid fa-folder-open"></i> 
-            {{ project.project_name }} (ID: {{ project.project_id }}) - Version {{ project.version }}
-        </h2>
-        <div class="info-block">
-            <h3><i class="fa-solid fa-circle-info"></i> Basic Information</h3>
-            <p><strong>Description:</strong> {{ project.description }}</p>
-            <p><strong>Project Manager:</strong> {{ pm.username }}</p>
-            <p>
-                <strong>Status:</strong>
-                <span class="status-badge status-{{ project.status|lower }}">{{ project.status }}</span>
-            </p>
-            <p><strong>Type:</strong> {{ project.project_type }}</p>
-            {% if project.project_type == 'fixed' %}
-                <p><strong>Total Amount:</strong> ${{ project.total_amount }}</p>
-            {% else %}
-                <p><strong>Per Month Billing:</strong> ${{ project.per_month_billing }}</p>
-            {% endif %}
-            <p><strong>PO Number:</strong> {{ project.po_number }}</p>
-            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-                <a href="{{ url_for('update_project_cost.update_project_cost', project_id=project.id) }}" class="btn" style="margin-top:10px;">
-                    <i class="fa-solid fa-pen-fancy"></i> Update Cost
-                </a>
-            {% endif %}
+    <div class="page-header">
+        <div class="header-content">
+        
+           
+            <h1 class="project-title">
+                <i class="fa-solid fa-diagram-project"></i>
+                {{ project.project_name }}
+                <span class="badge badge-{{ project.status|lower }}">
+                    <i class="fa-solid fa-circle"></i>
+                    {{ project.status }}
+                </span>
+            </h1>
         </div>
-        <div class="info-block">
-            <h3><i class="fa-solid fa-calendar-days"></i> Schedule Information</h3>
-            <p><strong>Start Date:</strong> {{ project.start_date }}</p>
-            <p><strong>End Date:</strong> {{ project.end_date }}</p>
-            <p><strong>Project Duration:</strong> {{ project_duration }} days</p>
-            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-                <a href="{{ url_for('update_project_schedule.update_project_schedule', project_id=project.id) }}" class="btn" style="margin-top:10px;">
-                    <i class="fa-solid fa-calendar-pen"></i> Update Schedule
-                </a>
-            {% endif %}
-        </div>
-        <div class="actions-block">
-            <a href="{{url_for('project_version_report.project_version_report',project_id=project.id)}}">
-                <i class="fa-solid fa-clock-rotate-left"></i> View Project Version History
-            </a>
-        </div>
-        {% if recent_versions %}
-        <div class="info-block">
-            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Version Changes</h3>
-            <table class="version-table">
-                <thead>
-                    <tr>
-                        <th>Version</th>
-                        <th>Change Type</th>
-                        <th>Description</th>
-                        <th>Changed By</th>
-                        <th>Changed At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for change in recent_versions %}
-                    <tr>
-                        <td>{{ change.version }}</td>
-                        <td>{{ change.change_type|capitalize }}</td>
-                        <td>{{ change.description }}</td>
-                        <td>{{ change.username }}</td>
-                        <td>{{ change.changed_at }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <a href="{{ url_for('project_version_report', project_id=project.id) }}" class="btn" style="margin-top:10px;">
-                <i class="fa-solid fa-clock-rotate-left"></i> View Complete Change History
-            </a>
-        </div>
-        {% endif %}
+    </div>
+    <!-- Rest of the content structure remains the same but with updated classes -->
+    <!-- ... -->
+
+    <div class="content-wrapper">
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-folder-open"></i> Project Overview</h2>
+            </div>
+            <p style="margin-bottom: 1.5rem; color: var(--gray-700);">{{ project.description }}</p>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Project ID</div>
+                    <div class="info-value">{{ project.project_id }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Current Version</div>
+                    <div class="info-value">{{ project.version }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Project Manager</div>
+                    <div class="info-value">{{ pm.username }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Type</div>
+                    <div class="info-value">{{ project.project_type }}</div>
+                </div>
+                {% if project.project_type == 'fixed' %}
+                <div class="info-item">
+                    <div class="info-label">Total Amount</div>
+                    <div class="info-value">${{ project.total_amount }}</div>
+                </div>
+                {% else %}
+                <div class="info-item">
+                    <div class="info-label">Per Month Billing</div>
+                    <div class="info-value">${{ project.per_month_billing }}</div>
+                </div>
+                {% endif %}
+                <div class="info-item">
+                    <div class="info-label">PO Number</div>
+                    <div class="info-value">{{ project.po_number }}</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-calendar-days"></i> Schedule Information</h2>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Start Date</div>
+                    <div class="info-value">{{ project.start_date }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">End Date</div>
+                    <div class="info-value">{{ project.end_date }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Project Duration</div>
+                    <div class="info-value">{{ project_duration }} days</div>
+                </div>
+            </div>
+        </section>
+
         {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-        <div class="actions-block">
-            <a href="{{ url_for('update_project.update_project', project_id=project.id) }}"><i class="fa-solid fa-pen-to-square"></i> Update Project</a>
-            <a href="{{ url_for('create_task.create_task', project_id=project.id) }}"><i class="fa-solid fa-list-check"></i> Create New Task</a>
-            <a href="{{ url_for('resource_management.resource_management') }}"><i class="fa-solid fa-users-cog"></i> Resource Management</a>
-            <a href="{{url_for('forums.forums', project_id=project.id)}}"><i class="fa-solid fa-comments"></i> Forums</a>
-            <a href="{{url_for('messages.messages')}}"><i class="fa-solid fa-envelope"></i> Messages</a>
-            <a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}"><i class="fa-solid fa-video"></i> Video Conferences</a>
-            <a href="{{url_for('notifications.notifications')}}"><i class="fa-solid fa-bell"></i> Notifications</a>
-            <a href="{{url_for('activity_stream.activity_stream')}}"><i class="fa-solid fa-stream"></i> Activity Stream</a>
-        </div>
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> Project Management</h2>
+            </div>
+            <div class="actions-grid">
+                <a href="{{ url_for('update_project.update_project', project_id=project.id) }}" class="btn btn-primary">
+                    <i class="fa-solid fa-pen-to-square"></i> Update Project
+                </a>
+                <a href="{{ url_for('create_task.create_task', project_id=project.id) }}" class="btn btn-primary">
+                    <i class="fa-solid fa-list-check"></i> Create New Task
+                </a>
+                <a href="{{ url_for('resource_management.resource_management') }}" class="btn btn-outline">
+                    <i class="fa-solid fa-users-cog"></i> Resource Management
+                </a>
+                <a href="{{url_for('forums.forums', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-comments"></i> Forums
+                </a>
+                <a href="{{url_for('messages.messages', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-envelope"></i> Messages
+                </a>
+                <a href="{{url_for('notifications.notifications', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                </a>
+
+                <a href="{{url_for('project_version_report.project_version_report')}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> View Complete Change History
+                </a>
+                <a href="{{url_for('activity_stream.activity_stream')}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Activity Stream
+                </a>
+              
+                <a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Video Conference
+                </a>
+
+                <a href="{{ url_for('update_project_cost.update_project_cost', project_id=project.id) }}" class="btn btn-outline">
+                    <i class="fa-solid fa-dollar-sign"></i> Update Project Cost
+                </a>
+                <a href="{{ url_for('update_project_schedule.update_project_schedule', project_id=project.id) }}" class="btn btn-outline">
+                    <i class="fa-solid fa-calendar"></i> Update Project Schedule
+                </a>
+            </div>
+        </section>
         {% endif %}
-        {% if session.user_type=="team_member" %}
-        <div class="actions-block">
-            <a href="{{url_for('forums.forums', project_id=project.id)}}"><i class="fa-solid fa-comments"></i> Forums</a>
-            <a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}"><i class="fa-solid fa-video"></i> Video Conferences</a>
-            <a href="{{url_for('notifications.notifications')}}"><i class="fa-solid fa-bell"></i> Notifications</a>
-        </div>
+
+
+
+
+        {% if session.user_type == 'team_member' %}
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> Project Management</h2>
+            </div>
+            <div class="actions-grid">
+             
+                <a href="{{url_for('forums.forums', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-comments"></i> Forums
+                </a>
+                <a href="{{url_for('messages.messages', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-envelope"></i> Messages
+                </a>
+                <a href="{{url_for('notifications.notifications', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                </a>
+<a href="{{url_for('video_conferences.video_conferences', project_id=project.id)}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Video Conference
+                </a>
+              
+              
+                <a href="{{url_for('time_tracking.time_tracking')}}" class="btn btn-outline">
+                    <i class="fa-solid fa-bell"></i> Time Sheet
+                </a>
+            </div>
+        </section>
         {% endif %}
-        <div class="info-block">
-            <h3><i class="fa-solid fa-tasks"></i> Tasks</h3>
-            <table class="tasks-table">
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fa-solid fa-tasks"></i> Project Tasks</h2>
+            </div>
+            <table>
                 <thead>
                     <tr>
                         <th>Task Name</th>
@@ -336,56 +591,72 @@
                 </thead>
                 <tbody>
                     {% for task in tasks %}
-                    <tr style="background-color: {% if task.color %}{{ task.color }}{% else %}white{% endif %};">
+                    <tr>
                         <td>{{ task.task_name }}</td>
                         <td>
-                            <span class="status-badge status-{{ task.status|lower }}">{{ task.status }}</span>
+                            <span class="badge badge-{{ task.status|lower }}">{{ task.status }}</span>
                         </td>
                         <td>{{ task.start_date }}</td>
                         <td>{{ task.end_date }}</td>
                         <td>
-                             <a href="{{ url_for('task_details', task_id=task.id) }}" class="task-action-link">
-                                 <i class="fa-solid fa-eye"></i> View
-                             </a>
+                            <a href="{{ url_for('task_details', task_id=task.id) }}" class="task-action">
+                                <i class="fa-solid fa-eye"></i> View
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-                <div class="tasks-actions">
-                    <a href="{{ url_for('create_task.create_task', project_id=project.id) }}">
-                        <i class="fa-solid fa-plus"></i> Add Task
-                    </a> 
-                </div>
-            {% endif %}
-        </div>
-        <div class="actions-block" style="margin-top:18px;">
-            <a href="{{ url_for('gantt_chart.gantt_chart', project_id=project.id) }}">
-                <i class="fa-solid fa-chart-gantt"></i> View Gantt Chart
-            </a>
-            <a href="{{ url_for('home.home') }}" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Back to Projects
-            </a>
-        </div>
+        </section>
+
+        <section class="section">
+            <div class="actions-grid">
+                <a href="{{ url_for('gantt_chart.gantt_chart', project_id=project.id) }}" class="btn btn-primary">
+                    <i class="fa-solid fa-chart-gantt"></i> View Gantt Chart
+                </a>
+                <a href="{{ url_for('home.home') }}" class="btn btn-outline">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Projects
+                </a>
+            </div>
+        </section>
     </div>
+
+
     <script>
-        // Status badge color logic for dynamic statuses
+        // Enhanced Status badge color logic with icons
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.status-badge').forEach(badge => {
+            document.querySelectorAll('.badge').forEach(badge => {
                 const status = badge.textContent.trim().toLowerCase();
-                badge.classList.remove('status-active','status-pending','status-completed','status-cancelled','status-onhold');
+                let icon = 'fa-circle';
+                
                 if (status.includes('active') || status.includes('progress')) {
-                    badge.classList.add('status-active');
+                    badge.classList.add('badge-active');
+                    icon = 'fa-play';
                 } else if (status.includes('pending') || status.includes('planned')) {
-                    badge.classList.add('status-pending');
+                    badge.classList.add('badge-pending');
+                    icon = 'fa-clock';
                 } else if (status.includes('complete') || status.includes('done') || status.includes('finished')) {
-                    badge.classList.add('status-completed');
+                    badge.classList.add('badge-completed');
+                    icon = 'fa-check';
                 } else if (status.includes('cancelled') || status.includes('canceled')) {
-                    badge.classList.add('status-cancelled');
+                    badge.classList.add('badge-cancelled');
+                    icon = 'fa-times';
                 } else if (status.includes('hold') || status.includes('on hold')) {
-                    badge.classList.add('status-onhold');
+                    badge.classList.add('badge-onhold');
+                    icon = 'fa-pause';
                 }
+
+                const iconElement = badge.querySelector('i');
+                if (iconElement) {
+                    iconElement.className = `fa-solid ${icon}`;
+                }
+            });
+        });
+
+        // Add loading animation to buttons when clicked
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.add('loading');
             });
         });
     </script>

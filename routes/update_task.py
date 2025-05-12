@@ -103,6 +103,7 @@ def update_task(task_id):
     # Check if user is logged in and is admin or PM
     if 'loggedin' in session and (session['user_type'] == 'admin' or session['user_type'] == 'pm'):
         # Create variables for easy access
+        task_name = request.form['task_name']
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         status = request.form['status']
@@ -112,9 +113,9 @@ def update_task(task_id):
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE tasks 
-            SET start_date = %s, end_date = %s, status = %s, color = %s 
+            SET  task_name = %s, start_date = %s, end_date = %s, status = %s, color = %s
             WHERE id = %s
-        ''', (start_date, end_date, status, 'green', task_id))
+        ''',  (task_name, start_date, end_date, status, 'green', task_id))
         conn.commit()
         
         # Fetch task details to get project_id

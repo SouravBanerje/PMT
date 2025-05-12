@@ -113,7 +113,7 @@ def create_task(project_id):
                 conn.commit()
                 
                 # Redirect to project details page
-                return redirect(url_for('project_details', project_id=project_id))
+                return redirect(url_for('project_details.project_details', project_id=project_id))
             except Exception as e:
                 conn.rollback()
                 print(f"Error creating task: {e}")

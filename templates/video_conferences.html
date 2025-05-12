@@ -1,268 +1,292 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Video Conferences</title>
-    <!-- Google Fonts & FontAwesome for modern UI (optional) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Video Conferences Dashboard">
+    <title>Video Conferences</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            margin: 0;
-            color: #23272f;
-            padding: 0 0 40px 0;
+            background: linear-gradient(120deg, #f3f4f8, #e5e9f0);
+            color: #1f2937;
+            line-height: 1.6;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
+        /* Container */
         .container {
-            max-width: 1100px;
-            margin: 40px auto 0 auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 38px 38px 28px 38px;
+            width: 90%;
+            max-width: 1200px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        h1 {
-            color: #2462d5;
-            font-size: 1.6rem;
+        /* Header */
+        .header {
+            padding: 20px;
+            background: linear-gradient(90deg, #4f8cff, #2462d5);
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 1.8rem;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header h1 i {
+            font-size: 1.5rem;
+        }
+        .header a {
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .schedule-link {
+            background: #ffffff;
+            color: #2462d5;
+        }
+        .schedule-link:hover {
+            background: #e6f1fa;
+            transform: translateY(-2px);
+        }
+        .home-link {
+            background: transparent;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .home-link:hover {
+            color: #d6e2ff;
+        }
+        /* Content */
+        .content {
+            padding: 30px;
+            background: #f9f9fb;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2462d5;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .back-link {
-            color: #2462d5;
-            text-decoration: none;
-            font-weight: 600;
-            background: #f2f7fd;
-            padding: 8px 17px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
-            display: inline-block;
-            margin-bottom: 18px;
+        /* Card Layout */
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .back-link:hover {
-            background: #e6f1fa;
-            color: #4f8cff;
-        }
-        .schedule-link {
-            display: inline-block;
-            background: linear-gradient(90deg, #4f8cff, #2462d5);
-            color: #fff;
-            border-radius: 6px;
-            font-weight: 600;
-            padding: 10px 22px;
-            font-size: 1rem;
-            text-decoration: none;
-            margin-bottom: 22px;
-            margin-top: 8px;
-            transition: background 0.18s, transform 0.13s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
-        }
-        .schedule-link:hover {
-            background: #2462d5;
-            transform: translateY(-2px) scale(1.02);
-        }
-        h2 {
-            color: #2462d5;
-            font-size: 1.18rem;
-            font-weight: 700;
-            margin-top: 38px;
-            margin-bottom: 12px;
-        }
+        /* Table */
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 7px;
-            background: #f8fafd;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: #ffffff;
             border-radius: 8px;
-            margin-bottom: 0;
+            overflow: hidden;
         }
         th, td {
-            padding: 10px 13px;
+            padding: 15px;
             text-align: left;
-            font-size: 1.01em;
+            font-size: 0.95rem;
         }
         th {
             background: #f2f7fd;
             color: #2462d5;
-            font-weight: 700;
+            font-weight: 600;
             border-bottom: 2px solid #dde4ed;
         }
         tr {
-            background: #fff;
-            border-radius: 8px;
-            transition: background 0.16s;
+            background: #ffffff;
+            transition: background 0.2s;
         }
         tr:hover {
             background: #f2faff;
         }
+        td {
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
         .actions-link {
-            color: #2462d5;
-            text-decoration: none;
-            background: #eaf2fb;
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: background 0.14s, color 0.14s;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: #eaf2fb;
+            color: #2462d5;
         }
         .actions-link:hover {
             background: #d6eaff;
             color: #4f8cff;
-            text-decoration: underline;
         }
-        @media (max-width: 1200px) {
-            .container {
-                max-width: 99vw;
-                padding: 10px 2vw 14px 2vw;
+        /* No Data */
+        .no-data {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1rem;
+            padding: 20px;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
             }
-        }
-        @media (max-width: 700px) {
-            h1 { font-size: 1.13rem; }
-            h2 { font-size: 1.01rem; }
-            th, td { font-size: 0.96em; }
-            table { font-size: 0.98em; }
-        }
-        @media (max-width: 600px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            tr { margin-bottom: 18px;}
-            th { position: absolute; left: -9999px; top: -9999px; }
-            td { border: none; position: relative; padding-left: 45%; }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                position: relative;
+                padding-left: 50%;
+            }
             td:before {
                 position: absolute;
-                top: 10px; left: 10px; width: 40%;
-                white-space: nowrap;
-                color: #2462d5;
+                top: 50%;
+                left: 15px;
+                transform: translateY(-50%);
                 font-weight: 600;
+                color: #2462d5;
+                content: attr(data-label);
             }
-            td:nth-of-type(1):before { content: "Conference Name"; }
-            td:nth-of-type(2):before { content: "Project"; }
-            td:nth-of-type(3):before { content: "Task"; }
-            td:nth-of-type(4):before { content: "Scheduled Start"; }
-            td:nth-of-type(5):before { content: "Scheduled End"; }
-            td:nth-of-type(6):before { content: "Participants"; }
-            td:nth-of-type(7):before { content: "Status"; }
-            td:nth-of-type(8):before { content: "Actions"; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/home" class="back-link">
-            <i class="fas fa-arrow-left"></i> Back to Home
-        </a>
-        <h1><i class="fas fa-video"></i> Video Conferences</h1>
-        <a href="/create_video_conference" class="schedule-link">
-            <i class="fas fa-calendar-plus"></i> Schedule New Conference
-        </a>
-        <div>
-            <h2><i class="fas fa-hourglass-start"></i> Upcoming Conferences</h2>
-            {% if upcoming_conferences %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Conference Name</th>
-                            <th>Project</th>
-                            <th>Task</th>
-                            <th>Scheduled Start</th>
-                            <th>Scheduled End</th>
-                            <th>Participants</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for conf in upcoming_conferences %}
+        <div class="header">
+            <h1><i class="fas fa-video"></i> Video Conferences</h1>
+            <div>
+                <a href="/create_video_conference" class="schedule-link">
+                    <i class="fas fa-calendar-plus"></i> Schedule Conference
+                </a>
+                <a href="/home" class="home-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Upcoming Conferences -->
+            <div class="card">
+                <h2><i class="fas fa-hourglass-start"></i> Upcoming Conferences</h2>
+                {% if upcoming_conferences %}
+                    <table>
+                        <thead>
                             <tr>
-                                <td>{{ conf.conference_name }}</td>
-                                <td>
-                                    {% if conf.project_name %}
-                                        {{ conf.project_name }}
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if conf.task_name %}
-                                        {{ conf.task_name }}
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>{{ conf.scheduled_start }}</td>
-                                <td>{{ conf.scheduled_end }}</td>
-                                <td>{{ conf.participant_count }}</td>
-                                <td>{{ conf.status|capitalize }}</td>
-                                <td>
+                                <th>Conference Name</th>
+                                <th>Project</th>
+                                <th>Task</th>
+                                <th>Scheduled Start</th>
+                                <th>Scheduled End</th>
+                                <th>Participants</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for conf in upcoming_conferences %}
+                            <tr>
+                                <td data-label="Conference Name">{{ conf.conference_name }}</td>
+                                <td data-label="Project">{{ conf.project_name or "N/A" }}</td>
+                                <td data-label="Task">{{ conf.task_name or "N/A" }}</td>
+                                <td data-label="Scheduled Start">{{ conf.scheduled_start }}</td>
+                                <td data-label="Scheduled End">{{ conf.scheduled_end }}</td>
+                                <td data-label="Participants">{{ conf.participant_count }}</td>
+                                <td data-label="Status">{{ conf.status|capitalize }}</td>
+                                <td data-label="Actions">
                                     <a href="/video_conference/{{ conf.id }}" class="actions-link">
                                         <i class="fas fa-eye"></i> Details
                                     </a>
                                 </td>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No upcoming conferences.</p>
-            {% endif %}
-            <h2><i class="fas fa-history"></i> Past Conferences</h2>
-            {% if past_conferences %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Conference Name</th>
-                            <th>Project</th>
-                            <th>Task</th>
-                            <th>Scheduled Start</th>
-                            <th>Scheduled End</th>
-                            <th>Participants</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for conf in past_conferences %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-data">No upcoming conferences.</p>
+                {% endif %}
+            </div>
+            <!-- Past Conferences -->
+            <div class="card">
+                <h2><i class="fas fa-history"></i> Past Conferences</h2>
+                {% if past_conferences %}
+                    <table>
+                        <thead>
                             <tr>
-                                <td>{{ conf.conference_name }}</td>
-                                <td>
-                                    {% if conf.project_name %}
-                                        {{ conf.project_name }}
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if conf.task_name %}
-                                        {{ conf.task_name }}
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>{{ conf.scheduled_start }}</td>
-                                <td>{{ conf.scheduled_end }}</td>
-                                <td>{{ conf.participant_count }}</td>
-                                <td>{{ conf.status|capitalize }}</td>
-                                <td>
+                                <th>Conference Name</th>
+                                <th>Project</th>
+                                <th>Task</th>
+                                <th>Scheduled Start</th>
+                                <th>Scheduled End</th>
+                                <th>Participants</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for conf in past_conferences %}
+                            <tr>
+                                <td data-label="Conference Name">{{ conf.conference_name }}</td>
+                                <td data-label="Project">{{ conf.project_name or "N/A" }}</td>
+                                <td data-label="Task">{{ conf.task_name or "N/A" }}</td>
+                                <td data-label="Scheduled Start">{{ conf.scheduled_start }}</td>
+                                <td data-label="Scheduled End">{{ conf.scheduled_end }}</td>
+                                <td data-label="Participants">{{ conf.participant_count }}</td>
+                                <td data-label="Status">{{ conf.status|capitalize }}</td>
+                                <td data-label="Actions">
                                     <a href="/video_conference/{{ conf.id }}" class="actions-link">
                                         <i class="fas fa-eye"></i> Details
                                     </a>
                                 </td>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No past conferences.</p>
-            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-data">No past conferences.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>
 </html>
-

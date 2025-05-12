@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -197,9 +196,16 @@
             <button type="submit"><i class="fa-solid fa-chart-line"></i> Generate Report</button>
         </form>
         <div>
+            <!-- Fixed back link - only shows if a project is selected -->
+            {% if selected_project_id %}
             <a href="{{ url_for('project_details.project_details', project_id=selected_project_id) }}" class="back-link">
                 <i class="fa-solid fa-arrow-left"></i> Back to Project
             </a>
+            {% else %}
+            <a href="{{ url_for('project_details.project_details', project_id=1) }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Projects
+            </a>
+            {% endif %}
         </div>
         <hr>
         {% if version_changes %}
@@ -247,8 +253,12 @@
                 Resource: {{ resource_count }}
             </p>
         </div>
+        {% else %}
+        <div class="summary">
+            <h3><i class="fa-solid fa-info-circle"></i> No Results</h3>
+            <p>No version changes match your filter criteria. Please adjust your filters and try again.</p>
+        </div>
         {% endif %}
     </div>
 </body>
 </html>
-

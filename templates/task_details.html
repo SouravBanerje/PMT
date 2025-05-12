@@ -1,190 +1,246 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Task Details - Project Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #818cf8;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --danger: #ef4444;
+            --success: #10b981;
+            --radius: 0.75rem;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease-in-out;
+        }
+
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-            color: #23272f;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            background: var(--gray-50);
             margin: 0;
+            padding: 0;
+            color: var(--gray-900);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .container {
-            max-width: 770px;
-            margin: 45px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 34px 34px 24px 34px;
-        }
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2462d5;
-            margin-bottom: 18px;
+
+        header {
+            background: var(--primary-dark);
+            color: white;
+            padding: 1rem 2rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
         }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            background: var(--primary-light);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        header a:hover {
+            background: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 3rem;
+        }
+
+        h2, h3 {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
         h2 {
-            font-size: 1.18rem;
-            font-weight: 700;
-            color: #2462d5;
-            margin-bottom: 12px;
+            font-size: 1.6rem;
         }
+
         h3 {
-            font-size: 1.07rem;
-            font-weight: 700;
-            color: #2462d5;
-            margin: 20px 0 9px 0;
+            font-size: 1.3rem;
         }
-        h4 {
-            font-size: 1.01rem;
-            font-weight: 600;
-            color: #2462d5;
-            margin: 12px 0 5px 0;
+
+        section {
+            margin-bottom: 2rem;
         }
-        .info-block {
-            background: #f7fbff;
-            border-radius: 9px;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
-            padding: 17px 22px;
-            margin-bottom: 18px;
+
+        section p {
+            margin: 0.5rem 0;
+            color: var(--gray-700);
         }
-        p {
-            margin: 7px 0;
+
+        section strong {
+            color: var(--primary-dark);
         }
-        strong {
-            color: #2462d5;
-        }
+
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 7px;
-            background: #f8fafd;
-            border-radius: 8px;
-            margin-bottom: 18px;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            border-radius: var(--radius);
+            overflow: hidden;
         }
+
         th, td {
-            padding: 10px 13px;
             text-align: left;
-            font-size: 1.03em;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
         }
+
         th {
-            background: #f2f7fd;
-            color: #2462d5;
-            font-weight: 700;
-            border-bottom: 2px solid #dde4ed;
-        }
-        tr {
-            background: #fff;
-            border-radius: 8px;
-            transition: background 0.16s;
-        }
-        tr:hover {
-            background: #f2faff;
-        }
-        textarea {
-            width: 100%;
-            min-height: 60px;
-            border-radius: 6px;
-            border: 1.5px solid #b2bec3;
-            padding: 9px;
-            font-size: 1rem;
-            font-family: inherit;
-            resize: vertical;
-            background: #f9fbfd;
-            margin-bottom: 7px;
-        }
-        textarea:focus {
-            border-color: #2462d5;
-            background: #fff;
-            outline: none;
-        }
-        input[type="date"], select {
-            padding: 7px 12px;
-            border-radius: 6px;
-            border: 1.5px solid #b2bec3;
-            font-size: 1rem;
-            background: #f9fbfd;
-            margin-bottom: 7px;
-            font-family: inherit;
-        }
-        input[type="submit"], .btn, a.update-link {
-            background: linear-gradient(90deg,#4f8cff,#2462d5);
-            color: #fff;
+            background: var(--gray-100);
+            color: var(--gray-900);
             font-weight: 600;
-            padding: 8px 18px;
-            border: none;
-            border-radius: 6px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(odd) {
+            background: var(--gray-50);
+        }
+
+        tr:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        textarea, input, select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-family: inherit;
             font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.18s, transform 0.13s;
-            margin-top: 8px;
-            margin-right: 10px;
-            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
         }
-        input[type="submit"]:hover, .btn:hover, a.update-link:hover {
-            background: #2462d5;
-            transform: translateY(-2px) scale(1.02);
-            color: #fff;
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
+
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            margin-top: 20px;
-            color: #2462d5;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+            background: var(--gray-100);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
             text-decoration: none;
             font-weight: 600;
-            background: #f2f7fd;
-            padding: 9px 18px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
+            transition: var(--transition);
         }
+
         .back-link:hover {
-            background: #e6f1fa;
-            color: #4f8cff;
+            background: var(--primary-light);
+            color: white;
         }
-        @media (max-width: 900px) {
-            .container { max-width: 99vw; padding: 10px 2vw 14px 2vw; }
-            h1 { font-size: 1.11rem; }
-            h2 { font-size: 1.01rem; }
-            th, td { font-size: 0.96em; }
-            table { font-size: 0.98em; }
-            textarea { min-width: 80px; }
+
+        footer {
+            background: var(--gray-100);
+            padding: 1rem 2rem;
+            text-align: center;
+            color: var(--gray-500);
+        }
+
+        @media (max-width: 768px) {
+            header, main, footer {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
-        <div class="info-block">
-            <h2><i class="fa-solid fa-list-check"></i> Task Details: {{ task.task_name }}</h2>
-            <div>
-                <p><strong>Project:</strong> {{ project.project_name }}</p>
-                <p><strong>Description:</strong> {{ task.description }}</p>
-                <p><strong>Start Date:</strong> {{ task.start_date }}</p>
-                <p><strong>End Date:</strong> {{ task.end_date }}</p>
-                <p><strong>Duration:</strong> {{ task_hours }} hours</p>
-                <p><strong>Dependency (days):</strong> {{ task.dependency_days }}</p>
-                <p><strong>Status:</strong> {{ task.status }}</p>
-                <p><strong>Active:</strong> {% if task.is_active %}Yes{% else %}No{% endif %}</p>
-            </div>
-        </div>
-        <div class="info-block">
-            <h3><i class="fa-solid fa-users"></i> Assigned Resources</h3>
+    <header>
+        <h1><i class="fa-solid fa-diagram-project"></i> Task Details</h1>
+        <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Project
+        </a>
+    </header>
+
+    <main>
+        <section>
+            <h2>{{ task.task_name }}</h2>
+            <p><strong>Project:</strong> {{ project.project_name }}</p>
+            <p><strong>Description:</strong> {{ task.description }}</p>
+            <p><strong>Start Date:</strong> {{ task.start_date }}</p>
+            <p><strong>End Date:</strong> {{ task.end_date }}</p>
+            <p><strong>Duration:</strong> {{ task_hours }} hours</p>
+            <p><strong>Dependency (days):</strong> {{ task.dependency_days }}</p>
+            <p><strong>Status:</strong> {{ task.status }}</p>
+            <p><strong>Active:</strong> {% if task.is_active %}Yes{% else %}No{% endif %}</p>
+        </section>
+
+        <section>
+            <h3>Assigned Resources</h3>
             <table>
                 <thead>
                     <tr>
@@ -205,39 +261,31 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+        </section>
+
         {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-        <div class="info-block">
-            <h3><i class="fa-solid fa-pen-to-square"></i> Update Task</h3>
+        <section>
+            <h3>Update Task</h3>
             <form action="{{ url_for('update_task.update_task', task_id=task.id) }}" method="post">
-                <div>
-                    <label for="start_date"><i class="fa-solid fa-calendar-day"></i> Start Date:</label>
-                    <input type="date" name="start_date" id="start_date" value="{{ task.start_date }}" required>
-                </div>
-                <div>
-                    <label for="end_date"><i class="fa-solid fa-calendar-day"></i> End Date:</label>
-                    <input type="date" name="end_date" id="end_date" value="{{ task.end_date }}" required>
-                </div>
-                <div>
-                    <label for="status"><i class="fa-solid fa-signal"></i> Status:</label>
-                    <select name="status" id="status">
-                        <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
-                        <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
-                        <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
-                        <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="submit" value="Update Task" class="btn">
-                </div>
+                <input type="text" name="task_name" value="{{ task.task_name }}" placeholder="Task Name" required>
+                <input type="date" name="start_date" value="{{ task.start_date }}" required>
+                <input type="date" name="end_date" value="{{ task.end_date }}" required>
+                <select name="status">
+                    <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                    <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                    <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                </select>
+                <button type="submit" class="btn">Update Task</button>
+                <a href="{{url_for('update_task.update_task_resources',task_id=task.id)}}" class="btn">
+                    <i class="fa-solid fa-user-pen"></i> Update Resources
+                </a>
             </form>
-            <div>
-                <a href="{{url_for('update_task.update_task_resources',task_id=task.id)}}" class="update-link"><i class="fa-solid fa-user-pen"></i> Update Resources</a>
-            </div>
-        </div>
+        </section>
         {% endif %}
-        <div class="info-block">
-            <h3><i class="fa-solid fa-comments"></i> Comments</h3>
+
+        <section>
+            <h3>Comments</h3>
             <table>
                 <thead>
                     <tr>
@@ -259,24 +307,16 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-            </table> 
-            <h4><i class="fa-solid fa-plus"></i> Add Comment</h4>
+            </table>
             <form action="{{ url_for('update_task.add_comment', task_id=task.id) }}" method="post">
-                <div>
-                    <textarea name="comment_text" required placeholder="Write your comment..."></textarea>
-                </div>
-                <div>
-                    <input type="submit" value="Add Comment" class="btn">
-                </div>
-                <div>
-                    <a href="{{url_for('messages.messages')}}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Messages</a>
-                </div>
+                <textarea name="comment_text" placeholder="Write your comment..." required></textarea>
+                <button type="submit" class="btn">Add Comment</button>
             </form>
-        </div>
-        <div>
-            <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Project</a>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer>
+        © 2025 Project Management System
+    </footer>
 </body>
 </html>
-

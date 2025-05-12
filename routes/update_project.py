@@ -16,7 +16,7 @@ update_project_bp = Blueprint('update_project', __name__)
 def update_project(project_id):
     # Check if the user is logged in and has proper permission
     if 'loggedin' not in session or (session['user_type'] not in ['admin', 'pm']):
-        return redirect(url_for('login'))  # Redirect to login if not logged in or has insufficient permissions
+        return redirect(url_for('auth.login'))  # Redirect to login if not logged in or has insufficient permissions
 
     conn = get_db_connection()
     cursor = conn.cursor()

@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Project Management System</title>
-    <!-- Google Fonts for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
@@ -23,105 +21,138 @@
             --shadow: 0 8px 24px rgba(0,0,0,0.11);
             --glass: rgba(255,255,255,0.85);
         }
+
+        /* Enhanced animations and transitions */
+        @keyframes slideInFromTop {
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 5px rgba(79,140,255,0.5); }
+            50% { box-shadow: 0 0 20px rgba(79,140,255,0.3); }
+            100% { box-shadow: 0 0 5px rgba(79,140,255,0.5); }
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.90) 100%),
+                url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1280&q=80') center/cover no-repeat fixed;
+            background-blend-mode: overlay;
             min-height: 100vh;
             color: var(--dark);
         }
+
         .navbar {
-            background: linear-gradient(90deg,var(--primary), var(--secondary));
-            color: white;
-            padding: 18px 40px;
+            background: linear-gradient(90deg, #2d3748 0%, #4a5568 100%);
+            padding: 1rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
-            z-index: 2;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            animation: slideInFromTop 0.5s ease-out;
         }
+
         .navbar h1 {
             font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 1px;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .navbar h1 i {
-            color: var(--secondary);
-            font-size: 1.8rem;
+            animation: floatAnimation 3s ease-in-out infinite;
         }
+
         .user-info {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 1.5rem;
         }
+
         .user-badge {
-            background: rgba(255,255,255,0.13);
-            padding: 7px 18px;
-            border-radius: 40px;
-            font-size: 1rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 10px;
-            animation: badgePop 0.5s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            animation: glowPulse 3s infinite;
         }
-        @keyframes badgePop {
-            0% {transform: scale(0.9);}
-            80% {transform: scale(1.05);}
-            100% {transform: scale(1);}
-        }
+
         .logout-btn, .user-info a {
-            background: linear-gradient(90deg,var(--primary-dark), var(--secondary-dark));
+            background: rgba(255,255,255,0.1);
             color: white;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.07);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
         }
+
         .logout-btn:hover, .user-info a:hover {
             background: var(--danger);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(231,76,60,0.13);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231,76,60,0.2);
         }
+
         .container {
             max-width: 1200px;
-            margin: 40px auto 0 auto;
-            padding: 0 20px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+            animation: fadeIn 0.6s ease-out;
         }
+
         .card {
-            background: var(--glass);
-            border-radius: 18px;
-            box-shadow: var(--shadow);
-            margin-bottom: 32px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
             overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
+            transform: translateY(0);
+            transition: all 0.3s ease;
         }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
         .card-header {
-            padding: 24px 30px 18px 30px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(90deg, #f7fbff 60%, #e8faf4 100%);
+            background: linear-gradient(to right, #f8faff 0%, #f0f7ff 100%);
+            padding: 1.8rem 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
+
         .card-header h3 {
             color: var(--dark);
             margin: 0;
@@ -132,108 +163,185 @@
             align-items: center;
             gap: 8px;
         }
+
         .card-header h3 i {
             color: var(--primary);
         }
+
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 1rem;
+            margin-top: 1rem;
         }
+
         .btn, .btn-secondary {
-            display: inline-flex;
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
             align-items: center;
             gap: 8px;
-            padding: 11px 20px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: 0 2px 10px rgba(44,62,80,0.07);
+            transition: background 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.3px;
+            border: 1px solid transparent;
         }
+
+        /* Removed ::after to disable hover effect for these specific buttons */
+        .action-buttons .btn::after, 
+        .action-buttons .btn-secondary::after {
+            content: none;
+        }
+
+        /* General button ::after effect for other buttons */
+        .btn::after, .btn-secondary::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: -100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        /* General hover effect for other buttons */
+        .btn:hover::after, .btn-secondary:hover::after {
+            left: 100%;
+        }
+
         .btn {
-            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
-            color: #fff;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.2);
         }
+
+        /* Removed hover transformation for action buttons */
+        .action-buttons .btn:hover,
+        .action-buttons .btn-secondary:hover {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 2px 8px rgba(79,140,255,0.2);
+            transform: none;
+        }
+
+        /* General button hover effect for other buttons */
         .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px) scale(1.03);
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 2px 8px rgba(79,140,255,0.25);
         }
+
         .btn-secondary {
-            background: linear-gradient(90deg, var(--secondary), var(--secondary-dark));
-            color: #fff;
+            background: linear-gradient(45deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            box-shadow: 0 2px 8px rgba(68,227,188,0.2);
         }
+
+        /* General button hover effect for other buttons */
         .btn-secondary:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-2px) scale(1.03);
+            background: linear-gradient(45deg, var(--secondary-dark), var(--secondary));
+            box-shadow: 0 2px 8px rgba(68,227,188,0.25);
         }
+
         .card-body {
             padding: 25px 30px 30px 30px;
         }
+
         .project-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 6px;
-            background: transparent;
+            border-spacing: 0 0.8rem;
         }
+
         .project-table th, .project-table td {
             padding: 13px 17px;
             text-align: left;
             vertical-align: middle;
         }
+
+        /* Add new styles for enhanced table headers */
         .project-table th {
-            background: #f4f7fa;
-            font-weight: 700;
-            color: var(--dark);
+            background: linear-gradient(to bottom, #f8faff 0%, #f4f7fa 100%);
+            font-weight: 600;
+            color: var(--primary-dark);
             border-bottom: 2px solid #e3e8ee;
+            padding: 16px 17px;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
+
+        .project-table th i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .project-table tr {
+            transition: all 0.3s ease;
+        }
+
         .project-table tbody tr {
             background: rgba(255,255,255,0.96);
             transition: box-shadow 0.2s, transform 0.2s;
         }
-        .project-table tr:hover {
-            background: #f2faff;
-            box-shadow: 0 2px 14px rgba(80,160,255,0.08);
-            transform: translateY(-2px) scale(1.01);
+
+        .project-table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background: #f8faff;
+            cursor: pointer;
         }
+
         .project-table .empty-row {
             text-align: center;
             color: var(--gray);
             padding: 38px 0;
         }
+
         .status-badge {
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.98em;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
             font-weight: 600;
-            display: inline-block;
-            min-width: 90px;
-            letter-spacing: 0.03em;
-            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
-            transition: background 0.3s, color 0.3s;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
         }
+
+        .status-badge i {
+            font-size: 0.75rem;
+        }
+
         .status-active {
             background: rgba(46,204,113,0.16);
             color: #1abc9c;
         }
+
         .status-pending {
             background: rgba(243,156,18,0.18);
             color: #e67e22;
         }
+
         .status-completed {
             background: rgba(52,152,219,0.18);
             color: #2462d5;
         }
+
         .status-cancelled {
             background: rgba(231,76,60,0.13);
             color: var(--danger);
         }
+
         .status-onhold {
             background: rgba(149,165,166,0.13);
             color: var(--gray);
         }
+
         .action-link {
             color: var(--primary);
             text-decoration: none;
@@ -245,14 +353,17 @@
             background: none;
             transition: color 0.2s;
         }
+
         .action-link i {
             font-size: 1rem;
         }
+
         .action-link:hover {
             color: var(--primary-dark);
             text-decoration: underline;
             cursor: pointer;
         }
+
         .user-type-admin {
             background: #e74c3c;
             color: #fff;
@@ -261,6 +372,7 @@
             font-size: 0.95em;
             margin-left: 7px;
         }
+
         .user-type-pm {
             background: #4f8cff;
             color: #fff;
@@ -269,6 +381,7 @@
             font-size: 0.95em;
             margin-left: 7px;
         }
+
         .user-type-team_member {
             background: #09c372;
             color: #fff;
@@ -277,6 +390,7 @@
             font-size: 0.95em;
             margin-left: 7px;
         }
+
         /* Responsive Styles */
         @media (max-width: 900px) {
             .container {
@@ -359,11 +473,417 @@
             display: table-row;
             animation: fadeIn 0.3s;
         }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1f2c 0%, #2d3748 100%);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .card {
+            background: rgba(45,55,72,0.9);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .card-header {
+            background: linear-gradient(to right, rgba(26,31,44,0.95) 0%, rgba(45,55,72,0.95) 100%);
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .card-header h3 {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .card-header h3 i {
+            color: var(--secondary);
+        }
+
+        body.dark-mode .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            box-shadow: 0 2px 8px rgba(79,140,255,0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary));
+            box-shadow: 0 2px 8px rgba(79,140,255,0.2);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        body.dark-mode .btn-secondary {
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            box-shadow: 0 2px 8px rgba(68,227,188,0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: linear-gradient(45deg, var(--secondary-dark), var(--primary));
+            box-shadow: 0 2px 8px rgba(68,227,188,0.2);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* Dark mode enhancement for table headers */
+        body.dark-mode .project-table th {
+            background: linear-gradient(to bottom, rgba(35,40,54,0.95) 0%, rgba(26,31,44,0.95) 100%);
+            color: #e2e8f0;
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .project-table th {
+            background: rgba(26,31,44,0.95);
+            border-bottom-color: rgba(255,255,255,0.1);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .project-table tbody tr {
+            background: rgba(45,55,72,0.8);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .project-table tbody tr:hover {
+            background: rgba(52,64,84,0.95);
+        }
+
+        body.dark-mode .action-link {
+            color: var(--secondary);
+        }
+
+        body.dark-mode .action-link:hover {
+            color: var(--secondary-dark);
+        }
+
+        body.dark-mode .status-badge {
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .search-input {
+            background: rgba(45,55,72,0.8);
+            color: #e2e8f0;
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .search-input::placeholder {
+            color: rgba(226,232,240,0.6);
+        }
+
+        body.dark-mode .view-toggle-btn {
+            background: rgba(45,55,72,0.8);
+            color: #e2e8f0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .view-toggle-btn.active {
+            background: var(--primary);
+            border-color: transparent;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Floating action button */
+        .floating-action {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .floating-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .floating-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Quick Actions Menu */
+        .quick-actions {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .quick-action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .quick-action-btn.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .quick-action-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .quick-action-tooltip {
+            position: absolute;
+            right: 60px;
+            background: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .quick-action-btn:hover .quick-action-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Project Card Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .project-card {
+            background: var(--glass);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .view-toggle-btn {
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: none;
+            background: var(--glass);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Search Filter Animation */
+        .search-filter {
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 45px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: var(--glass);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79,140,255,0.1);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--primary);
+        }
+
+        /* Progress Indicator */
+        .progress-ring {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            background: conic-gradient(var(--primary) var(--progress), #e2e8f0 var(--progress));
+            color: var(--dark);
+            position: relative;
+        }
+
+        .progress-ring::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--primary);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Dark mode enhancements */
+        body.dark-mode .project-card {
+            background: rgba(45,55,72,0.9);
+        }
+
+        body.dark-mode .search-input {
+            background: rgba(45,55,72,0.8);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .view-toggle-btn {
+            background: rgba(45,55,72,0.8);
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .progress-ring::before {
+            background: #2d3748;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <header class="navbar">
-        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
+        <h1><i class="fa-solid fa-diagram-project"></i> PMS</h1>
         <div class="user-info">
             <span class="user-badge">
                 <span>Welcome, <strong>{{ username }}</strong></span>
@@ -373,34 +893,51 @@
         </div>
     </header>
     <div class="container">
+        <!-- Add search and view toggle -->
+        <div class="search-filter">
+            <input type="text" class="search-input" id="projectSearch" placeholder="Search projects...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="view-toggle-btn active" data-view="table">
+                <i class="fas fa-table"></i> Table View
+            </button>
+            <button class="view-toggle-btn" data-view="grid">
+                <i class="fas fa-th"></i> Grid View
+            </button>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3><i class="fa-solid fa-folder-open"></i> Projects</h3>
-                {% if user_type == 'admin' or user_type == 'pm' %}
+            
                 <div class="action-buttons">
+                    {% if user_type == 'admin'  %}
                     <a href="{{ url_for('define_project.define_project') }}" class="btn tooltip">
                         <i class="fa-solid fa-plus"></i> Define New Project
-                        
                     </a>
-                    <a href="{{ url_for('search_project.search_project') }}" class="btn btn-secondary tooltip">
+                    {% endif %}
+                    {% if user_type == 'admin' or user_type == 'pm' %}
+                    <a href="{{ url_for('search_project.search_project') }}" class="btn-secondary tooltip">
                         <i class="fa-solid fa-magnifying-glass"></i> Search Projects
-                       
                     </a>
+                    {% endif %}
                 </div>
-                {% endif %}
+            
             </div>
             <div class="card-body">
                 <div style="overflow-x: auto;">
                     <table class="project-table">
                         <thead>
                             <tr>
-                                <th>Project ID</th>
-                                <th>Name</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th><i class="fas fa-hashtag"></i>Project ID</th>
+                                <th><i class="fas fa-project-diagram"></i>Project Name</th>
+                                <th><i class="fas fa-calendar-plus"></i>Start Date</th>
+                                <th><i class="fas fa-calendar-check"></i>End Date</th>
+                                <th><i class="fas fa-tag"></i>Type</th>
+                                <th><i class="fas fa-chart-pie"></i>Status</th>
+                                <th><i class="fas fa-cog"></i>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -413,6 +950,7 @@
                                 <td>{{ project.project_type }}</td>
                                 <td>
                                     <span class="status-badge status-{{ project.status.lower() }}">
+                                        <i class="fas fa-circle-notch"></i>
                                         {{ project.status }}
                                     </span>
                                 </td>
@@ -425,13 +963,25 @@
                             </tr>
                             <tr class="project-extra">
                                 <td colspan="7">
-                                    <strong>Description:</strong> {{ project.description or "No description available." }}<br>
-                        
+                                    <div class="project-details">
+                                        <p><strong>Description:</strong> {{ project.description or "No description available." }}</p>
+                                     
+                                    </div>
                                 </td>
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="7" class="empty-row">No projects found</td>
+                                <td colspan="7" class="empty-row">
+                                    <div class="empty-state">
+                                        <i class="fas fa-folder-open"></i>
+                                        <p>No projects found</p>
+                                        {% if user_type == 'admin' or user_type == 'pm' %}
+                                        <a href="{{ url_for('define_project.define_project') }}" class="btn">
+                                            <i class="fas fa-plus"></i> Create Your First Project
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -439,52 +989,220 @@
                 </div>
             </div>
         </div>
+
+        
+    <!-- Quick Actions Menu -->
+     {% if user_type == 'admin'  %}
+    <div class="quick-actions">
+        <button class="quick-action-btn" id="newProjectBtn" style="--delay: 0.1s">
+            <i class="fas fa-plus"></i>
+            <span class="quick-action-tooltip">New Project</span>
+        </button>
+        {% endif %}
+       
+       
     </div>
-    <!-- Modal for quick add/search -->
-    <div id="quick-action-modal" style="display:none;">
-      <!-- Placeholder for future interactive modal -->
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
     </div>
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Scroll to Top -->
+    <div class="floating-action">
+        <button class="floating-btn" id="scroll-top" aria-label="Scroll to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
     <script>
-        // Interactive: Table row expand/collapse for extra info
-        document.addEventListener('DOMContentLoaded', function() {
-            // Table row expansion for extra info
-            document.querySelectorAll('.expand-row').forEach((row, idx) => {
-                row.addEventListener('click', function() {
-                    // Toggle expanded
-                    row.classList.toggle('expanded');
-                    const next = row.nextElementSibling;
-                    if(next && next.classList.contains('project-extra')) {
-                        if(row.classList.contains('expanded')) {
-                            next.style.display = 'table-row';
-                        } else {
-                            next.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all interactive features
+        initTableInteractions();
+        initSearchFilter();
+        initViewToggle();
+        initDarkMode();
+        initQuickActions();
+        initScrollToTop();
+
+        // Table row interactions
+        function initTableInteractions() {
+            const projectRows = document.querySelectorAll('.expand-row');
+            projectRows.forEach(row => {
+                row.addEventListener('click', function(e) {
+                    if (e.target.closest('.action-link')) return;
+                    
+                    const wasExpanded = this.classList.contains('expanded');
+                    projectRows.forEach(r => {
+                        r.classList.remove('expanded');
+                        if (r.nextElementSibling?.classList.contains('project-extra')) {
+                            r.nextElementSibling.style.display = 'none';
+                        }
+                    });
+
+                    if (!wasExpanded) {
+                        this.classList.add('expanded');
+                        const extraRow = this.nextElementSibling;
+                        if (extraRow?.classList.contains('project-extra')) {
+                            extraRow.style.display = 'table-row';
+                            extraRow.style.animation = 'fadeIn 0.3s ease-out';
                         }
                     }
                 });
             });
-            // Status dynamic coloring
-            document.querySelectorAll('.status-badge').forEach(badge => {
-                const status = badge.textContent.trim().toLowerCase();
-                badge.classList.remove('status-active','status-pending','status-completed','status-cancelled','status-onhold');
-                if (status.includes('active') || status.includes('progress')) {
-                    badge.classList.add('status-active');
-                } else if (status.includes('pending') || status.includes('planned')) {
-                    badge.classList.add('status-pending');
-                } else if (status.includes('complete') || status.includes('done') || status.includes('finished')) {
-                    badge.classList.add('status-completed');
-                } else if (status.includes('cancelled') || status.includes('canceled')) {
-                    badge.classList.add('status-cancelled');
-                } else if (status.includes('hold') || status.includes('on hold')) {
-                    badge.classList.add('status-onhold');
+        }
+
+        // Search functionality
+        function initSearchFilter() {
+            const searchInput = document.getElementById('projectSearch');
+            const projectRows = document.querySelectorAll('.project-table tbody tr:not(.project-extra)');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                projectRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const shouldShow = text.includes(searchTerm);
+                    row.style.display = shouldShow ? '' : 'none';
+                    
+                    const extraRow = row.nextElementSibling;
+                    if (extraRow?.classList.contains('project-extra')) {
+                        extraRow.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // View toggle
+        function initViewToggle() {
+            const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
+            const tableView = document.querySelector('.project-table').parentElement;
+            const gridView = document.createElement('div');
+            gridView.className = 'project-grid';
+            gridView.style.display = 'none';
+            tableView.parentElement.appendChild(gridView);
+
+            // Create grid cards
+            document.querySelectorAll('.project-table tbody tr:not(.project-extra)').forEach(row => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                const name = row.querySelector('td:nth-child(2)').textContent;
+                const status = row.querySelector('.status-badge').cloneNode(true);
+                const progress = Math.floor(Math.random() * 100);
+                
+                card.innerHTML = `
+                    <h4>${name}</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        ${status.outerHTML}
+                        <div class="progress-ring" style="--progress: ${progress}%">
+                            ${progress}%
+                        </div>
+                    </div>
+                `;
+                
+                gridView.appendChild(card);
+            });
+
+            viewToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const view = this.dataset.view;
+                    viewToggleBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (view === 'grid') {
+                        tableView.style.display = 'none';
+                        gridView.style.display = 'grid';
+                    } else {
+                        tableView.style.display = 'block';
+                        gridView.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Dark mode
+        function initDarkMode() {
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+            if (localStorage.getItem('darkMode') === 'enabled' || 
+                (localStorage.getItem('darkMode') === null && prefersDark.matches)) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            darkModeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+                darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        }
+
+        // Quick actions
+        function initQuickActions() {
+            document.querySelectorAll('.quick-action-btn').forEach((btn, index) => {
+                setTimeout(() => btn.classList.add('show'), index * 100);
+            });
+
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                this.querySelector('i').classList.add('fa-spin');
+                document.getElementById('loadingOverlay').classList.add('show');
+                
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').classList.remove('show');
+                    this.querySelector('i').classList.remove('fa-spin');
+                    location.reload();
+                }, 1000);
+            });
+
+            // New Project button
+            document.getElementById('newProjectBtn').addEventListener('click', function() {
+                window.location.href = "{{ url_for('define_project.define_project') }}";
+            });
+
+            // Filter button
+            document.getElementById('filterBtn').addEventListener('click', function() {
+                // Implement filter functionality
+                alert('Filter functionality coming soon!');
+            });
+        }
+
+        // Scroll to top
+        function initScrollToTop() {
+            const scrollTopBtn = document.getElementById('scroll-top');
+            const navbar = document.querySelector('.navbar');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+
+                if (window.scrollY > 100) {
+                    navbar.style.background = 'linear-gradient(90deg, rgba(79,140,255,0.95), rgba(68,227,188,0.95))';
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.background = 'linear-gradient(90deg, var(--primary), var(--secondary))';
+                    navbar.style.backdropFilter = 'none';
                 }
             });
-            // Set user type styling
-            const userTypeElement = document.querySelector('.user-type');
-            if (userTypeElement) {
-                const userType = userTypeElement.textContent.replace(/[()]/g, '').trim().toLowerCase();
-                userTypeElement.classList.add('user-type-' + userType);
-            }
-        });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
     </script>
 </body>
 </html>

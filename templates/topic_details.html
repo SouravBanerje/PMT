@@ -1,176 +1,410 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ topic.title }}</title>
-    <!-- Google Fonts & FontAwesome for a modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --surface: #ffffff;
+            --surface-hover: #fafafa;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+            
+            --radius-sm: 0.5rem;
+            --radius: 1rem;
+            --radius-lg: 1.5rem;
+            --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #23272f;
+            background: var(--gray-50);
             margin: 0;
             min-height: 100vh;
+            color: var(--gray-900);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
         }
-        .container {
-            max-width: 720px;
-            margin: 38px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 30px 30px 22px 30px;
+
+        .topic-container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
         }
+
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--gray-200);
+            padding: 24px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: var(--gray-500);
+            margin-bottom: 16px;
+            font-size: 0.875rem;
+        }
+
+        .breadcrumbs a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .breadcrumbs a:hover {
+            background: var(--gray-100);
+            color: var(--primary-dark);
+        }
+
         h1 {
-            font-size: 1.6rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: #2462d5;
-            margin-bottom: 10px;
+            margin: 0;
+            background: linear-gradient(120deg, var(--primary-dark), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-        .breadcrumbs {
-            font-size: 0.98em;
-            margin-bottom: 20px;
-            color: #57606f;
+
+        .section-title {
+            font-size: 1.25rem;
+            color: var(--gray-900);
+            font-weight: 600;
+            margin: 32px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .breadcrumbs a {
-            color: #2462d5;
-            text-decoration: none;
-            transition: color 0.17s;
+
+        .post-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
         }
-        .breadcrumbs a:hover {
-            text-decoration: underline;
-            color: #4f8cff;
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
-        .original-post, .reply {
-            background: #f7fbff;
-            padding: 17px 18px 13px 18px;
-            border-radius: 8px;
-            margin-bottom: 18px;
-            border-left: 4px solid #2462d5;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.03);
+
+        .post-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .original-post {
-            background: #eaf2fb;
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
         }
+
         .post-meta {
-            color: #6c7a89;
-            font-size: 0.97em;
-            margin-bottom: 7px;
+            flex: 1;
         }
-        .reply {
-            border-left: 4px solid #4f8cff;
-            background: #f7fbff;
+
+        .post-author {
+            font-weight: 600;
+            color: var(--gray-900);
         }
-        .reply:not(:last-child) {
-            margin-bottom: 13px;
+
+        .post-time {
+            font-size: 0.875rem;
+            color: var(--gray-500);
         }
-        h2 {
-            font-size: 1.17rem;
-            font-weight: 700;
-            color: #2462d5;
-            margin: 22px 0 13px 0;
-            letter-spacing: 0.03em;
+
+        .post-content {
+            padding: 24px;
+            color: var(--gray-700);
+            font-size: 1rem;
+            line-height: 1.7;
         }
+
+        .reply-form {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 32px;
+            border: 1px solid var(--gray-200);
+        }
+
         textarea {
             width: 100%;
-            resize: vertical;
-            min-height: 70px;
-            border-radius: 6px;
-            border: 1.5px solid #b2bec3;
-            padding: 9px;
-            font-size: 1rem;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
             font-family: inherit;
-            background: #f9fbfd;
-            margin-bottom: 8px;
-        }
-        textarea:focus {
-            border-color: #2462d5;
-            background: #fff;
-            outline: none;
-        }
-        button[type="submit"] {
-            background: linear-gradient(90deg,#4f8cff,#2462d5);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            padding: 9px 22px;
             font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.18s, transform 0.12s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
+            color: var(--gray-900);
+            background: var(--surface);
+            transition: var(--transition);
+            box-sizing: border-box;
+            resize: vertical;
         }
-        button[type="submit"]:hover {
-            background: #2462d5;
-            transform: translateY(-2px) scale(1.03);
+
+        textarea:hover {
+            border-color: var(--primary-light);
         }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+        }
+
         .tip {
-            color: #57606f;
-            font-size: 0.95em;
-            margin-bottom: 9px;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        @media (max-width: 850px) {
-            .container { max-width: 98vw; padding: 10px 2vw 16px 2vw; }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        @media (max-width: 600px) {
-            .container { padding: 8px 2vw 8px 2vw;}
-            h1 { font-size: 1.14rem; }
-            h2 { font-size: 1rem; }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+        }
+
+        .topic-info {
+            padding: 24px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .topic-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 1024px) {
+            .topic-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .post-header {
+                padding: 12px 16px;
+            }
+
+            .post-content {
+                padding: 16px;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .submit-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1><i class="fa-solid fa-comment-dots"></i> {{ topic.title }}</h1>
-        <div class="breadcrumbs">
-            <a href="/project/{{ topic.project_id }}/forums"><i class="fa-solid fa-comments"></i> Forums</a> &gt; 
-            <a href="/forum/{{ topic.forum_id }}"><i class="fa-solid fa-folder"></i> {{ topic.forum_name }}</a>
-        </div>
-
-        <div>
-            <h2><i class="fa-solid fa-thumbtack"></i> Original Post</h2>
-            <div class="original-post">
-                <div class="post-meta">
-                    <i class="fa-solid fa-user"></i> Posted by <strong>{{ topic.username }}</strong> on <span>{{ topic.created_at }}</span>
+    <div class="topic-container">
+        <aside class="sidebar">
+            <div class="topic-info">
+                <h3>Topic Information</h3>
+                <div class="topic-stats">
+                    <div class="stat-item">
+                        <i class="fa-solid fa-reply"></i>
+                        {{ replies|length }} Replies
+                    </div>
+                    <div class="stat-item">
+                        <i class="fa-solid fa-clock"></i>
+                        Active {{ topic.created_at }}
+                    </div>
                 </div>
-                <div>{{ topic.content|safe }}</div>
             </div>
-        </div>
+        </aside>
 
-        <div>
-            <h2><i class="fa-solid fa-reply"></i> Replies</h2>
+        <main class="main-content">
+            <div class="header">
+                <div class="breadcrumbs">
+                    <a href="/project/{{ topic.project_id }}/forums">
+                        <i class="fa-solid fa-comments"></i>Forums
+                    </a>
+                    <i class="fa-solid fa-chevron-right"></i>
+                    <a href="/forum/{{ topic.forum_id }}">
+                        <i class="fa-solid fa-folder"></i>{{ topic.forum_name }}
+                    </a>
+                </div>
+                <h1>
+                    <i class="fa-solid fa-comment-dots"></i>
+                    {{ topic.title }}
+                </h1>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="user-avatar">
+                        {{ topic.username[:2].upper() }}
+                    </div>
+                    <div class="post-meta">
+                        <div class="post-author">{{ topic.username }}</div>
+                        <div class="post-time">Posted {{ topic.created_at }}</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    {{ topic.content|safe }}
+                </div>
+            </div>
+
             {% if replies %}
+                <h2 class="section-title">
+                    <i class="fa-solid fa-reply"></i>
+                    Replies
+                </h2>
                 {% for reply in replies %}
-                    <div class="reply">
-                        <div class="post-meta">
-                            <i class="fa-solid fa-user"></i> Reply by <strong>{{ reply.username }}</strong> on <span>{{ reply.created_at }}</span>
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="user-avatar">
+                                {{ reply.username[:2].upper() }}
+                            </div>
+                            <div class="post-meta">
+                                <div class="post-author">{{ reply.username }}</div>
+                                <div class="post-time">Replied {{ reply.created_at }}</div>
+                            </div>
                         </div>
-                        <div>{{ reply.content|safe }}</div>
+                        <div class="post-content">
+                            {{ reply.content|safe }}
+                        </div>
                     </div>
                 {% endfor %}
-            {% else %}
-                <p class="tip">No replies yet.</p>
             {% endif %}
-        </div>
 
-        <div>
-            <h2><i class="fa-solid fa-pen"></i> Add Reply</h2>
-            <form method="post" action="/topic/{{ topic.id }}/reply">
-                <div>
-                    <textarea name="content" rows="5" cols="50" required placeholder="Write your reply..."></textarea>
-                </div>
-                <div>
-                    <p class="tip"><small><i class="fa-solid fa-at"></i> Tip: Use @username to mention someone</small></p>
-                    <button type="submit"><i class="fa-solid fa-paper-plane"></i> Post Reply</button>
-                </div>
-            </form>
-        </div>
+            <div class="reply-form">
+                <h2 class="section-title">
+                    <i class="fa-solid fa-pen"></i>
+                    Add Reply
+                </h2>
+                <form method="post" action="/topic/{{ topic.id }}/reply">
+                    <textarea 
+                        name="content" 
+                        required 
+                        placeholder="Write your reply here..."
+                    ></textarea>
+                    <div class="form-footer">
+                        <div class="tip">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Pro tip: Use @username to mention someone
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Post Reply
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 </body>
 </html>

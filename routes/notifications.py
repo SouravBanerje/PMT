@@ -82,15 +82,20 @@ def create_mention(user_id, mentioned_by, content_type, content_id):
 
 
 
-@notifications_bp.route('/notifications')
-def notifications():
+@notifications_bp.route('/project/<int:project_id>/notifications')
+def notifications(project_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
     
+
+    # Fetch project details
+    cursor.execute('SELECT * FROM projects WHERE id = %s', (project_id,))
+    project = cursor.fetchone()
+
     # Fetch unread notifications
     cursor.execute('''
         SELECT * FROM notifications
@@ -111,13 +116,13 @@ def notifications():
     cursor.close()
     conn.close()
     
-    return render_template('notifications.html', unread_notifications=unread_notifications, read_notifications=read_notifications)
+    return render_template('notifications.html', project=project, unread_notifications=unread_notifications, read_notifications=read_notifications)
 
-@notifications_bp.route('/notifications/mark_read/<int:notification_id>')
-def mark_notification_read(notification_id):
+@notifications_bp.route('/project/<int:project_id>/notifications/mark_read/<int:notification_id>')
+def mark_notification_read(project_id, notification_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -143,13 +148,13 @@ def mark_notification_read(notification_id):
     if notification['link']:
         return redirect(notification['link'])
     else:
-        return redirect(url_for('notifications'))
+        return redirect(url_for('notifications.notifications', project_id=project_id))
 
-@notifications_bp.route('/notifications/mark_all_read')
-def mark_all_notifications_read():
+@notifications_bp.route('/project/<int:project_id>/notifications/mark_all_read')
+def mark_all_notifications_read(project_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -162,16 +167,19 @@ def mark_all_notifications_read():
     conn.close()
     
     flash('All notifications marked as read!')
-    return redirect(url_for('notifications'))
+    return redirect(url_for('notifications.notifications', project_id=project_id))
 
-@notifications_bp.route('/mentions')
-def mentions():
+@notifications_bp.route('/project/<int:project_id>/notifications/mentions')
+def mentions(project_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM projects WHERE id = %s', (project_id,))
+    project = cursor.fetchone()
     
     # Fetch mentions
     cursor.execute('''
@@ -192,57 +200,58 @@ def mentions():
     cursor.close()
     conn.close()
     
-    return render_template('mentions.html', mentions=mentions)
+    return render_template('mentions.html', mentions=mentions,project=project)
 
-@notifications_bp.route('/mentions/mark_read/<int:mention_id>')
-def mark_mention_read(mention_id):
-    # Check if user is logged in
+@notifications_bp.route('/project/<int:project_id>/notifications/mentions/mark_read/<int:mention_id>')
+def mark_mention_read(project_id, mention_id):
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
-    
+        return redirect(url_for('auth.login'))
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+
+
+    # Fetch project details
+    cursor.execute('SELECT * FROM projects WHERE id = %s', (project_id,))
+    project = cursor.fetchone()
     # Fetch mention
     cursor.execute('SELECT * FROM mentions WHERE id = %s', (mention_id,))
     mention = cursor.fetchone()
-    
+
     if not mention or mention['user_id'] != session['id']:
         cursor.close()
         conn.close()
         flash('Mention not found!')
         return redirect(url_for('mentions'))
-    
+
     # Mark as read
     cursor.execute('UPDATE mentions SET is_read = 1 WHERE id = %s', (mention_id,))
     conn.commit()
-    
-    cursor.close()
-    conn.close()
-    
-    # Determine redirect based on content type
+
+    # Prepare redirect
+    redirect_url = url_for('notifications.mentions',project_id=project_id )
+
     if mention['content_type'] == 'comment':
-        cursor = conn.cursor()
         cursor.execute('SELECT task_id FROM comments WHERE id = %s', (mention['content_id'],))
         comment = cursor.fetchone()
-        cursor.close()
         if comment:
-            return redirect(url_for('task_details', task_id=comment['task_id']))
+            redirect_url = url_for(' task_details', task_id=comment['task_id'])
+
     elif mention['content_type'] == 'message':
-        cursor = conn.cursor()
         cursor.execute('SELECT sender_id FROM messages WHERE id = %s', (mention['content_id'],))
         message = cursor.fetchone()
-        cursor.close()
         if message:
-            return redirect(url_for('conversation', user_id=message['sender_id']))
+            redirect_url = url_for('messages.conversation', user_id=message['sender_id'], project_id=project_id)
+
     elif mention['content_type'] == 'forum_topic':
-        return redirect(url_for('topic_details', topic_id=mention['content_id']))
+        redirect_url = url_for('forums.topic_details', topic_id=mention['content_id'])
+
     elif mention['content_type'] == 'forum_reply':
-        cursor = conn.cursor()
         cursor.execute('SELECT topic_id FROM forum_replies WHERE id = %s', (mention['content_id'],))
         reply = cursor.fetchone()
-        cursor.close()
         if reply:
-            return redirect(url_for('topic_details', topic_id=reply['topic_id']))
-    
-    return redirect(url_for('mentions'))
+            redirect_url = url_for('forums.topic_details', topic_id=reply['topic_id'])
+
+    cursor.close()
+    conn.close()
+    return redirect(redirect_url)

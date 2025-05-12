@@ -14,7 +14,7 @@ activity_stream_bp = Blueprint('activity_stream', __name__)
 def activity_stream():
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()

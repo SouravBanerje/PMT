@@ -65,7 +65,7 @@ def create_mention(user_id, mentioned_by, content_type, content_id):
 def forums(project_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -149,7 +149,7 @@ def create_forum(project_id):
 def forum_topics(forum_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -190,7 +190,7 @@ def forum_topics(forum_id):
 def create_topic(forum_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -261,7 +261,7 @@ def create_topic(forum_id):
 def topic_details(topic_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -302,7 +302,7 @@ def topic_details(topic_id):
 def reply_to_topic(topic_id):
     # Check if user is logged in
     if 'loggedin' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     
     content = request.form['content']
     

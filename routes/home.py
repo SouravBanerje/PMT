@@ -44,4 +44,4 @@ def home():
                                user_type=session['user_type'], projects=projects)
     
     # User is not logged in, redirect to login page
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))

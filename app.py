@@ -13,21 +13,17 @@ from flask import jsonify
 from pymysql.cursors import DictCursor
 import json
 from routes import init_app
-from utils.db import get_db_connection
+from utils.db import get_db_connection, close_db
 
 app = Flask(__name__)
 
 # Secret key for session management
 app.secret_key = 'your_secret_key'
 
-
-
-
 init_app(app)
 
-
-
-
+# Register database close function
+app.teardown_appcontext(close_db)
 
 # Task details route
 @app.route('/task/<int:task_id>')
@@ -76,12 +72,7 @@ def task_details(task_id):
                                resources=resources, comments=comments, task_hours=task_hours)
     
     # User is not logged in, redirect to login page
-    return redirect(url_for('login'))
-
-
-
-
-
+    return redirect(url_for('auth.login'))
 
 # Assign Resource Route
 @app.route('/assign_resource', methods=['POST'])
@@ -115,7 +106,7 @@ def assign_resource():
         conn.close()
         
         # Redirect back to optimization page
-        return redirect(url_for('resource_optimization', project_id=project_id))
+        return redirect(url_for('resource_optimization.resource_optimization', project_id=project_id))
     
     # User is not authorized, redirect to home page
     return redirect(url_for('home'))
@@ -143,23 +134,6 @@ def remove_resource():
     # User is not authorized, redirect to home page
     return redirect(url_for('home'))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Add notifications count API
 @app.route('/api/notifications/count')
 def notifications_count():
@@ -186,9 +160,6 @@ def notifications_count():
         'mention_count': mention_count,
         'total_count': notification_count + mention_count
     })
-
-
-
 
 # Project version report route
 

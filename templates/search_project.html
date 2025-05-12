@@ -1,303 +1,335 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Projects - Project Management System</title>
-    <!-- Google Fonts for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-            --primary: #4f8cff;
-            --primary-dark: #2462d5;
-            --secondary: #44e3bc;
-            --secondary-dark: #1fa886;
-            --light: #f8f9fa;
-            --dark: #23272f;
-            --danger: #e74c3c;
-            --gray: #b2bec3;
-            --shadow: 0 6px 18px rgba(44,62,80,0.09);
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --secondary: #0ea5e9;
+            --accent: #8b5cf6;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
         }
         * {
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
         }
         body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            background: var(--gray-100);
+            color: var(--gray-700);
+            line-height: 1.5;
             min-height: 100vh;
-            color: var(--dark);
-            margin: 0;
+            display: flex;
+            flex-direction: column;
         }
-        .container {
-            max-width: 800px;
-            margin: 46px auto 0 auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            padding: 33px 30px 32px 30px;
-        }
-        header {
+        .top-bar {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.75rem 1.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding-bottom: 20px;
-            border-bottom: 1.5px solid #e3e8ee;
-            margin-bottom: 16px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--primary-dark);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        h2 {
+        .top-bar h1 {
             font-size: 1.25rem;
-            margin: 26px 0 18px 0;
-            font-weight: 700;
-            color: var(--primary-dark);
-            letter-spacing: 0.5px;
-        }
-        form {
-            margin-bottom: 28px;
-            background: #f7fbff;
-            border-radius: 11px;
-            padding: 18px 18px 16px 18px;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 14px;
-        }
-        label {
             font-weight: 600;
-            margin-right: 10px;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .main-content {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .search-section {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .search-header {
+            padding: 0.75rem 1rem;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .search-form {
+            padding: 1rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            background: white;
+        }
+        .search-input {
+            flex: 1;
+            position: relative;
         }
         input[type="text"] {
-            padding: 10px 14px;
-            border-radius: 6px;
-            border: 1.5px solid #b2bec3;
-            font-size: 1rem;
-            min-width: 220px;
+            width: 100%;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--gray-300);
+            font-size: 0.9375rem;
             outline: none;
-            background: #f9fbfd;
-            transition: border-color 0.2s;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            pointer-events: none;
         }
         input[type="text"]:focus {
             border-color: var(--primary);
-            background: #fff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
-        input[type="submit"], .btn {
-            background: linear-gradient(90deg,var(--primary), var(--primary-dark));
-            color: #fff;
-            font-weight: 600;
-            padding: 11px 23px;
+        .btn-search {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+            padding: 0.625rem 1.25rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.9375rem;
             cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.08);
-            margin-left: 10px;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.375rem;
+            white-space: nowrap;
         }
-        input[type="submit"]:hover, .btn:hover {
+        .btn-search:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px) scale(1.03);
+        }
+        .results-table {
+            width: 100%;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 6px;
-            margin-top: 18px;
-            background: transparent;
-        }
-        th, td {
-            padding: 13px 16px;
-            text-align: left;
-            vertical-align: middle;
+            border-collapse: collapse;
         }
         th {
-            background: #f4f7fa;
-            font-weight: 700;
-            color: var(--dark);
-            border-bottom: 2px solid #e3e8ee;
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+            white-space: nowrap;
         }
-        tbody tr {
-            background: rgba(255,255,255,0.97);
-            transition: box-shadow 0.2s, transform 0.2s;
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 0.9375rem;
+        }
+        tr:last-child td {
+            border-bottom: none;
         }
         tbody tr:hover {
-            background: #f2faff;
-            box-shadow: 0 2px 14px rgba(80,160,255,0.09);
-            transform: translateY(-2px) scale(1.01);
+            background: var(--gray-50);
         }
         .status-badge {
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.98em;
-            font-weight: 600;
-            display: inline-block;
-            min-width: 90px;
-            letter-spacing: 0.03em;
-            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
         .status-active {
-            background: rgba(46,204,113,0.16);
-            color: #1abc9c;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
         }
         .status-pending {
-            background: rgba(243,156,18,0.18);
-            color: #e67e22;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
         }
         .status-completed {
-            background: rgba(52,152,219,0.18);
-            color: #2462d5;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
         }
         .status-cancelled {
-            background: rgba(231,76,60,0.13);
+            background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
         }
         .status-onhold {
-            background: rgba(149,165,166,0.13);
-            color: var(--gray);
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--gray-500);
         }
         .action-link {
             color: var(--primary);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 0.875rem;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            border: none;
-            background: none;
-            transition: color 0.2s;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
         }
         .action-link:hover {
+            background: var(--primary-light);
             color: var(--primary-dark);
-            text-decoration: underline;
-            cursor: pointer;
         }
         .msg {
-            background: #fef6f6;
+            background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
-            padding: 13px 17px;
-            border-radius: 6px;
-            font-size: 1.02rem;
-            margin-bottom: 20px;
-            margin-top: 20px;
-            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.9375rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .back-link {
+            position: absolute;
+            top: 0.875rem;
+            right: 1.5rem;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            margin-top: 22px;
-            color: var(--primary-dark);
+            gap: 0.375rem;
+            color: var(--gray-600);
             text-decoration: none;
-            font-weight: 600;
-            background: #f2f7fd;
-            padding: 9px 18px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
         }
         .back-link:hover {
-            background: #e6f1fa;
-            color: var(--primary);
+            background: var(--gray-100);
+            color: var(--gray-700);
         }
-        /* Responsive Styles */
-        @media (max-width: 900px) {
-            .container {
-                max-width: 98%;
-                padding: 18px 4vw 18px 4vw;
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
             }
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px 3vw 18px 3vw;
-            }
-            table, .container {
-                font-size: 0.97em;
+            .btn-search {
+                width: 100%;
+                justify-content: center;
             }
             th, td {
-                padding: 8px 7px;
+                padding: 0.625rem 0.75rem;
             }
-            input[type="text"] {
-                min-width: 120px;
+            .top-bar {
+                padding: 0.625rem 1rem;
             }
-            .back-link {
-                font-size: 0.99em;
+            .main-content {
+                padding: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
-        </header>
-        <h2><i class="fa-solid fa-magnifying-glass"></i> Search Projects</h2>
-        <form action="{{ url_for('search_project.search_project') }}" method="post" autocomplete="off">
-            <label for="search_term">
-                <i class="fa-solid fa-search"></i> Search Term:
-            </label>
-            <input type="text" name="search_term" id="search_term" required placeholder="Enter project name, type, etc.">
-            <input type="submit" value="Search">
-        </form>
-        {% if projects %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Project ID</th>
-                    <th>Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for project in projects %}
-                <tr>
-                    <td>{{ project.project_id }}</td>
-                    <td>{{ project.project_name }}</td>
-                    <td>{{ project.start_date }}</td>
-                    <td>{{ project.end_date }}</td>
-                    <td>{{ project.project_type }}</td>
-                    <td>
-                        <span class="status-badge status-{{ project.status.lower() }}">
-                            {{ project.status }}
-                        </span>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="action-link">
-                            <i class="fa-solid fa-eye"></i> View
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-        {% if msg %}
-        <div class="msg">
-            <p><i class="fa-solid fa-circle-info"></i> {{ msg }}</p>
-        </div>
-        {% endif %}
+    <div class="top-bar">
+        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
         <a href="{{ url_for('home.home') }}" class="back-link">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
         </a>
     </div>
+    
+    <main class="main-content">
+        <section class="search-section">
+            <div class="search-header">
+                <h2><i class="fa-solid fa-magnifying-glass"></i> Search Projects</h2>
+            </div>
+            <form action="{{ url_for('search_project.search_project') }}" method="post" autocomplete="off" class="search-form">
+                <div class="search-input">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="text" name="search_term" id="search_term" required placeholder="Search by project name, type, or status...">
+                </div>
+                <button type="submit" class="btn-search">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </form>
+        </section>
+
+        {% if msg %}
+        <div class="msg">
+            <i class="fa-solid fa-circle-info"></i> {{ msg }}
+        </div>
+        {% endif %}
+
+        {% if projects %}
+        <div class="results-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project ID</th>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>{{ project.project_id }}</td>
+                        <td>{{ project.project_name }}</td>
+                        <td>{{ project.start_date }}</td>
+                        <td>{{ project.end_date }}</td>
+                        <td>{{ project.project_type }}</td>
+                        <td>
+                            <span class="status-badge status-{{ project.status.lower() }}">
+                                <i class="fa-solid fa-circle-dot"></i> {{ project.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="action-link">
+                                <i class="fa-solid fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </main>
+
     <script>
-        // Dynamic status badge coloring if needed (for e.g. custom statuses)
+        // Dynamic status badge coloring
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.status-badge').forEach(badge => {
                 const status = badge.textContent.trim().toLowerCase();
@@ -315,7 +347,8 @@
                 }
             });
         });
-        // Autofocus on the search bar for UX
+
+        // Autofocus search input
         window.onload = () => {
             const searchInput = document.getElementById('search_term');
             if(searchInput) searchInput.focus();

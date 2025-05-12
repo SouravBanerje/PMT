@@ -62,13 +62,13 @@ def project_version_report():
         conn.close()
         
         # Return template
-        return render_template('project_version_report.html', 
-                               projects=projects,
-                               selected_project_id=int(selected_project_id) if selected_project_id else '',
-                               change_type=change_type,
-                               start_date=start_date,
-                               end_date=end_date,
-                               version_changes=version_changes)
+        return render_template('project_version_report.html',
+                            projects=projects,
+                            selected_project_id=int(selected_project_id) if selected_project_id else '',
+                            change_type=change_type,
+                            start_date=start_date,
+                            end_date=end_date,
+                            version_changes=version_changes)
     
     # User is not authorized, redirect to home page
     return redirect(url_for('home.home'))

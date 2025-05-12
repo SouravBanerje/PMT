@@ -1,187 +1,368 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Forums - {{ project.project_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for clean look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Modern sans-serif font combination -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        :root {
+            /* Modern color palette */
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --surface: #ffffff;
+            --surface-hover: #fafafa;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+            
+            /* Modern design tokens */
+            --radius-sm: 0.5rem;
+            --radius: 1rem;
+            --radius-lg: 1.5rem;
+            --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            background: linear-gradient(135deg, #f8faff 0%, #f0f5ff 100%);
             min-height: 100vh;
             margin: 0;
-            color: #23272f;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--gray-900);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
         }
+
         .container {
-            max-width: 820px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 34px 34px 28px 34px;
+            max-width: 1100px;
+            margin: 32px auto;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
         h1 {
-            font-size: 1.5rem;
-            margin-bottom: 4px;
+            font-size: 2.25rem;
+            margin: 0;
             font-weight: 700;
-            color: #2462d5;
+            background: linear-gradient(120deg, var(--primary-dark), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 12px;
         }
+
+        h1 i {
+            font-size: 0.9em;
+            color: var(--primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #4f8cff;
+            gap: 8px;
+            color: var(--gray-700);
             text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 18px;
-            background: #f2f7fd;
-            padding: 7px 16px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
+            font-weight: 500;
+            background: var(--gray-50);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
         }
+
         .back-link:hover {
-            background: #e6f1fa;
-            color: #2462d5;
+            background: var(--surface);
+            color: var(--primary);
+            border-color: var(--primary-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
+
         .create-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #fff;
-            background: linear-gradient(90deg,#4f8cff,#2462d5);
-            padding: 10px 22px;
-            border-radius: 6px;
+            gap: 8px;
+            color: var(--surface);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 12px 24px;
+            border-radius: var(--radius);
             font-weight: 600;
             text-decoration: none;
-            margin-bottom: 22px;
-            margin-top: 3px;
-            transition: background 0.2s, transform 0.13s;
-            box-shadow: 0 2px 7px rgba(44,62,80,0.08);
+            transition: var(--transition);
+            border: 1px solid var(--primary-light);
         }
+
         .create-link:hover {
-            background: #2462d5;
-            color: #fff;
-            transform: translateY(-2px) scale(1.03);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -8px rgba(79, 70, 229, 0.35);
         }
+
+        .create-link i {
+            font-size: 0.9em;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
         h2 {
-            font-size: 1.15rem;
-            color: #2462d5;
+            font-size: 1.5rem;
+            color: var(--gray-900);
             font-weight: 700;
-            margin-top: 12px;
-            margin-bottom: 14px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 7px;
+
+        .forums-grid {
+            display: grid;
+            gap: 16px;
         }
-        thead th {
-            text-align: left;
-            padding: 12px 13px;
-            background: #f4f7fa;
-            font-weight: 700;
-            color: #23272f;
-            border-bottom: 2px solid #e3e8ee;
+
+        .forum-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 24px;
+            align-items: center;
         }
-        tbody tr {
-            background: rgba(255,255,255,0.97);
-            transition: box-shadow 0.18s, transform 0.18s;
+
+        .forum-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
-        tbody tr:hover {
-            background: #f2faff;
-            box-shadow: 0 2px 14px rgba(80,160,255,0.09);
-            transform: translateY(-2px) scale(1.01);
+
+        .forum-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        td {
-            padding: 11px 13px;
-            vertical-align: middle;
-            font-size: 1.05em;
-        }
-        td a {
-            color: #2462d5;
+
+        .forum-title {
+            color: var(--primary-dark);
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.16s;
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        td a:hover {
-            color: #4f8cff;
-            text-decoration: underline;
+
+        .forum-title:hover {
+            color: var(--primary);
         }
-        td p {
-            color: #444;
-            margin: 2px 0 0 0;
-            font-size: 0.97em;
+
+        .forum-description {
+            color: var(--gray-500);
+            margin: 0;
+            font-size: 0.95rem;
         }
-        @media (max-width: 900px) {
+
+        .stat-box {
+            background: var(--gray-50);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 100px;
+        }
+
+        .stat-label {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .last-activity {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .last-activity strong {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .no-forums {
+            text-align: center;
+            padding: 48px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            color: var(--gray-500);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 2px dashed var(--gray-200);
+        }
+
+        @media (max-width: 1000px) {
             .container {
-                max-width: 99vw;
-                padding: 14px 3vw 18px 3vw;
+                margin: 16px;
+                padding: 24px;
             }
-            h1 { font-size: 1.13rem; }
-            h2 { font-size: 1.02rem; }
-            table, thead, tbody, th, td, tr {
-                font-size: 0.99em;
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .forum-card {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .stat-box {
+                padding: 8px 16px;
+                flex-direction: row;
+                justify-content: center;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .back-link, .create-link {
+                width: 100%;
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1><i class="fa-solid fa-comments"></i> Forums - {{ project.project_name }}</h1>
-        <a href="/project/{{ project.id }}" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Back to Project
-        </a>
-        
-        {% if session.user_type == 'admin' or session.user_type == 'pm' %}
-            <div>
-                <a href="/project/{{ project.id }}/forums/create" class="create-link">
-                    <i class="fa-solid fa-plus"></i> Create New Forum
+        <div class="header">
+            <h1><i class="fa-solid fa-comments"></i> Forums - {{ project.project_name }}</h1>
+            <div class="actions">
+                <a href="/project/{{ project.id }}" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Project
                 </a>
+                {% if session.user_type == 'admin' or session.user_type == 'pm' %}
+                    <a href="/project/{{ project.id }}/forums/create" class="create-link">
+                        <i class="fa-solid fa-plus"></i> Create New Forum
+                    </a>
+                {% endif %}
             </div>
-        {% endif %}
-        
+        </div>
+
         <div>
-            <h2><i class="fa-solid fa-list"></i> Available Forums</h2>
+            <div class="section-header">
+                <h2><i class="fa-solid fa-list"></i> Available Forums</h2>
+            </div>
+
             {% if forums %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Forum</th>
-                            <th>Topics</th>
-                            <th>Replies</th>
-                            <th>Last Activity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for forum in forums %}
-                            <tr>
-                                <td>
-                                    <a href="/forum/{{ forum.id }}"><i class="fa-solid fa-comments"></i> {{ forum.forum_name }}</a>
-                                    <p>{{ forum.description }}</p>
-                                </td>
-                                <td>{{ forum.topic_count }}</td>
-                                <td>{{ forum.reply_count }}</td>
-                                <td>
-                                    {% if forum.last_activity %}
-                                        {{ forum.last_activity }}
-                                    {% else %}
-                                        No activity
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="forums-grid">
+                    {% for forum in forums %}
+                        <div class="forum-card">
+                            <div class="forum-info">
+                                <a href="/forum/{{ forum.id }}" class="forum-title">
+                                    <i class="fa-solid fa-comments"></i>
+                                    {{ forum.forum_name }}
+                                </a>
+                                <p class="forum-description">{{ forum.description }}</p>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Topics</span>
+                                <span class="stat-value">{{ forum.topic_count }}</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Replies</span>
+                                <span class="stat-value">{{ forum.reply_count }}</span>
+                            </div>
+                            <div class="last-activity">
+                                <i class="fa-regular fa-clock"></i>
+                                {% if forum.last_activity %}
+                                    <strong>{{ forum.last_activity }}</strong>
+                                {% else %}
+                                    <span>No activity</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
-                <p>No forums available for this project.</p>
+                <div class="no-forums">
+                    <i class="fa-solid fa-circle-info"></i>
+                    No forums available for this project.
+                </div>
             {% endif %}
         </div>
     </div>

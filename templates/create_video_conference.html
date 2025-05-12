@@ -1,199 +1,442 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Schedule Video Conference</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Using modern Inter and Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-            color: #23272f;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Modern Design System */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-bg: #f5f3ff;
+            --accent: #8b5cf6;
+            --accent-light: #ddd6fe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+
+        /* Reset and Base Styles */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            background: linear-gradient(135deg, #f5f3ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
         .container {
-            max-width: 600px;
-            margin: 36px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 34px 34px 22px 34px;
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr;
         }
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: #2462d5;
+
+        /* Header Styles */
+        .app-header {
+            background: linear-gradient(to right, var(--primary-bg), var(--accent-light));
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .app-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
-        h2 {
-            font-size: 1.08rem;
-            color: #2462d5;
-            font-weight: 600;
-            margin-top: 10px;
-            margin-bottom: 14px;
+
+        .app-title i {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            height: 40px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
         }
-        a {
-            color: #4f8cff;
+
+        .back-link {
+            color: var(--gray-600);
             text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 18px;
+            font-weight: 500;
+            font-size: 0.94rem;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            background: #f2f7fd;
-            padding: 7px 16px;
-            border-radius: 5px;
-            transition: background 0.16s, color 0.16s;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background: white;
+            transition: var(--transition);
         }
-        a:hover {
-            background: #e6f1fa;
-            color: #2462d5;
-            text-decoration: underline;
+
+        .back-link:hover {
+            background: var(--gray-100);
+            color: var(--gray-800);
+            box-shadow: var(--shadow-sm);
         }
-        form > div {
-            margin-bottom: 18px;
-            display: flex;
-            flex-direction: column;
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
         }
-        label {
+
+        .section-header {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            color: var(--gray-800);
             font-weight: 600;
-            margin-bottom: 5px;
-            color: #2462d5;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        input[type="text"], input[type="url"], input[type="datetime-local"], select {
-            border-radius: 7px;
-            border: 1.5px solid #b2bec3;
-            padding: 10px 13px;
+
+        .section-header i {
+            color: var(--primary);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-size: 0.94rem;
+        }
+
+        .form-label i {
+            margin-right: 6px;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            padding: 12px 16px;
             font-size: 1rem;
-            background: #f9fbfd;
-            transition: border-color 0.2s;
+            background: white;
+            transition: var(--transition);
             font-family: inherit;
+            color: var(--gray-800);
         }
-        input[type="text"]:focus, input[type="url"]:focus, input[type="datetime-local"]:focus, select:focus {
-            border-color: #2462d5;
-            background: #fff;
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
             outline: none;
         }
-        button[type="submit"] {
-            background: linear-gradient(90deg,#4f8cff,#2462d5);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            padding: 11px 27px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.18s, transform 0.12s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
+
+        .form-control::placeholder {
+            color: var(--gray-400);
         }
-        button[type="submit"]:hover {
-            background: #2462d5;
-            transform: translateY(-2px) scale(1.03);
+
+        /* Time input grid */
+        .time-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
+
+        /* Participants Section */
         .participants-container {
-            max-height: 165px;
+            max-height: 240px;
             overflow-y: auto;
-            border: 1.5px solid #e3e8ee;
-            padding: 10px 10px 5px 10px;
-            border-radius: 7px;
-            background: #f7fbff;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            background: var(--gray-50);
+            padding: 4px;
         }
+
         .participant-item {
-            margin-bottom: 8px;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: var(--transition);
         }
-        .participant-item label {
+
+        .participant-item:hover {
+            background: white;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+
+        .custom-checkbox input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: white;
+            border: 2px solid var(--gray-300);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: var(--primary);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 5px;
+            top: 1px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .participant-label {
             font-weight: 500;
-            margin-bottom: 0;
-            color: #23272f;
+            color: var(--gray-700);
             cursor: pointer;
+            user-select: none;
         }
-        @media (max-width: 700px) {
-            .container {
-                padding: 10px 2vw 12px 2vw;
-                max-width: 100vw;
+
+        /* Button Styles */
+        .btn-container {
+            margin-top: 32px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            padding: 14px 28px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
             }
-            h1 {
-                font-size: 1.11rem;
+            
+            .main-content {
+                padding: 20px;
             }
-            h2 {
-                font-size: 1.01rem;
+            
+            .time-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
+            }
+            
+            .btn-container {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1><i class="fa-solid fa-video"></i> Schedule Video Conference</h1>
-        <a href="/video_conferences"><i class="fa-solid fa-arrow-left"></i> Back to Conferences</a>
-        <div>
-            <h2><i class="fa-solid fa-calendar-plus"></i> Conference Details</h2>
+        <div class="app-header">
+            <h1 class="app-title">
+                <i class="fa-solid fa-video"></i>
+                Schedule Conference
+            </h1>
+            <a href="/video_conferences" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Conferences
+            </a>
+        </div>
+        
+        <div class="main-content">
             <form method="post" autocomplete="off">
-                <div>
-                    <label for="conference_name"><i class="fa-solid fa-signature"></i> Conference Name:</label>
-                    <input type="text" id="conference_name" name="conference_name" required placeholder="Enter conference name">
+                <h2 class="section-header">
+                    <i class="fa-solid fa-calendar-plus"></i> Conference Details
+                </h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="conference_name">
+                        <i class="fa-solid fa-signature"></i> Conference Name
+                    </label>
+                    <input type="text" id="conference_name" name="conference_name" class="form-control" 
+                           required placeholder="Enter conference name">
                 </div>
-                <div>
-                    <label for="project_id"><i class="fa-solid fa-folder"></i> Project (Optional):</label>
-                    <select id="project_id" name="project_id">
+                
+                <div class="form-group">
+                    <label class="form-label" for="project_id">
+                        <i class="fa-solid fa-folder"></i> Project (Optional)
+                    </label>
+                    <select id="project_id" name="project_id" class="form-control">
                         <option value="">-- No Project --</option>
                         {% for project in projects %}
                             <option value="{{ project.id }}">{{ project.project_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <!-- <div>
-                    <label for="task_id">Task (Optional):</label>
-                    <select id="task_id" name="task_id" disabled>
-                        <option value="">-- No Task --</option>
-                         Tasks will be loaded dynamically based on selected project
-                    </select>
-                </div> -->
-                <div>
-                    <label for="meeting_link"><i class="fa-solid fa-link"></i> Meeting Link:</label>
-                    <input type="url" id="meeting_link" name="meeting_link" required placeholder="https://meet.example.com/room-id">
+                
+                <div class="form-group">
+                    <label class="form-label" for="meeting_link">
+                        <i class="fa-solid fa-link"></i> Meeting Link
+                    </label>
+                    <input type="url" id="meeting_link" name="meeting_link" class="form-control" 
+                           required placeholder="https://meet.example.com/room-id">
                 </div>
-                <div>
-                    <label for="scheduled_start"><i class="fa-solid fa-clock"></i> Start Time:</label>
-                    <input type="datetime-local" id="scheduled_start" name="scheduled_start" required>
+                
+                <div class="form-group time-grid">
+                    <div>
+                        <label class="form-label" for="scheduled_start">
+                            <i class="fa-solid fa-clock"></i> Start Time
+                        </label>
+                        <input type="datetime-local" id="scheduled_start" name="scheduled_start" 
+                               class="form-control" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="scheduled_end">
+                            <i class="fa-solid fa-clock"></i> End Time
+                        </label>
+                        <input type="datetime-local" id="scheduled_end" name="scheduled_end" 
+                               class="form-control" required>
+                    </div>
                 </div>
-                <div>
-                    <label for="scheduled_end"><i class="fa-solid fa-clock"></i> End Time:</label>
-                    <input type="datetime-local" id="scheduled_end" name="scheduled_end" required>
-                </div>
-                <div>
-                    <label><i class="fa-solid fa-users"></i> Participants:</label>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fa-solid fa-users"></i> Participants
+                    </label>
                     <div class="participants-container">
                         {% for user in users %}
                             <div class="participant-item">
-                                <input type="checkbox" id="participant_{{ user.id }}" name="participants" value="{{ user.id }}">
-                                <label for="participant_{{ user.id }}">{{ user.username }}</label>
+                                <div class="checkbox-wrapper">
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" id="participant_{{ user.id }}" name="participants" value="{{ user.id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="participant-label" for="participant_{{ user.id }}">
+                                        {{ user.username }}
+                                    </label>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div>
-                    <button type="submit"><i class="fa-solid fa-calendar-check"></i> Schedule Conference</button>
+                
+                <div class="btn-container">
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-calendar-check"></i> Schedule Conference
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+    
     <script>
-        // Set default datetime values to current time rounded to next 30 minutes
+        // Set default datetime values to current time rounded to the next 30 minutes
         document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();
             const minutes = Math.ceil(now.getMinutes() / 30) * 30;
@@ -206,41 +449,26 @@
             
             const formatDateTime = date => {
                 return date.getFullYear() + '-' + 
-                       String(date.getMonth() + 1).padStart(2, '0') + '-' + 
-                       String(date.getDate()).padStart(2, '0') + 'T' + 
-                       String(date.getHours()).padStart(2, '0') + ':' + 
-                       String(date.getMinutes()).padStart(2, '0');
+                    String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                    String(date.getDate()).padStart(2, '0') + 'T' + 
+                    String(date.getHours()).padStart(2, '0') + ':' + 
+                    String(date.getMinutes()).padStart(2, '0');
             };
             
             document.getElementById('scheduled_start').value = formatDateTime(start);
             document.getElementById('scheduled_end').value = formatDateTime(end);
             
-            // If you want dynamic task loading based on project:
-            // document.getElementById('project_id').addEventListener('change', function() {
-            //     const projectId = this.value;
-            //     const taskSelect = document.getElementById('task_id');
-            //     while (taskSelect.options.length > 1) {
-            //         taskSelect.remove(1);
-            //     }
-            //     if (projectId) {
-            //         taskSelect.disabled = false;
-            //         fetch(`/api/project_tasks/${projectId}`)
-            //             .then(response => response.json())
-            //             .then(tasks => {
-            //                 tasks.forEach(task => {
-            //                     const option = document.createElement('option');
-            //                     option.value = task.id;
-            //                     option.textContent = task.task_name;
-            //                     taskSelect.appendChild(option);
-            //                 });
-            //             })
-            //             .catch(error => console.error('Error fetching tasks:', error));
-            //     } else {
-            //         taskSelect.disabled = true;
-            //     }
-            // });
+            // Add subtle animation for better UX
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                control.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
         });
     </script>
 </body>
 </html>
-

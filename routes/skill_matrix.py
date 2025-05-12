@@ -56,4 +56,4 @@ def skill_matrix():
                                user_skills=user_skills)
     
    
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))

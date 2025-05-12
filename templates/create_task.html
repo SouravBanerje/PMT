@@ -1,192 +1,487 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Task - Project Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    <title>Create Task - Project Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
+        :root {
+            /* Core colors */
+            --primary: #4f8cff;
+            --primary-dark: #2462d5;
+            --primary-light: rgba(79, 140, 255, 0.1);
+            --secondary: #44e3bc;
+            --secondary-dark: #1fa886;
+            --accent: #6c63ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+
+            /* Neutral colors */
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+
+            /* Shadows and Effects */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --shadow-colored: 0px 10px 20px rgba(124, 58, 237, 0.1);
+            
+            /* Border Radius */
+            --radius-sm: 0.5rem;
+            --radius: 0.75rem;
+            --radius-lg: 1rem;
+            
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Gradients */
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
             margin: 0;
-            color: #23272f;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         }
-        .container {
-            max-width: 650px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(44,62,80,0.09);
-            padding: 36px 34px 24px 34px;
-        }
-        h1 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: #2462d5;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        h2 {
-            font-size: 1.16rem;
-            color: #2462d5;
-            margin-top: 7px;
-            margin-bottom: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        form > div, .resource-row {
-            margin-bottom: 18px;
+
+        body {
+            background: 
+                linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%),
+                url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1280&q=80') center/cover no-repeat fixed;
+            background-blend-mode: overlay;
+            color: var(--gray-700);
+            line-height: 1.5;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        label {
+
+        .navbar {
+            background: var(--gradient);
+            padding: 1.25rem 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 4px;
-            color: #2462d5;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"], input[type="date"], input[type="number"], textarea, select {
-            border-radius: 7px;
-            border: 1.5px solid #b2bec3;
-            padding: 10px 13px;
-            font-size: 1rem;
-            background: #f9fbfd;
-            transition: border-color 0.2s;
-            font-family: inherit;
+
+        .navbar .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
-            border-color: #2462d5;
-            background: #fff;
+
+        .navbar .back-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .page-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-name {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-container {
+            background: var(--glass);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            backdrop-filter: blur(16px);
+            margin-top: 1rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        label i {
+            color: var(--primary);
+        }
+
+        .required {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            color: var(--gray-800);
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
             outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
+
         textarea {
-            min-height: 60px;
+            min-height: 120px;
             resize: vertical;
         }
-        select {
-            cursor: pointer;
+
+        .resources-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
         }
-        input[type="submit"], .btn {
-            background: linear-gradient(90deg,#4f8cff,#2462d5);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            padding: 11px 27px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.18s, transform 0.12s;
-            box-shadow: 0 2px 9px rgba(44,62,80,0.09);
-            display: inline-flex;
+
+        .resources-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 7px;
+            margin-bottom: 1rem;
         }
-        input[type="submit"]:hover, .btn:hover {
-            background: #2462d5;
-            transform: translateY(-2px) scale(1.03);
-        }
-        .back-link {
-            display: inline-flex;
+
+        .resources-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
             align-items: center;
-            gap: 6px;
-            color: #4f8cff;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 8px;
-            background: #f2f7fd;
-            padding: 7px 16px;
-            border-radius: 5px;
-            transition: background 0.2s, color 0.2s;
+            gap: 0.5rem;
         }
-        .back-link:hover {
-            background: #e6f1fa;
-            color: #2462d5;
-        }
-        h3 {
-            font-size: 1.08rem;
-            font-weight: 600;
-            color: #2462d5;
-            margin-bottom: 4px;
-        }
-        #resources-container {
-            margin-top: 10px;
-        }
-        .resource-row {
-            background: #f7fbff;
-            border-radius: 6px;
-            box-shadow: 0 1px 4px rgba(44,62,80,0.07);
-            padding: 9px 12px 4px 12px;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 8px;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        .resource-row select, .resource-row input[type="text"] {
-            margin-bottom: 0;
-            flex: 1 1 140px;
-            min-width: 120px;
-            margin-right: 8px;
-        }
-        .remove-btn {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .remove-btn:hover {
-            background: #c0392b;
-        }
+
         .btn-add-resource {
-            background: #09c372;
-            color: #fff;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            font-weight: 600;
-            padding: 9px 18px;
-            font-size: 1rem;
+            background: var(--success);
+            color: white;
             border: none;
+            padding: 0.625rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.18s, transform 0.12s;
-            box-shadow: 0 2px 7px rgba(44,62,80,0.08);
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
         }
-        .btn-add-resource:hover {
-            background: #0eaf5b;
-            transform: translateY(-1px) scale(1.02);
+
+        
+        .resource-row {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
         }
-        @media (max-width: 700px) {
-            .container {
-                padding: 10px 2vw 14px 2vw;
-                max-width: 100vw;
+
+        .resource-row:hover {
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .resource-row select,
+        .resource-row input {
+            margin: 0;
+        }
+
+        .remove-btn {
+            background: var(--danger-light);
+            color: var(--danger);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            min-width: 2.5rem;
+        }
+
+        .remove-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-colored);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
             }
-            h1 {
-                font-size: 1.1rem;
+
+            .form-grid {
+                grid-template-columns: 1fr;
             }
-            h2 {
-                font-size: 1rem;
-            }
+
             .resource-row {
                 flex-direction: column;
-                gap: 6px;
+            }
+
+            .resource-row select,
+            .resource-row input {
+                width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .navbar {
+                padding: 1rem;
             }
         }
     </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1><i class="fas fa-list-check"></i> Create Task</h1>
+        <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Project
+        </a>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h2><i class="fas fa-folder-tree"></i> New Task</h2>
+            <div class="project-name">{{ project.project_name }}</div>
+        </div>
+
+        <div class="form-container">
+            <form action="{{ url_for('create_task.create_task', project_id=project.id) }}" method="post" autocomplete="off">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required" for="task_name">
+                            <i class="fas fa-signature"></i> Task Name
+                        </label>
+                        <input type="text" name="task_name" id="task_name" required placeholder="Enter task name">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="task_description">
+                            <i class="fas fa-pen"></i> Task Description
+                        </label>
+                        <textarea name="task_description" id="task_description" placeholder="Describe the task details, objectives, and any specific requirements"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required" for="start_date">
+                            <i class="fas fa-calendar-days"></i> Start Date
+                        </label>
+                        <input type="date" name="start_date" id="start_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required" for="end_date">
+                            <i class="fas fa-calendar-days"></i> End Date
+                        </label>
+                        <input type="date" name="end_date" id="end_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dependency_days">
+                            <i class="fas fa-link"></i> Dependency (days)
+                        </label>
+                        <input type="number" name="dependency_days" id="dependency_days" value="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parent_task_id">
+                            <i class="fas fa-diagram-next"></i> Parent Task
+                        </label>
+                        <select name="parent_task_id" id="parent_task_id">
+                            <option value="">No Parent Task</option>
+                            {% for task in existing_tasks %}
+                                <option value="{{ task.id }}">{{ task.task_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="is_active">
+                            <i class="fas fa-toggle-on"></i> Status
+                        </label>
+                        <select name="is_active" id="is_active">
+                            <option value="yes">Active</option>
+                            <option value="no">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">
+                            <i class="fas fa-circle-half-stroke"></i> Progress
+                        </label>
+                        <select name="status" id="status">
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="resources-section">
+                    <div class="resources-header">
+                        <h3><i class="fas fa-users"></i> Team Resources</h3>
+                        <button type="button" class="btn-add-resource" onclick="addResource()">
+                            <i class="fas fa-plus"></i> Add Resource
+                        </button>
+                    </div>
+                    <div id="resources-container">
+                        <!-- Resources are added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Task
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
     <script>
         function addResource() {
             var resourcesContainer = document.getElementById('resources-container');
@@ -198,88 +493,21 @@
                         <option value="{{ member.id }}">{{ member.username }}</option>
                     {% endfor %}
                 </select>
-                <input type="text" name="designations[]" placeholder="Designation/Grade" required>
-                <button type="button" class="remove-btn" title="Remove Resource"><i class="fa-solid fa-trash"></i> Remove</button>
+                <input type="text" name="designations[]" placeholder="Designation/Role" required>
+                <button type="button" class="remove-btn" title="Remove Resource">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             `;
-            // Add remove event
             newResource.querySelector('.remove-btn').onclick = function() {
                 resourcesContainer.removeChild(newResource);
             };
             resourcesContainer.appendChild(newResource);
         }
-        // Allow remove for dynamically created rows and reset resources on page load
+
         window.onload = function() {
             document.getElementById('resources-container').innerHTML = "";
         };
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1><i class="fa-solid fa-diagram-project"></i> Project Management System</h1>
-        <h2><i class="fa-solid fa-list-check"></i> Create Task for Project: <span style="color:#2462d5;">{{ project.project_name }}</span></h2>
-        <form action="{{ url_for('create_task.create_task', project_id=project.id) }}" method="post" autocomplete="off">
-            <div>
-                <label for="task_name"><i class="fa-solid fa-signature"></i> Task Name: *</label>
-                <input type="text" name="task_name" id="task_name" required placeholder="Enter task name">
-            </div>
-            <div>
-                <label for="task_description"><i class="fa-solid fa-pen"></i> Task Description:</label>
-                <textarea name="task_description" id="task_description" placeholder="Describe the task"></textarea>
-            </div>
-            <div>
-                <label for="start_date"><i class="fa-solid fa-calendar-days"></i> Start Date: *</label>
-                <input type="date" name="start_date" id="start_date" required>
-            </div>
-            <div>
-                <label for="end_date"><i class="fa-solid fa-calendar-days"></i> End Date: *</label>
-                <input type="date" name="end_date" id="end_date" required>
-            </div>
-            <div>
-                <label for="dependency_days"><i class="fa-solid fa-link"></i> Dependency (days):</label>
-                <input type="number" name="dependency_days" id="dependency_days" value="0" min="0">
-            </div>
-            <div>
-                <label for="parent_task_id"><i class="fa-solid fa-diagram-next"></i> Parent Task:</label>
-                <select name="parent_task_id" id="parent_task_id">
-                    <option value="">No Parent Task</option>
-                    {% for task in existing_tasks %}
-                        <option value="{{ task.id }}">{{ task.task_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label for="is_active"><i class="fa-solid fa-toggle-on"></i> Is Active:</label>
-                <select name="is_active" id="is_active">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <div>
-                <label for="status"><i class="fa-solid fa-circle-half-stroke"></i> Status:</label>
-                <select name="status" id="status">
-                    <option value="Not Started">Not Started</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pending">Pending</option>
-                </select>
-            </div>
-            <div>
-                <h3><i class="fa-solid fa-users"></i> Resources</h3>
-                <button type="button" class="btn-add-resource" onclick="addResource()">
-                    <i class="fa-solid fa-plus"></i> Add Resource
-                </button>
-                <div id="resources-container">
-                    <!-- Resources are added here dynamically -->
-                </div>
-            </div>
-            <div>
-                <input type="submit" value="Create Task">
-            </div>
-        </form>
-        <a href="{{ url_for('project_details.project_details', project_id=project.id) }}" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Back to Project Details
-        </a>
-    </div>
 </body>
 </html>
 
