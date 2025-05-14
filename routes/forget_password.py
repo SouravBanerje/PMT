@@ -18,8 +18,8 @@ forget_password_bp = Blueprint('forget_password', __name__)
 
 # Helper function to send email
 def send_password_reset_email(email, new_password):
-    sender_email = "sourav2473486@gmail.com"
-    password = "jkmtipyjbixxubme"  # Replace with your email password
+    sender_email = "XXXXXXX@gmail.com"
+    password = "XXXXXXXXXXXXXX"  # Replace with your email password
     
     message = MIMEMultipart("alternative")
     message["Subject"] = "Password Reset"
